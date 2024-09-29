@@ -1,13 +1,13 @@
 import React from "react"; 
 import { useEffect, useState } from "react"
-import axios from "axios";
+import api from "../services";
 
 
 const TestRequest: React.FC = () => {
     const [text, setText] = useState<string>('');
 
     useEffect(() => {
-        axios.get<string>("http://localhost:5057/api/test")
+        api.get<string>("test")
         .then(r => { setText(r.data); })
     })
 
