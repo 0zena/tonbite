@@ -1,0 +1,4 @@
+*.sln
+
+backend/Tonbite.Api/bin/
+backend/Tonbite.Api/obj/

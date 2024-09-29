@@ -1,0 +1,6 @@
+@Tonbite.Api_HostAddress = http://localhost:5057
+
+GET {{Tonbite.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
