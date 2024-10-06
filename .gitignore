@@ -1,4 +1,5 @@
 *.sln
+.idea/
 
 backend/Tonbite.Api/bin/
 backend/Tonbite.Api/obj/
