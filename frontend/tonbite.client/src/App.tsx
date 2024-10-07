@@ -1,4 +1,4 @@
-import './App.css'
+import './App.scss'
 
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import { Header } from './components/header';
