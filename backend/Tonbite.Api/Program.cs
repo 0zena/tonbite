@@ -1,4 +1,7 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Tonbite.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +11,24 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Controllers
+// JWT
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(x 
+        => x.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        }
+    );
+
+builder.Services.AddAuthorization();
+
 builder.Services.AddControllers();
 
 // Postgres
@@ -26,14 +46,18 @@ if (app.Environment.IsDevelopment())
 }
 
 // CORS
-app.UseCors(CorsPolicyBuilder => CorsPolicyBuilder
+app.UseCors(corsPolicyBuilder => corsPolicyBuilder
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowAnyOrigin());
 
-app.UseHttpsRedirection();
 app.UseRouting();
+
 app.UseAuthentication();
-app.MapDefaultControllerRoute();
+app.UseAuthorization();
+
+app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();

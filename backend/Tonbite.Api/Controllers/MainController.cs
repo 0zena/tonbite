@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Decrypted.Api.Controllers;
+namespace Tonbite.Api.Controllers;
 
 public class MainController : ControllerBase
 {
@@ -8,10 +9,17 @@ public class MainController : ControllerBase
     {
         return Ok("API Connected");
     }
-
+    
     [HttpGet("/api/test")]
     public IActionResult TestRequest()
     {
         return Ok("API TEST");
+    }
+    
+    [Authorize]
+    [HttpGet("/api/jwt/test")]
+    public IActionResult TestSecureRequest()
+    {
+        return Ok("JWT TEST");
     }
 }
