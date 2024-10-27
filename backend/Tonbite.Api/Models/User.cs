@@ -45,9 +45,9 @@ public class UserProps
     /// <summary> User profile bio </summary>
     [MaxLength(1000, ErrorMessage = "Bio must be 1000 characters or fewer")]
     public string Bio { get; set; } = string.Empty;
-    
+
     /// <summary> User password </summary>
     [DataType(DataType.Password)]
     [Required(AllowEmptyStrings = false, ErrorMessage = "Password is required")]
-    public required string Password { get; set; }
+    public string Password { get; set; } = default!;
 }

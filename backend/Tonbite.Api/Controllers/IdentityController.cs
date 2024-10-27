@@ -1,8 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Tonbite.Api.Data;
@@ -22,22 +22,22 @@ public class IdentityController : ControllerBase
         Configuration = configuration;
     }
     
-    [HttpPost("api/token")]
-    public IActionResult GenerateToken()
+    [HttpPost("/api/user/token")]
+    public string GenerateToken(int userId, string email)
     {
-        TimeSpan tokenLifetime = TimeSpan.FromHours(8);
+        var tokenLifetime = TimeSpan.FromHours(8);
         
         var claims = new List<Claim>
         {
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new (JwtRegisteredClaimNames.Sub, "user-id"),
-            new (JwtRegisteredClaimNames.Email, "email@gmail.com")
+            new (JwtRegisteredClaimNames.NameId, userId.ToString()),
+            new (JwtRegisteredClaimNames.Email, email)
         };
         
         var jwtSecret = Configuration["Jwt:Key"];
         if (string.IsNullOrEmpty(jwtSecret))
         {
-            return StatusCode(500, "JWT secret key is not configured.");
+            throw new InvalidOperationException("JWT secret key is not configured.");
         }
         
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
@@ -53,10 +53,50 @@ public class IdentityController : ControllerBase
         );
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        var jwt = tokenHandler.WriteToken(token);
-
-        // Return the token to the client
-        return Ok(new { token = jwt });
+        return tokenHandler.WriteToken(token);
     }
 
+    [HttpPost("/api/user/register")]
+    public IActionResult RegisterUser([FromBody] UserRegister request)
+    {
+        if (!ModelState.IsValid) 
+            return BadRequest("User is not valid.");
+        
+        var passwordHasher = new PasswordHasher<User>();
+        
+        var user = new User
+        {
+            Username = request.Username,
+            Email = request.Email,
+            Bio = request.Bio,
+        };
+        
+        user.Password = passwordHasher.HashPassword(user, request.Password);
+
+        Context.Add(user);
+        Context.SaveChanges();
+
+        return Ok("User registered successfully.");
+    }
+    
+    [HttpPost("/api/user/login")]
+    public IActionResult LoginUser([FromBody] UserLogin request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest("User is not valid.");
+        
+        var user = Context.Users.FirstOrDefault(u => u.Email == request.Email);
+        if (user == null)
+            return Unauthorized("Invalid username or password.");
+    
+        var passwordHasher = new PasswordHasher<User>();
+    
+        var result = passwordHasher.VerifyHashedPassword(user, user.Password, request.Password);
+        if (result == PasswordVerificationResult.Failed)
+            return Unauthorized("Invalid username or password.");
+
+        var jwt = GenerateToken(user.Id, user.Email);
+    
+        return Ok(new { jwt });
+    }
 }
