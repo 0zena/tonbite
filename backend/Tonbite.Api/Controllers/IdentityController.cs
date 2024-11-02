@@ -1,11 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Tonbite.Api.Data;
+using Tonbite.Api.Identity;
 using Tonbite.Api.Models;
 
 namespace Tonbite.Api.Controllers;
@@ -13,17 +14,17 @@ namespace Tonbite.Api.Controllers;
 [ApiController]
 public class IdentityController : ControllerBase
 {
-    [Inject] private ApplicationDbContext Context { get; set; }
-    [Inject] private IConfiguration Configuration { get; set; }
+    private readonly ApplicationDbContext _context;
+    private readonly IConfiguration _configuration;
     
     public IdentityController(ApplicationDbContext context, IConfiguration configuration)
     {
-        Context = context;
-        Configuration = configuration;
+        _context = context;
+        _configuration = configuration;
     }
     
     [HttpPost("/api/user/token")]
-    public string GenerateToken(int userId, string email)
+    public string GenerateToken(int userId, string email, string isAdmin)
     {
         var tokenLifetime = TimeSpan.FromHours(8);
         
@@ -31,10 +32,11 @@ public class IdentityController : ControllerBase
         {
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (JwtRegisteredClaimNames.NameId, userId.ToString()),
-            new (JwtRegisteredClaimNames.Email, email)
+            new (JwtRegisteredClaimNames.Email, email),
+            new (IdentityData.AdminUserClaimName, isAdmin)
         };
         
-        var jwtSecret = Configuration["Jwt:Key"];
+        var jwtSecret = _configuration["Jwt:Key"];
         if (string.IsNullOrEmpty(jwtSecret))
         {
             throw new InvalidOperationException("JWT secret key is not configured.");
@@ -43,10 +45,9 @@ public class IdentityController : ControllerBase
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        // Create the JWT token
         var token = new JwtSecurityToken(
-            issuer: "https:localhost",
-            audience: "https:localhost",
+            issuer: _configuration["ClientBaseUrl"],
+            audience: _configuration["ServerBaseUrl"],
             claims: claims,
             expires: DateTime.UtcNow.Add(tokenLifetime),
             signingCredentials: credentials
@@ -70,11 +71,18 @@ public class IdentityController : ControllerBase
             Email = request.Email,
             Bio = request.Bio,
         };
+
+        var role = new Role
+        {
+            Name = "User",
+            User = user
+        };
         
         user.Password = passwordHasher.HashPassword(user, request.Password);
 
-        Context.Add(user);
-        Context.SaveChanges();
+        _context.Add(user);
+        _context.Add(role);
+        _context.SaveChanges();
 
         return Ok("User registered successfully.");
     }
@@ -85,7 +93,7 @@ public class IdentityController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest("User is not valid.");
         
-        var user = Context.Users.FirstOrDefault(u => u.Email == request.Email);
+        var user = _context.Users.Include(user => user.Roles).FirstOrDefault(u => u.Email == request.Email);
         if (user == null)
             return Unauthorized("Invalid username or password.");
     
@@ -95,7 +103,9 @@ public class IdentityController : ControllerBase
         if (result == PasswordVerificationResult.Failed)
             return Unauthorized("Invalid username or password.");
 
-        var jwt = GenerateToken(user.Id, user.Email);
+        var isAdmin = user.Roles!.Exists(r => r.Name == "Admin");
+
+        var jwt = GenerateToken(user.Id, user.Email, isAdmin.ToString());
     
         return Ok(new { jwt });
     }
