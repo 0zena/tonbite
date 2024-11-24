@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Input } from "@nextui-org/input";
+import { Button } from "@nextui-org/react";
 import LoginFormState from "../../states/LoginFormState.ts";
 import AuthService from "../../services/AuthService.ts";
 
@@ -15,28 +17,24 @@ export default function LoginForm() {
 
     const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        return await AuthService.Login(form);
+        await AuthService.Login(form);
+        return window.location.reload();
     }
 
     return(
         <>
             <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-2">
-                <span className="flex w-full items-center place-content-between space-x-2">
-                    <label htmlFor="email">email</label>
-                    <input name="email"
-                           value={form.email}
-                           onChange={handleChange}
-                           className="p-2 border rounded"/>
-                </span>
-                <span className="flex w-full items-center place-content-between space-x-2">
-                    <label htmlFor="password">password</label>
-                    <input name="password"
-                           type="password"
-                           value={form.password}
-                           onChange={handleChange}
-                           className="p-2 border rounded"/>
-                </span>
-                <button type="submit">Login</button>
+                <Input label="email"
+                       type="email"
+                       name="email"
+                       value={form.email}
+                       onChange={handleChange} />
+                <Input label="password" 
+                       type="password" 
+                       name="password"
+                       value={form.password}
+                       onChange={handleChange} />
+                <Button type="submit">Login</Button>
             </form>
         </>
     );

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { Input } from "@nextui-org/input";
+import { Button } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 import RegisterFormState from "../../states/RegisterFormState.ts";
 import AuthService from "../../services/AuthService.ts";
 
@@ -12,6 +15,8 @@ export default function RegisterForm() {
         confirmPassword: '',
     });
 
+    const navigate = useNavigate();
+    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
         setFormData(prevData => ({...prevData, [name]: value}));
@@ -19,56 +24,39 @@ export default function RegisterForm() {
 
     const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        return await AuthService.Signup(form);
+        await AuthService.Signup(form);
+        return navigate("/login");
     }
 
     return (
         <>
             <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-2">
-                <span className="flex w-full items-center place-content-between space-x-2">
-                    <label htmlFor="userName" className="">username</label>
-                    <input name="userName"
-                           value={form.userName}
-                           onChange={handleChange}
-                           className="p-2 border rounded"/>
-                </span>
-                <span className="flex w-full items-center place-content-between space-x-2">
-                    <label htmlFor="firstName">first name</label>
-                    <input name="firstName"
-                           value={form.firstName}
-                           onChange={handleChange}
-                           className="p-2 border rounded"/>
-                </span>
-                <span className="flex w-full items-center place-content-between space-x-2">
-                    <label htmlFor="lastName">last name</label>
-                    <input name="lastName"
-                           value={form.lastName}
-                           onChange={handleChange}
-                           className="p-2 border rounded"/>
-                </span>
-                <span className="flex w-full items-center place-content-between space-x-2">
-                    <label htmlFor="email">email</label>
-                    <input name="email"
-                           value={form.email}
-                           onChange={handleChange}
-                           className="p-2 border rounded"/>
-                </span>
-                <span className="flex w-full items-center place-content-between space-x-2">
-                    <label htmlFor="password">password</label>
-                    <input name="password"
-                           type="password"
-                           value={form.password}
-                           onChange={handleChange}
-                           className="p-2 border rounded"/>
-                </span>
-                <span className="flex w-full items-center place-content-between space-x-2">
-                    <label htmlFor="confirmPassword">confirm</label>
-                    <input name="confirmPassword"
-                           type="password"
-                           onChange={handleChange}
-                           className="p-2 border rounded" />
-                </span>
-                <button type="submit">Register</button>
+                <Input name="userName"
+                       label="username"
+                       value={form.userName}
+                       onChange={handleChange} />
+                <Input name="firstName"
+                       label="first name"
+                       value={form.firstName}
+                       onChange={handleChange} />
+                <Input name="lastName"
+                       label="last name"
+                       value={form.lastName}
+                       onChange={handleChange} />
+                <Input name="email"
+                       label="email"
+                       value={form.email}
+                       onChange={handleChange} />
+                <Input name="password"
+                       label="password"
+                       type="password"
+                       value={form.password}
+                       onChange={handleChange} />
+                <Input name="confirmPassword"
+                       label="confirm password"
+                       type="password"
+                       onChange={handleChange} />
+                <Button type="submit">Register</Button>
             </form>
         </>
     );
