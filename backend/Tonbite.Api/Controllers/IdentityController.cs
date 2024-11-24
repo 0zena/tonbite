@@ -18,42 +18,41 @@ public class IdentityController : ControllerBase
     }
 
     [HttpPost("/api/user/register")]
-    public IActionResult RegisterUser([FromBody] UserRegister request)
+    public IActionResult RegisterUser(
+        [FromBody] UserRegister request, 
+        [FromServices] IIdentityHttpService service)
     {
         if (!ModelState.IsValid) 
             return BadRequest("User is not valid.");
         
-        var passwordHasher = new PasswordHasher<User>();
-        
-        var user = new User
-        {
-            Username = request.Username,
-            Email = request.Email,
-            Bio = request.Bio,
-        };
+        var exists = _context.Users.FirstOrDefault(u => u.Email == request.Email);
+        if (exists != null)
+            return Conflict("User with this email already exists.");
 
-        var role = new Role
+        try 
         {
-            Name = "User",
-            User = user
-        };
-        
-        user.Password = passwordHasher.HashPassword(user, request.Password);
-
-        _context.Add(user);
-        _context.Add(role);
-        _context.SaveChanges();
+            service.Create(request);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
 
         return Ok("User registered successfully.");
     }
     
     [HttpPost("/api/user/login")]
-    public IActionResult LoginUser([FromBody] UserLogin request, [FromServices] IIdentityHttpService service)
+    public IActionResult LoginUser(
+        [FromBody] UserLogin request, 
+        [FromServices] IIdentityHttpService service)
     {
         if (!ModelState.IsValid)
             return BadRequest("User is not valid.");
         
-        var user = _context.Users.Include(user => user.Roles).FirstOrDefault(u => u.Email == request.Email);
+        var user = _context.Users
+            .Include(user => user.Roles)
+            .FirstOrDefault(u => u.Email == request.Email);
+        
         if (user == null)
             return Unauthorized("Invalid username or password.");
     

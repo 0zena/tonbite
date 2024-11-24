@@ -1,8 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Tonbite.Api.Data;
 using Tonbite.Api.Identity;
+using Tonbite.Api.Models;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Tonbite.Api.Http.Services;
@@ -10,10 +13,12 @@ namespace Tonbite.Api.Http.Services;
 public class IdentityHttpService : IIdentityHttpService
 {
     private readonly IConfiguration _configuration;
+    private readonly ApplicationDbContext _context;
 
-    public IdentityHttpService(IConfiguration configuration)
+    public IdentityHttpService(IConfiguration configuration, ApplicationDbContext context)
     {
         _configuration = configuration;
+        _context = context;
     }
 
     public string GenerateToken(int userId, string email, string isAdmin)
@@ -47,5 +52,29 @@ public class IdentityHttpService : IIdentityHttpService
 
         var tokenHandler = new JwtSecurityTokenHandler();
         return tokenHandler.WriteToken(token);
+    }
+
+    public void Create(UserRegister form)
+    {
+        var passwordHasher = new PasswordHasher<User>();
+        
+        var user = new User
+        {
+            Username = form.Username,
+            Email = form.Email,
+            Bio = form.Bio,
+        };
+
+        var role = new Role
+        {
+            Name = "User",
+            User = user
+        };
+        
+        user.Password = passwordHasher.HashPassword(user, form.Password);
+
+        _context.Add(user);
+        _context.Add(role);
+        _context.SaveChanges();
     }
 }
