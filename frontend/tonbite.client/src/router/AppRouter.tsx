@@ -2,6 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Header from "../components/header.tsx";
 import RegisterPage from "../pages/register/RegisterPage.tsx";
+import LoginPage from "../pages/login/LoginPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -9,9 +10,13 @@ const router = createBrowserRouter([
         element: <Header />,
     },
     {
-        path: '/signup',
+        path: "/register",
         element: <RegisterPage />,
     },
+    {
+        path: "/login",
+        element: <LoginPage />,
+    }
 ]);
 
 const AppRouter: React.FC = () => {
