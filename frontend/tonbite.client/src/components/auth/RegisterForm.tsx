@@ -7,9 +7,6 @@ import AuthService from "../../services/AuthService.ts";
 
 export default function RegisterForm() {
     const [form, setFormData] = useState<RegisterFormState>({
-        userName: '',
-        firstName: '',
-        lastName: '',
         email: '',
         password: '',
         confirmPassword: '',
@@ -31,18 +28,6 @@ export default function RegisterForm() {
     return (
         <>
             <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-2">
-                <Input name="userName"
-                       label="username"
-                       value={form.userName}
-                       onChange={handleChange} />
-                <Input name="firstName"
-                       label="first name"
-                       value={form.firstName}
-                       onChange={handleChange} />
-                <Input name="lastName"
-                       label="last name"
-                       value={form.lastName}
-                       onChange={handleChange} />
                 <Input name="email"
                        label="email"
                        value={form.email}

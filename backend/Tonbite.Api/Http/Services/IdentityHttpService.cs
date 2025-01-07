@@ -58,12 +58,7 @@ public class IdentityHttpService : IIdentityHttpService
     {
         var passwordHasher = new PasswordHasher<User>();
         
-        var user = new User
-        {
-            Username = form.Username,
-            Email = form.Email,
-            Bio = form.Bio,
-        };
+        var user = new User { Email = form.Email };
 
         var role = new Role
         {
