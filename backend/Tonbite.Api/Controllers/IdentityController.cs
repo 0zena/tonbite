@@ -1,3 +1,6 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -67,5 +70,25 @@ public class IdentityController : ControllerBase
         var jwt = service.GenerateToken(user.Id, user.Email, isAdmin.ToString());
     
         return Ok(new { jwt });
+    }
+
+    [Authorize]
+    [HttpGet("/api/user")]
+    public async Task<IActionResult> GetUser()
+    {
+        var email = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
+        Console.WriteLine(email);
+        var user =  await _context.Users
+            .Where(u => u.Email == email)
+            .Select(u => new
+            {
+                u.Id,
+                u.Email,
+                u.Username,
+                u.Bio
+            })
+            .FirstOrDefaultAsync();
+        
+        return Ok(user);
     }
 }
