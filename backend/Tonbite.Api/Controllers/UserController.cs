@@ -1,4 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,19 +10,20 @@ using Tonbite.Api.Models;
 namespace Tonbite.Api.Controllers;
 
 [ApiController]
-public class IdentityController : ControllerBase
+[Route("/api/user")]
+public class UserController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
     
-    public IdentityController(ApplicationDbContext context)
+    public UserController(ApplicationDbContext context)
     {
         _context = context;
     }
 
-    [HttpPost("/api/user/register")]
+    [HttpPost("/register")]
     public IActionResult RegisterUser(
         [FromBody] UserRegister request, 
-        [FromServices] IIdentityHttpService service)
+        [FromServices] IUserHttpService service)
     {
         if (!ModelState.IsValid) 
             return BadRequest("User is not valid.");
@@ -44,10 +44,10 @@ public class IdentityController : ControllerBase
         return Ok("User registered successfully.");
     }
     
-    [HttpPost("/api/user/login")]
+    [HttpPost("/login")]
     public IActionResult LoginUser(
         [FromBody] UserLogin request, 
-        [FromServices] IIdentityHttpService service)
+        [FromServices] IUserHttpService service)
     {
         if (!ModelState.IsValid)
             return BadRequest("User is not valid.");
@@ -72,8 +72,8 @@ public class IdentityController : ControllerBase
         return Ok(new { jwt });
     }
 
+    [HttpGet]
     [Authorize]
-    [HttpGet("/api/user")]
     public async Task<IActionResult> GetUser()
     {
         var email = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;

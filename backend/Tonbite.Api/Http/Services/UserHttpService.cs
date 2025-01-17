@@ -10,12 +10,12 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace Tonbite.Api.Http.Services;
 
-public class IdentityHttpService : IIdentityHttpService
+public class UserHttpService : IUserHttpService
 {
     private readonly IConfiguration _configuration;
     private readonly ApplicationDbContext _context;
 
-    public IdentityHttpService(IConfiguration configuration, ApplicationDbContext context)
+    public UserHttpService(IConfiguration configuration, ApplicationDbContext context)
     {
         _configuration = configuration;
         _context = context;

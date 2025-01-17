@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
 // Http Services
-builder.Services.AddScoped<IIdentityHttpService, IdentityHttpService>();
+builder.Services.AddScoped<IUserHttpService, UserHttpService>();
 
 // JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt");
