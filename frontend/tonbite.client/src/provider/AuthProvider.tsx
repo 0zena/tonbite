@@ -1,6 +1,6 @@
-import axios from "axios";
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import AuthService from "../services/AuthService.ts";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 type AuthContextType = {
     token: string | null;
@@ -14,16 +14,19 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AuthProvider = ({ children } : { children: ReactNode}) => {
     const [ token, setToken ] = useState(localStorage.getItem("accessToken"));
 
+    const isTokenExpired = (token: string) : boolean => {
+        const decoded = jwtDecode<JwtPayload>(token);
+        if (decoded.exp != undefined)
+            return decoded.exp < Math.floor(Date.now() / 1000)
+        return true;
+    }
+
     const logout = () => {
-        // TODO: HTTP Request for login
-        setToken(null);
-        localStorage.removeItem("accessToken");
-        delete axios.defaults.headers.common["Authorization"];
+        AuthService.Logout().then(() => { setToken(null); });
     };
 
     useEffect(() => {
-        // TODO: Check Access token expire time via HTTP request or jwt decoder
-        if (!token) {
+        if (!token || isTokenExpired(token)) {
             AuthService.RefreshToken().then((token) => {
                 if (token) setToken(token);
                 else logout();

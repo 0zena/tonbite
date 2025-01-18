@@ -89,6 +89,21 @@ public class UserController : ControllerBase
         return Ok(new { accessToken });
     }
 
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        var refreshToken = Request.Cookies["refreshToken"] ?? string.Empty;
+        var storedToken = _context.RefreshTokens.FirstOrDefault(t => t.Token == refreshToken);
+        
+        if (storedToken == null) 
+            return Ok("User already logged out.");
+        
+        _context.RefreshTokens.Remove(storedToken);
+        _context.SaveChanges();
+
+        return Ok("User logged out successfully.");
+    }
+
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetUser()

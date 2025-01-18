@@ -1,7 +1,6 @@
 import api from "./index.ts";
 import RegisterFormState from "../states/RegisterFormState.ts";
 import LoginFormState from "../states/LoginFormState.ts";
-import UserState from "../states/UserState.ts";
 import axios from "axios";
 
 export default class AuthService {
@@ -24,6 +23,16 @@ export default class AuthService {
         }
     }
 
+    public static async Logout() {
+        try {
+            await api.post("/user/logout");
+            delete axios.defaults.headers.common["Authorization"];
+            localStorage.removeItem("accessToken");
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     public static async RefreshToken() : Promise<string | null> {
         try {
             const result = await api.post("/user/token/refresh")
@@ -36,7 +45,4 @@ export default class AuthService {
         }
     }
 
-    public static async GetUser() : Promise<UserState> {
-        return await api.get("/user");
-    }
 }
