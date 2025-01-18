@@ -64,10 +64,12 @@ if (app.Environment.IsDevelopment())
 }
 
 // CORS
+var origin = builder.Configuration.GetValue<string>("ClientBaseUrl") ?? string.Empty;
 app.UseCors(corsPolicyBuilder => corsPolicyBuilder
+    .WithOrigins(origin)
+    .AllowCredentials()
     .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowAnyOrigin());
+    .AllowAnyMethod());
 
 app.UseRouting();
 

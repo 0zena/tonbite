@@ -44,8 +44,8 @@ public class UserHttpService : IUserHttpService
 
         
         var token = new JwtSecurityToken(
-            issuer: _configuration["ClientBaseUrl"],
-            audience: _configuration["ServerBaseUrl"],
+            issuer: _configuration["ServerBaseUrl"],
+            audience: _configuration["ClientBaseUrl"],
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(15),
             signingCredentials: credentials

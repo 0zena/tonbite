@@ -6,14 +6,13 @@ import RegisterFormState from "../../states/RegisterFormState.ts";
 import AuthService from "../../services/AuthService.ts";
 
 export default function RegisterForm() {
+    const navigate = useNavigate();
     const [form, setFormData] = useState<RegisterFormState>({
         email: '',
         password: '',
         confirmPassword: '',
     });
 
-    const navigate = useNavigate();
-    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
         setFormData(prevData => ({...prevData, [name]: value}));
@@ -21,10 +20,11 @@ export default function RegisterForm() {
 
     const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await AuthService.Signup(form);
+        await AuthService.Register(form);
         return navigate("/login");
     }
 
+    // TODO: Implement field validation
     return (
         <>
             <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-2">

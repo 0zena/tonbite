@@ -18,9 +18,9 @@ export default function LoginForm() {
     const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         await AuthService.Login(form);
-        return window.location.reload();
     }
 
+    // TODO: Implement field validation
     return(
         <>
             <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-2">

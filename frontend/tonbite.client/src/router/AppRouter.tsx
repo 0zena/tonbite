@@ -4,6 +4,7 @@ import Header from "../components/header.tsx";
 import RegisterPage from "../pages/register/RegisterPage.tsx";
 import LoginPage from "../pages/login/LoginPage.tsx";
 
+// TODO: Secure and public routes
 const router = createBrowserRouter([
     {
         path: "/",

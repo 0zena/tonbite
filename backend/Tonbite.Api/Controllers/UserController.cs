@@ -80,7 +80,9 @@ public class UserController : ControllerBase
         _context.SaveChanges();
         Response.Cookies.Append("refreshToken", refreshToken.Token, new CookieOptions
         {
+            Secure = true, 
             HttpOnly = true,
+            SameSite = SameSiteMode.None,
             Expires = refreshToken.Expires,
         });
 
@@ -106,22 +108,29 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("token/refresh")]
     public IActionResult RefreshToken([FromServices] IUserHttpService service)
     {
-        var refreshToken = HttpContext.Request.Cookies["refreshToken"];
-        
-        if (string.IsNullOrWhiteSpace(refreshToken)) 
-            return Unauthorized();
+        var refreshToken = Request.Cookies["refreshToken"];
+
+        if (string.IsNullOrWhiteSpace(refreshToken))
+            return Unauthorized("Refresh token is not provided.");
         
         var storedToken = _context.RefreshTokens
             .Include(t => t.User)
             .ThenInclude(user => user.Roles)
             .FirstOrDefault(t => t.Token == refreshToken);
+
+        if (storedToken == null) 
+            return Unauthorized("Invalid refresh token.");
         
-        if (storedToken == null || storedToken.Expires < DateTime.UtcNow)
-            return Unauthorized();
+        if (storedToken.Expires < DateTime.UtcNow)
+        {
+            _context.RefreshTokens.Remove(storedToken);
+            _context.SaveChanges();
+            return Unauthorized("User session has expired.");
+        }
         
         var isAdmin = storedToken.User.Roles!.Exists(r => r.Name == "Admin");
         var accessToken = service.GenerateAccessToken(storedToken.User.Id, storedToken.User.Email, isAdmin.ToString());

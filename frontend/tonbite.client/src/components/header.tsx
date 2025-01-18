@@ -1,28 +1,14 @@
 import  { TonConnectButton } from "@tonconnect/ui-react";
-import { useEffect, useState } from "react";
-import AuthService from "../services/AuthService.ts";
-import UserState from "../states/UserState.ts";
+import { useAuth } from "../provider/AuthProvider.tsx";
 
 const Header = () => {
-    const [user, setUser] = useState<UserState>();
-
-
-    useEffect(() => {
-        const getUser = async () => {
-            const data = await AuthService.GetUser()
-            setUser(data);
-        }
-
-        getUser();
-    }, []);
-
+    const { isAuthenticated } = useAuth();
 
     return (
-        <header className={"flex flex-col"}>
+        <header className={"flex flex-col items-center"}>
             <span>My App with React UI</span>
             <TonConnectButton />
-
-            <p>{user?.email}</p>
+            {isAuthenticated ? (<p>IsAuth</p>) : (<p>notAuth</p>)}
         </header>
     );
 };

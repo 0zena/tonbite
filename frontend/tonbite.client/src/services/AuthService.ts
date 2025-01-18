@@ -2,9 +2,10 @@ import api from "./index.ts";
 import RegisterFormState from "../states/RegisterFormState.ts";
 import LoginFormState from "../states/LoginFormState.ts";
 import UserState from "../states/UserState.ts";
+import axios from "axios";
 
 export default class AuthService {
-    public static async Signup(form: RegisterFormState) {
+    public static async Register(form: RegisterFormState) {
         try {
             return await api.post("/user/register", form);
         } catch (error) {
@@ -15,15 +16,27 @@ export default class AuthService {
     public static async Login(form: LoginFormState) {
         try {
             const result = await api.post("/user/login", form);
-            localStorage.setItem("jwt", result.data.jwt);
+            axios.defaults.headers.common["Authorization"] = "Bearer" + result.data.accessToken;
+            localStorage.setItem("accessToken", result.data.accessToken);
         }
         catch (error) {
-            return error;
+            console.error(error);
+        }
+    }
+
+    public static async RefreshToken() : Promise<string | null> {
+        try {
+            const result = await api.post("/user/token/refresh")
+            axios.defaults.headers.common["Authorization"] = "Bearer" + result.data.accessToken;
+            localStorage.setItem("accessToken", result.data.accessToken);
+            return result.data.accessToken;
+        } catch (error) {
+            console.error(error);
+            return null;
         }
     }
 
     public static async GetUser() : Promise<UserState> {
-        const jwt = localStorage.getItem("jwt");
-        return await api.get("/user", { headers: { "Authorization": "Bearer " + jwt }})
+        return await api.get("/user");
     }
 }
