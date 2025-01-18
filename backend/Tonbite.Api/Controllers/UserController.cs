@@ -20,7 +20,7 @@ public class UserController : ControllerBase
         _context = context;
     }
 
-    [HttpPost("/register")]
+    [HttpPost("register")]
     public IActionResult RegisterUser(
         [FromBody] UserRegister request, 
         [FromServices] IUserHttpService service)
@@ -44,7 +44,7 @@ public class UserController : ControllerBase
         return Ok("User registered successfully.");
     }
     
-    [HttpPost("/login")]
+    [HttpPost("login")]
     public IActionResult LoginUser(
         [FromBody] UserLogin request, 
         [FromServices] IUserHttpService service)
@@ -60,16 +60,31 @@ public class UserController : ControllerBase
             return Unauthorized("Invalid username or password.");
     
         var passwordHasher = new PasswordHasher<User>();
-    
         var result = passwordHasher.VerifyHashedPassword(user, user.Password, request.Password);
         if (result == PasswordVerificationResult.Failed)
             return Unauthorized("Invalid username or password.");
 
-        var isAdmin = user.Roles!.Exists(r => r.Name == "Admin");
 
-        var jwt = service.GenerateToken(user.Id, user.Email, isAdmin.ToString());
-    
-        return Ok(new { jwt });
+        // Tokens
+        var isAdmin = user.Roles!.Exists(r => r.Name == "Admin");
+        var accessToken = service.GenerateAccessToken(user.Id, user.Email, isAdmin.ToString());
+        var refreshToken = new RefreshToken
+        {
+            Token = service.GenerateRefreshToken(),
+            Expires = DateTime.UtcNow.AddHours(12),
+            User = user
+        };
+        
+        // Save
+        _context.Add(refreshToken);
+        _context.SaveChanges();
+        Response.Cookies.Append("refreshToken", refreshToken.Token, new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = refreshToken.Expires,
+        });
+
+        return Ok(new { accessToken });
     }
 
     [HttpGet]
@@ -77,7 +92,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetUser()
     {
         var email = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
-        Console.WriteLine(email);
         var user =  await _context.Users
             .Where(u => u.Email == email)
             .Select(u => new
@@ -90,5 +104,27 @@ public class UserController : ControllerBase
             .FirstOrDefaultAsync();
         
         return Ok(user);
+    }
+
+    [HttpGet]
+    [Route("token/refresh")]
+    public IActionResult RefreshToken([FromServices] IUserHttpService service)
+    {
+        var refreshToken = HttpContext.Request.Cookies["refreshToken"];
+        
+        if (string.IsNullOrWhiteSpace(refreshToken)) 
+            return Unauthorized();
+        
+        var storedToken = _context.RefreshTokens
+            .Include(t => t.User)
+            .ThenInclude(user => user.Roles)
+            .FirstOrDefault(t => t.Token == refreshToken);
+        
+        if (storedToken == null || storedToken.Expires < DateTime.UtcNow)
+            return Unauthorized();
+        
+        var isAdmin = storedToken.User.Roles!.Exists(r => r.Name == "Admin");
+        var accessToken = service.GenerateAccessToken(storedToken.User.Id, storedToken.User.Email, isAdmin.ToString());
+        return Ok(new { accessToken });
     }
 }

@@ -23,7 +23,6 @@ builder.Services.AddScoped<IUserHttpService, UserHttpService>();
 
 // JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-
 var validIssuers = jwtSettings.GetSection("Issuer").Get<IEnumerable<string>>() ?? [];
 var validAudiences = jwtSettings.GetSection("Audience").Get<IEnumerable<string>>() ?? [];
 

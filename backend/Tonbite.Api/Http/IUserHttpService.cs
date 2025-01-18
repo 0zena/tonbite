@@ -4,7 +4,9 @@ namespace Tonbite.Api.Http;
 
 public interface IUserHttpService
 {
-    string GenerateToken(int userId, string email, string isAdmin);
+    string GenerateAccessToken(int userId, string email, string isAdmin);
+    
+    string GenerateRefreshToken();
 
     void Create(UserRegister form);
 }

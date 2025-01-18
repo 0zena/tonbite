@@ -33,12 +33,12 @@ public class UserProps
 {
     /// <summary> User unique email </summary>
     [EmailAddress]
-    [Required(AllowEmptyStrings = false, ErrorMessage = "Email is required")]
+    [Required(ErrorMessage = "Email is required")]
     [MaxLength(254, ErrorMessage = "Email cannot be longer than 254 characters.")]
     public required string Email { get; set; }
 
     /// <summary> User password </summary>
     [DataType(DataType.Password)]
-    [Required(AllowEmptyStrings = false, ErrorMessage = "Password is required")]
+    [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; } = null!;
 }
