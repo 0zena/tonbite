@@ -44,5 +44,4 @@ export default class AuthService {
             return null;
         }
     }
-
 }

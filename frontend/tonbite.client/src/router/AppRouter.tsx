@@ -1,26 +1,18 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Header from "../components/header.tsx";
-import RegisterPage from "../pages/register/RegisterPage.tsx";
-import LoginPage from "../pages/login/LoginPage.tsx";
+import { publicRoutes, anonymousOnlyRoutes, authorizedRoutes } from "./AppRoutes.tsx";
 
-// TODO: Secure and public routes
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Header />,
-    },
-    {
-        path: "/register",
-        element: <RegisterPage />,
-    },
-    {
-        path: "/login",
-        element: <LoginPage />,
-    }
-]);
+import { useAuth } from "../provider/AuthProvider.tsx";
 
 const AppRouter: React.FC = () => {
+    const { isAuthenticated } = useAuth();
+
+    const router = createBrowserRouter([
+        ...publicRoutes,
+        ...(!isAuthenticated ? anonymousOnlyRoutes : []),
+        ...authorizedRoutes,
+    ]);
+
     return <RouterProvider router={router} />
 }
 

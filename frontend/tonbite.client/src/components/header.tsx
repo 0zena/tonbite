@@ -8,8 +8,12 @@ const Header = () => {
         <header className={"flex flex-col items-center"}>
             <span>My App with React UI</span>
             <TonConnectButton />
-            {isAuthenticated ? (<p>IsAuth</p>) : (<p>notAuth</p>)}
-            <button onClick={logout}>Logout</button>
+            {isAuthenticated ? (
+                <>
+                    <p>IsAuth</p>
+                    <button onClick={logout}>Logout</button>
+                </>
+            ) : (<p>notAuth</p>)}
         </header>
     );
 };
