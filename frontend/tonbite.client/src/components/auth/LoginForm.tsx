@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/react";
+import { Input } from "@heroui/input";
+import { Button } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormProps, LoginFormSchema } from "../../states/LoginFormProps.ts";
 import AuthService from "../../services/AuthService.ts";
@@ -18,12 +18,12 @@ export default function LoginForm() {
                    isRequired
                    type="email"
                    {...register("email")} />
-            {errors.email && (<p className="text-red-500 text-sm mt-1">{errors.email.message}</p>)}
+            {errors.email && (<p className="text-danger text-tiny mt-1">{errors.email.message}</p>)}
             <Input label="password"
                    isRequired
                    type="password"
                    {...register("password")} />
-            {errors.password && (<p className="text-red-500 text-sm mt-1">{errors.password.message}</p>)}
+            {errors.password && (<p className="text-danger text-tiny mt-1">{errors.password.message}</p>)}
             <Button type="submit">Login</Button>
         </form>
     );
