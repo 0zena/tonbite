@@ -66,7 +66,7 @@ public class UserController : ControllerBase
 
 
         // Tokens
-        var isAdmin = user.Roles!.Exists(r => r.Name == "Admin");
+        var isAdmin = user.Roles!.Exists(r => r.Name == nameof(Roles.Admin));
         var accessToken = service.GenerateAccessToken(user.Id, user.Email, isAdmin.ToString());
         var refreshToken = new RefreshToken
         {
@@ -101,6 +101,8 @@ public class UserController : ControllerBase
         _context.RefreshTokens.Remove(storedToken);
         _context.SaveChanges();
 
+        Response.Cookies.Delete("refreshToken");
+        
         return Ok("User logged out successfully.");
     }
 
@@ -147,7 +149,7 @@ public class UserController : ControllerBase
             return Unauthorized("User session has expired.");
         }
         
-        var isAdmin = storedToken.User.Roles!.Exists(r => r.Name == "Admin");
+        var isAdmin = storedToken.User.Roles!.Exists(r => r.Name == nameof(Roles.Admin));
         var accessToken = service.GenerateAccessToken(storedToken.User.Id, storedToken.User.Email, isAdmin.ToString());
         return Ok(new { accessToken });
     }

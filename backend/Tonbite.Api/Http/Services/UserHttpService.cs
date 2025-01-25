@@ -24,7 +24,6 @@ public class UserHttpService : IUserHttpService
 
     public string GenerateAccessToken(int userId, string email, string isAdmin)
     {
-       
         var claims = new List<Claim>
         {
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),

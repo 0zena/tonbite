@@ -14,3 +14,15 @@ public class RoleProps
     /// <summary> Name of the user role </summary>
     public required string Name { get; set; }
 }
+
+public enum Roles
+{
+    /// <summary> Represents default user. </summary>
+    Default = 0,
+    
+    /// <summary> Represents creator. </summary>
+    Creator = 1,
+
+    /// <summary> Represents administrator. </summary>
+    Admin = 2
+}
