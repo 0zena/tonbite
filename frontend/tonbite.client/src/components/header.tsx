@@ -1,4 +1,4 @@
-import  { TonConnectButton } from "@tonconnect/ui-react";
+import { TonConnectButton } from "@tonconnect/ui-react";
 import { useAuth } from "../provider/AuthProvider.tsx";
 
 const Header = () => {

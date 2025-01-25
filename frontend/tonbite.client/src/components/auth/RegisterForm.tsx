@@ -1,48 +1,34 @@
-import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
-import RegisterFormState from "../../states/RegisterFormState.ts";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { RegisterFormProps, RegisterFormSchema } from "../../states/RegisterFormProps.ts";
 import AuthService from "../../services/AuthService.ts";
 
 export default function RegisterForm() {
-    const navigate = useNavigate();
-    const [form, setFormData] = useState<RegisterFormState>({
-        email: '',
-        password: '',
-        confirmPassword: '',
-    });
+    const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormProps>({ resolver: zodResolver(RegisterFormSchema) });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        setFormData(prevData => ({...prevData, [name]: value}));
-    }
-
-    const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const Submit = async (form: RegisterFormProps) => {
         await AuthService.Register(form);
-        return navigate("/login");
     }
 
-    // TODO: Implement field validation
     return (
-        <>
-            <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-2">
-                <Input name="email"
-                       label="email"
-                       value={form.email}
-                       onChange={handleChange} />
-                <Input name="password"
-                       label="password"
-                       type="password"
-                       value={form.password}
-                       onChange={handleChange} />
-                <Input name="confirmPassword"
-                       label="confirm password"
-                       type="password"
-                       onChange={handleChange} />
-                <Button type="submit">Register</Button>
-            </form>
-        </>
+        <form onSubmit={handleSubmit(Submit)} className="flex flex-col w-full space-y-2">
+            <Input label="email"
+                   isRequired
+                   {...register("email")} />
+            {errors.email && (<p className="text-red-500 text-sm mt-1">{errors.email.message}</p>)}
+            <Input label="password"
+                   isRequired
+                   type="password"
+                   {...register("password")} />
+            {errors.password && (<p className="text-red-500 text-sm mt-1">{errors.password.message}</p>)}
+            <Input label="confirm password"
+                   isRequired
+                   type="password"
+                   {...register("confirmPassword")} />
+            {errors.confirmPassword && (<p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>)}
+            <Button type="submit">Register</Button>
+        </form>
     );
 }

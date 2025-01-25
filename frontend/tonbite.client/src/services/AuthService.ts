@@ -1,10 +1,10 @@
 import api from "./index.ts";
-import RegisterFormState from "../states/RegisterFormState.ts";
-import LoginFormState from "../states/LoginFormState.ts";
+import { RegisterFormProps } from "../states/RegisterFormProps.ts";
+import { LoginFormProps } from "../states/LoginFormProps.ts";
 import axios from "axios";
 
 export default class AuthService {
-    public static async Register(form: RegisterFormState) {
+    public static async Register(form: RegisterFormProps) {
         try {
             return await api.post("/user/register", form);
         } catch (error) {
@@ -12,7 +12,7 @@ export default class AuthService {
         }
     }
     
-    public static async Login(form: LoginFormState) {
+    public static async Login(form: LoginFormProps) {
         try {
             const result = await api.post("/user/login", form);
             axios.defaults.headers.common["Authorization"] = "Bearer" + result.data.accessToken;
@@ -39,8 +39,7 @@ export default class AuthService {
             axios.defaults.headers.common["Authorization"] = "Bearer" + result.data.accessToken;
             localStorage.setItem("accessToken", result.data.accessToken);
             return result.data.accessToken;
-        } catch (error) {
-            console.error(error);
+        } catch {
             return null;
         }
     }

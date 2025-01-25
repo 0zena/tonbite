@@ -1,41 +1,30 @@
-import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
-import LoginFormState from "../../states/LoginFormState.ts";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginFormProps, LoginFormSchema } from "../../states/LoginFormProps.ts";
 import AuthService from "../../services/AuthService.ts";
 
 export default function LoginForm() {
-    const [form, setFormData] = useState<LoginFormState>({
-        email: '',
-        password: '',
-    });
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginFormProps>({ resolver: zodResolver(LoginFormSchema)});
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        setFormData(prevData => ({...prevData, [name]: value}));
-    }
-
-    const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const Submit = async (form: LoginFormProps) => {
         await AuthService.Login(form);
     }
 
-    // TODO: Implement field validation
     return(
-        <>
-            <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-2">
-                <Input label="email"
-                       type="email"
-                       name="email"
-                       value={form.email}
-                       onChange={handleChange} />
-                <Input label="password" 
-                       type="password" 
-                       name="password"
-                       value={form.password}
-                       onChange={handleChange} />
-                <Button type="submit">Login</Button>
-            </form>
-        </>
+        <form onSubmit={handleSubmit(Submit)} className="flex flex-col w-full space-y-2">
+            <Input label="email"
+                   isRequired
+                   type="email"
+                   {...register("email")} />
+            {errors.email && (<p className="text-red-500 text-sm mt-1">{errors.email.message}</p>)}
+            <Input label="password"
+                   isRequired
+                   type="password"
+                   {...register("password")} />
+            {errors.password && (<p className="text-red-500 text-sm mt-1">{errors.password.message}</p>)}
+            <Button type="submit">Login</Button>
+        </form>
     );
 }
