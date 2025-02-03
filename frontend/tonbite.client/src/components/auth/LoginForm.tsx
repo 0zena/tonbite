@@ -3,7 +3,7 @@ import { Input } from "@heroui/input";
 import { Button } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormProps, LoginFormSchema } from "../../states/LoginFormProps.ts";
-import AuthService from "../../services/AuthService.ts";
+import { AuthService } from "../../services";
 
 export default function LoginForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormProps>({ resolver: zodResolver(LoginFormSchema)});

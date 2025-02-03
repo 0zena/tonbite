@@ -1,7 +1,7 @@
 import "./App.scss"
 
-import {TonConnectUIProvider} from "@tonconnect/ui-react";
-import {HeroUIProvider} from "@heroui/react";
+import { TonConnectUIProvider } from "@tonconnect/ui-react";
+import { HeroUIProvider } from "@heroui/react";
 import AppRouter from "./router/AppRouter.tsx";
 import AuthProvider from "./provider/AuthProvider.tsx";
 
@@ -10,7 +10,7 @@ function App() {
         <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/public/tonconnect-manifest.json">
             <AuthProvider>
                 <HeroUIProvider>
-                    <AppRouter/>
+                    <AppRouter />
                 </HeroUIProvider>
             </AuthProvider>
         </TonConnectUIProvider>

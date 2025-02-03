@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useTonConnectUI } from '@tonconnect/ui-react';
-import AuthService from "../services/AuthService.ts";
+import { AuthService } from "../services";
 
 type AuthContextType = {
     token: string | null;

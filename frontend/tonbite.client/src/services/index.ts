@@ -1,8 +1,3 @@
-import axios from 'axios';
-
-const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true,
-})
-
-export default api;
+export { api } from "./Api.ts";
+export { AuthService } from "./AuthService.ts";
+export { UserService } from "./UserService.ts";

@@ -42,3 +42,21 @@ public class UserProps
     [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; } = null!;
 }
+
+public class PasswordReset
+{
+    /// <summary> User password </summary>
+    [DataType(DataType.Password)]
+    [Required(ErrorMessage = "Password is required")]
+    public string Password { get; set; } = null!;
+    
+    /// <summary> User password </summary>
+    [DataType(DataType.Password)]
+    [Required(ErrorMessage = "Password is required")]
+    public string NewPassword { get; set; } = null!;
+    
+    /// <summary> Confirm password </summary>
+    [DataType(DataType.Password)]
+    [Compare("NewPassword", ErrorMessage = "The old password and confirmation password do not match.")]
+    public string ConfirmPassword { get; set; } = null!;
+}

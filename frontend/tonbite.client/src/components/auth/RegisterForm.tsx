@@ -3,7 +3,7 @@ import { Input } from "@heroui/input";
 import { Button } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormProps, RegisterFormSchema } from "../../states/RegisterFormProps.ts";
-import AuthService from "../../services/AuthService.ts";
+import { AuthService } from "../../services";
 
 export default function RegisterForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormProps>({ resolver: zodResolver(RegisterFormSchema) });
