@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { UserService } from "../../../services";
 import UserProps from "../../../states/UserProps.ts";
-import {Tabs, Tab, CircularProgress } from "@heroui/react";
+import { Tabs, Tab, CircularProgress } from "@heroui/react";
 import { ChangePasswordForm } from "./ChangePasswordForm.tsx";
 
 export const ProfileManagePage = () => {

@@ -7,7 +7,7 @@ import { ChangePasswordProps, ChangePasswordSchema } from "../../../states/Chang
 import { ConfirmModal, useConfirmModal } from "../../../components/modal";
 
 export const ChangePasswordForm = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<ChangePasswordProps>({ resolver: zodResolver(ChangePasswordSchema) });
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<ChangePasswordProps>({ resolver: zodResolver(ChangePasswordSchema) });
     const { isOpen, onOpenChange, confirmAction, handleConfirmResult } = useConfirmModal();
     const [message, setMessage] = useState("");
 
@@ -18,6 +18,8 @@ export const ChangePasswordForm = () => {
         const result = await AuthService.ChangePassword(form);
         if (result !== undefined)
             setMessage(result)
+
+        reset();
     }
 
     return <form onSubmit={handleSubmit(Submit)} className="flex flex-col w-full space-y-2 max-w-96">
@@ -40,12 +42,10 @@ export const ChangePasswordForm = () => {
         {message && <p className="text-danger text-tiny mt-1">{message}</p>}
 
         <Button type="submit">Change</Button>
-        <ConfirmModal
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
-            onConfirm={handleConfirmResult}
-            title="Confirm Change"
-            message="Are you sure you want to change your password?"
-        />
+        <ConfirmModal isOpen={isOpen}
+                      onOpenChange={onOpenChange}
+                      onConfirm={handleConfirmResult}
+                      title="Confirm Change"
+                      message="Are you sure you want to change your password?" />
     </form>
 }
