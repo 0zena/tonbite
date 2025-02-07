@@ -4,18 +4,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@heroui/react";
 import { AuthService } from "../../../services";
 import { ChangePasswordProps, ChangePasswordSchema } from "../../../states/ChangePasswordProps.ts";
+import { ConfirmModal, useConfirmModal } from "../../../components/modal";
 
-export const ChangePassword = () => {
+export const ChangePasswordForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<ChangePasswordProps>({ resolver: zodResolver(ChangePasswordSchema) });
+    const { isOpen, onOpenChange, confirmAction, handleConfirmResult } = useConfirmModal();
     const [message, setMessage] = useState("");
 
     const Submit = async (form: ChangePasswordProps) => {
+        setMessage("");
+        if (!await confirmAction()) return;
+
         const result = await AuthService.ChangePassword(form);
         if (result !== undefined)
             setMessage(result)
     }
 
-    return <form onSubmit={handleSubmit(Submit)} className="flex flex-col w-full space-y-2">
+    return <form onSubmit={handleSubmit(Submit)} className="flex flex-col w-full space-y-2 max-w-96">
         <Input label="old password"
                isRequired
                type="password"
@@ -34,6 +39,13 @@ export const ChangePassword = () => {
 
         {message && <p className="text-danger text-tiny mt-1">{message}</p>}
 
-        <Button type="submit">Register</Button>
+        <Button type="submit">Change</Button>
+        <ConfirmModal
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            onConfirm={handleConfirmResult}
+            title="Confirm Change"
+            message="Are you sure you want to change your password?"
+        />
     </form>
 }
