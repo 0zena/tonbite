@@ -1,6 +1,6 @@
 import LoginForm from "./LoginForm.tsx";
 
-export default function LoginPage() {
+export const LoginPage = () => {
     return(
         <>
             <div className="flex flex-col max-w-96 mx-auto space-y-2">

@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@heroui/react";
 import { AuthService } from "../../../services";
-import { ChangePasswordProps, ChangePasswordSchema } from "../../../states/ChangePasswordProps.ts";
-import { ConfirmModal, useConfirmModal } from "../../../components/modal";
+import { ChangePasswordProps, ChangePasswordSchema } from "../../../states";
+import { ConfirmModal, useConfirmModal } from "../../../components";
 
 export const ChangePasswordForm = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<ChangePasswordProps>({ resolver: zodResolver(ChangePasswordSchema) });

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { UserService } from "../../../services";
-import UserProps from "../../../states/UserProps.ts";
+import { UserProps } from "../../../states";
 import { Tabs, Tab, CircularProgress } from "@heroui/react";
 import { ChangePasswordForm } from "./ChangePasswordForm.tsx";
 

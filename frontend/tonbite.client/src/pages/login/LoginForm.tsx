@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormProps, LoginFormSchema } from "../../states/LoginFormProps.ts";
+import { LoginFormProps, LoginFormSchema } from "../../states";
 import { AuthService } from "../../services";
 
 export default function LoginForm() {

@@ -1,15 +1,10 @@
-import { ProtectedRoute } from "../components/auth/ProtectedRoute.tsx";
-
-import Header from "../components/header.tsx";
-import RegisterPage from "../pages/register/RegisterPage.tsx";
-import LoginPage from "../pages/login/LoginPage.tsx";
-import PrivatePage from "../pages/PrivatePage.tsx";
-import { ProfilePage, ProfileManagePage } from "../pages/profile";
+import { ProtectedRoute } from "../components";
+import { HomePage, LoginPage, ProfileManagePage, ProfilePage, RegisterPage } from "../pages";
 
 export const publicRoutes = [
     {
         path: "/",
-        element: <Header />
+        element: <HomePage />
     },
 ];
 
@@ -29,10 +24,6 @@ export const authorizedRoutes = [
         path: "/",
         element: <ProtectedRoute />,
         children: [
-            {
-                path: "/private",
-                element: <PrivatePage />,
-            },
             {
               path: "/profile",
               element: <ProfilePage />,

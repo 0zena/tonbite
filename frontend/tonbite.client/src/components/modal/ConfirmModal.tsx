@@ -18,7 +18,7 @@ export const ConfirmModal = ({ isOpen, onOpenChange, onConfirm, title, message }
                 </ModalBody>
                 <ModalFooter>
                     <Button onPress={() => onConfirm(false)} color="danger" variant="light">Cancel</Button>
-                    <Button onPress={() => onConfirm(true)} color="primary">Confirm</Button>
+                    <Button onPress={() => onConfirm(true)} color="primary" variant="flat">Confirm</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

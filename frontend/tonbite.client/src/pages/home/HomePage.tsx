@@ -1,7 +1,7 @@
 import { TonConnectButton } from "@tonconnect/ui-react";
-import { useAuth } from "../provider/AuthProvider.tsx";
+import { useAuth } from "../../provider/AuthProvider.tsx";
 
-const Header = () => {
+export const HomePage = () => {
     const { isAuthenticated, logout } = useAuth();
 
     return (
@@ -17,5 +17,3 @@ const Header = () => {
         </header>
     );
 };
-
-export default Header;
