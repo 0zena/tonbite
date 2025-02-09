@@ -1,9 +1,16 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, User, Button, Link } from "@heroui/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Button, Link } from "@heroui/react";
 import { useAuth } from "../../provider/AuthProvider.tsx";
+import { Icons } from "../../utils";
+import { Icon } from "../icon/Icon.tsx";
 
 export const AppNavbar = () => {
     const { isAuthenticated, logout } = useAuth();
-    const menuItems = [ "Home" ];
+    const menuItems = [
+        {
+            name: "Home",
+            path: "/",
+        },
+    ];
 
     return (
         <Navbar>
@@ -16,7 +23,7 @@ export const AppNavbar = () => {
             <NavbarContent className={"max-sm:hidden"} justify={"center"}>
                 {menuItems.map((item, index) => (
                     <NavbarItem key={index}>
-                        <Link color={"foreground"}>{item}</Link>
+                        <Link color={"foreground"} href={item.path}>{item.name}</Link>
                     </NavbarItem>
                 ))}
             </NavbarContent>
@@ -26,7 +33,11 @@ export const AppNavbar = () => {
                         <NavbarItem>
                             <Button onPress={logout}>Logout</Button>
                         </NavbarItem>
-                        <User name={"Test User"} />
+                        <NavbarItem>
+                            <Button as={Link} href={"/profile"} isIconOnly variant={"light"}>
+                                <Icon icon={Icons.PROFILE} />
+                            </Button>
+                        </NavbarItem>
                     </>
                 ) : (
                     <NavbarItem>
@@ -37,7 +48,7 @@ export const AppNavbar = () => {
             <NavbarMenu>
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={index}>
-                        <Button variant={"light"}>{item}</Button>
+                        <Button as={Link} variant={"light"} href={item.path}>{item.name}</Button>
                     </NavbarMenuItem>
                 ))}
             </NavbarMenu>

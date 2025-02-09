@@ -1,4 +1,4 @@
-import UserProps from "../states/UserProps.ts";
+import { UserProps } from "../states";
 import { api } from "./index.ts";
 
 export class UserService {
