@@ -1,15 +1,21 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Input } from "@heroui/input";
-import { Button } from "@heroui/react";
+import { useNavigate } from "react-router-dom";
+import { Button, Input } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormProps, RegisterFormSchema } from "../../states";
 import { AuthService } from "../../services";
 
 export default function RegisterForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormProps>({ resolver: zodResolver(RegisterFormSchema) });
+    const [message, setMessage] = useState("");
+    const navigate = useNavigate();
 
     const Submit = async (form: RegisterFormProps) => {
-        await AuthService.Register(form);
+        const response = await AuthService.Register(form);
+        if (response != undefined)
+            setMessage(response);
+        else navigate("/login");
     }
 
     return (
@@ -28,6 +34,7 @@ export default function RegisterForm() {
                    type="password"
                    {...register("confirmPassword")} />
             {errors.confirmPassword && (<p className="text-danger text-tiny mt-1">{errors.confirmPassword.message}</p>)}
+            {message && <p className="text-danger text-tiny mt-1">{message}</p>}
             <Button type="submit">Register</Button>
         </form>
     );

@@ -12,4 +12,7 @@ export const RegisterFormSchema : ZodType<RegisterFormProps> = z.object({
         .min(8, { message: "Password must be at least 8 characters long." })
         .max(255, { message: "Password can not be longer then 255 characters." }),
     confirmPassword: z.string(),
+}).refine((props) => props.password === props.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
 });

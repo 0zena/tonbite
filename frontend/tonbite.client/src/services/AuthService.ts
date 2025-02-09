@@ -1,40 +1,41 @@
 import { api } from "./index.ts";
-import { RegisterFormProps } from "../states/RegisterFormProps.ts";
-import { LoginFormProps } from "../states/LoginFormProps.ts";
-import {ChangePasswordProps} from "../states/ChangePasswordProps.ts";
-import axios from "axios";
+import { RegisterFormProps, LoginFormProps,ChangePasswordProps } from "../states";
+import { HTTPResponseHandler } from "./extensions/HTTPResponseHandler.ts";
 
 export class AuthService {
     public static async Register(form: RegisterFormProps) {
         try {
-            return await api.post("/user/register", form);
+            await api.post("/user/register", form);
+            return undefined;
         } catch (error) {
-            return error;
+            return HTTPResponseHandler.HandleError(error);
         }
     }
-    
+
     public static async Login(form: LoginFormProps) {
         try {
             const result = await api.post("/user/login", form);
             api.defaults.headers.common = { "Authorization": "Bearer " + result.data.accessToken };
             localStorage.setItem("accessToken", result.data.accessToken);
-        }
-        catch (error) {
-            console.error(error);
+            return undefined;
+        } catch (error: unknown) {
+            return HTTPResponseHandler.HandleError(error);
         }
     }
 
     public static async Logout() {
+        // TODO: refactor request
         try {
             await api.post("/user/logout");
             delete api.defaults.headers.common["Authorization"];
             localStorage.removeItem("accessToken");
-        } catch (error) {
-            console.error(error);
+        } catch {
+            return;
         }
     }
 
     public static async RefreshToken() : Promise<string | null> {
+        // TODO: refactor request
         try {
             const result = await api.post("/user/token/refresh")
             api.defaults.headers.common = { "Authorization": "Bearer " + result.data.accessToken };
@@ -50,12 +51,7 @@ export class AuthService {
             const response = await api.post("/user/password/change", form);
             return response.data;
         } catch (error: unknown) {
-            console.log("error");
-            if (axios.isAxiosError(error) && error.response) {
-                return error.response.data || "An error occurred";
-            }
-
-            return "An unknown error occurred";
+            return HTTPResponseHandler.HandleError(error);
         }
     }
 }
