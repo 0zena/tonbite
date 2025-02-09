@@ -1,10 +1,14 @@
 import { ProtectedRoute } from "../components";
-import { HomePage, LoginPage, ProfileManagePage, ProfilePage, RegisterPage } from "../pages";
+import { HomePage, LoginPage, NotFoundError, ProfileManagePage, ProfilePage, RegisterPage } from "../pages";
 
 export const publicRoutes = [
     {
         path: "/",
-        element: <HomePage />
+        element: <HomePage />,
+    },
+    {
+      path: "*",
+      element: <NotFoundError />,
     },
 ];
 
