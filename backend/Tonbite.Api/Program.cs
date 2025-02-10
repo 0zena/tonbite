@@ -41,11 +41,9 @@ builder.Services
         }
     );
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy(IdentityData.AdminUserPolicyName, policy => 
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy(IdentityData.AdminUserPolicyName, policy => 
         policy.RequireClaim(IdentityData.AdminUserClaimName, "True"));
-});
 
 builder.Services.AddControllers();
 
