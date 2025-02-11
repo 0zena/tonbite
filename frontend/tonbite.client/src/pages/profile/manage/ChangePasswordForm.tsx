@@ -22,7 +22,7 @@ export const ChangePasswordForm = () => {
         reset();
     }
 
-    return <form onSubmit={handleSubmit(Submit)} className="flex flex-col w-full space-y-2 max-w-96">
+    return <form onSubmit={handleSubmit(Submit)} className="flex flex-col w-full space-y-4 max-w-96">
         <Input label="old password"
                isRequired
                type="password"
