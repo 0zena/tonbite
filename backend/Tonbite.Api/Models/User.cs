@@ -8,9 +8,6 @@ public class User : UserProps
     [DataType(DataType.Password)]
     [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; } = null!;
-    
-    /// <summary> List of the user roles </summary>
-    public List<Role>? Roles { get; set; }
 }
 
 public class UserProps : IEntity
@@ -31,6 +28,9 @@ public class UserProps : IEntity
     /// <summary> User profile bio </summary>
     [MaxLength(1000, ErrorMessage = "Bio must be 1000 characters or fewer")]
     public string? Bio { get; set; }
+    
+    /// <summary> List of the user roles </summary>
+    public List<Role>? Roles { get; set; }
 }
 
 public class UserLogin
