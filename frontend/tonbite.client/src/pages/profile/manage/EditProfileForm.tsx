@@ -2,22 +2,33 @@ import { Button, Input, Textarea } from "@heroui/react";
 import { UserSchema, UserType } from "../../../states";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UserService } from "../../../services";
+import { useState } from "react";
+import { ConfirmModal, useConfirmModal } from "../../../components";
 
 export const EditProfileForm = ({user}: {user: UserType}) => {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<UserType>({ resolver: zodResolver(UserSchema) });
+    const { register, handleSubmit, formState: { errors } } = useForm<UserType>({ resolver: zodResolver(UserSchema) });
+    const { isOpen, onOpenChange, confirmAction, handleConfirmResult } = useConfirmModal();
+    const [message, setMessage] = useState("");
 
     const Submit = async (form: UserType) => {
+        setMessage("");
+        if (!await confirmAction()) return;
 
-        reset();
+        const response = await UserService.Update(form);
+        if (response != undefined)
+            setMessage(response);
     }
 
-    return <form onSubmit={handleSubmit(Submit)} className={"space-y-4 w-full max-w-96"}>
+    return (
+        <form onSubmit={handleSubmit(Submit)} className={"space-y-4 w-full max-w-96"}>
             <Input label={"Username"}
                    placeholder={"Add username"}
-                   value={user.username}
+                   defaultValue={user.username}
                    {...register("username")} />
             {errors.username && (<p className="text-danger text-tiny mt-1">{errors.username.message}</p>)}
             <Input label={"Email"}
+                   readOnly={true}
                    value={user.email}
                    type={"email"}
                    {...register("email")} />
@@ -25,9 +36,18 @@ export const EditProfileForm = ({user}: {user: UserType}) => {
             <Textarea label={"Bio"}
                       minRows={4}
                       placeholder={"Describe yourself"}
-                      value={user.bio}
+                      defaultValue={user.bio}
                       {...register("bio")} className={"h-fit"} />
             {errors.bio && (<p className="text-danger text-tiny mt-1">{errors.bio.message}</p>)}
-            <Button type={"submit"}>Change</Button>
+            {message && <p className="text-danger text-tiny mt-1">{message}</p>}
+            <span className={"flex w-full justify-end"}>
+                <Button type="submit" className={"ml-auto"} color={"danger"}>Save</Button>
+            </span>
+            <ConfirmModal isOpen={isOpen}
+                          onOpenChange={onOpenChange}
+                          onConfirm={handleConfirmResult}
+                          title="Save changes?"
+                          message="Are you sure you want to change your account data?" />
         </form>
+    );
 }

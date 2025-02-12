@@ -4,6 +4,7 @@ import { UserType } from "../../../states";
 import { Tabs, Tab, CircularProgress, Card } from "@heroui/react";
 import { ChangePasswordForm } from "./ChangePasswordForm.tsx";
 import { EditProfileForm } from "./EditProfileForm.tsx";
+import {AdvancedSettingsForm} from "./AdvancedSettingsForm.tsx";
 
 export const ProfileManagePage = () => {
     const [user, getUser] = useState<UserType | undefined>();
@@ -13,12 +14,12 @@ export const ProfileManagePage = () => {
     }, []);
 
     return <main>
-        <div className="flex w-full flex-col space-y-4">
+        <div className="flex w-full flex-col space-y-4 items-center">
             <h1>Manage Profile</h1>
 
             {user != undefined
                 ? (
-                    <Card className={"flex w-fit h-max p-6 justify-center"}>
+                    <Card className={"flex w-fit h-max p-6"}>
                         <Tabs placement={"top"}>
                             <Tab key={"profile"} title={"Profile"}>
                                 <div className={"flex justify-center"}>
@@ -31,7 +32,7 @@ export const ProfileManagePage = () => {
                                 </div>
                             </Tab>
                             <Tab key={"advanced"} title={"Advanced"}>
-                                Advanced settings
+                                <AdvancedSettingsForm />
                             </Tab>
                         </Tabs>
                     </Card>

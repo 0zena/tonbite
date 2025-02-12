@@ -22,7 +22,7 @@ export const ChangePasswordForm = () => {
         reset();
     }
 
-    return <form onSubmit={handleSubmit(Submit)} className="flex flex-col w-full space-y-4 max-w-96">
+    return <form onSubmit={handleSubmit(Submit)} className="w-full space-y-4 max-w-96">
         <Input label="old password"
                isRequired
                type="password"
@@ -41,7 +41,9 @@ export const ChangePasswordForm = () => {
 
         {message && <p className="text-danger text-tiny mt-1">{message}</p>}
 
-        <Button type="submit">Change</Button>
+        <span className={"flex w-full justify-end"}>
+            <Button type="submit" className={"ml-auto"} color={"danger"}>Change</Button>
+        </span>
         <ConfirmModal isOpen={isOpen}
                       onOpenChange={onOpenChange}
                       onConfirm={handleConfirmResult}

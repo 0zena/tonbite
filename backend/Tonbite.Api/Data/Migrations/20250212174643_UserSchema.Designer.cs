@@ -12,15 +12,15 @@ using Tonbite.Api.Data;
 namespace Tonbite.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250118145737_RefreshTokens")]
-    partial class RefreshTokens
+    [Migration("20250212174643_UserSchema")]
+    partial class UserSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0-rc.1.24451.1")
+                .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

@@ -11,4 +11,14 @@ export class UserService {
             return undefined;
         }
     }
+
+    public static async Update(form: UserType) : Promise<string | undefined> {
+        try {
+            const response = await api.put("/user", form);
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return undefined;
+        }
+    }
 }
