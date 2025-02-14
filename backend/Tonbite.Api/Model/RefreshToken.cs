@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Tonbite.Api.Models;
+namespace Tonbite.Api.Model;
 
 public class RefreshToken : IEntity
 {
-    /// <summary> Unique Role identifier. </summary>
+    /// <inheritdoc />
     public int Id { get; set; }
     
     /// <summary> Refresh Token. </summary>

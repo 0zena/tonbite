@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Tonbite.Api.Data;
 using Tonbite.Api.Identity;
-using Tonbite.Api.Models;
+using Tonbite.Api.Model;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Tonbite.Api.Http.Services;

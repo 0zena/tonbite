@@ -1,4 +1,4 @@
-namespace Tonbite.Api.Models;
+namespace Tonbite.Api.Model;
 
 public interface IEntity
 {

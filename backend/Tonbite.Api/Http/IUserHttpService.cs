@@ -1,4 +1,4 @@
-using Tonbite.Api.Models;
+using Tonbite.Api.Model;
 
 namespace Tonbite.Api.Http;
 

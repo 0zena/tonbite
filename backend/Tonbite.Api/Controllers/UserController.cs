@@ -1,10 +1,9 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tonbite.Api.Data;
-using Tonbite.Api.Models;
+using Tonbite.Api.Model;
 
 namespace Tonbite.Api.Controllers;
 

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Tonbite.Api.Models;
+namespace Tonbite.Api.Model;
 
 public class User : UserProps
 {
@@ -10,9 +10,12 @@ public class User : UserProps
     public string Password { get; set; } = null!;
 }
 
+/// <summary>
+/// Properties that might be used to send back data to the client.
+/// </summary>
 public class UserProps : IEntity
 {
-    /// <summary> Unique User identifier </summary>
+    /// <inheritdoc />
     public int Id { get; set; }
 
     /// <summary> Username </summary>
@@ -29,10 +32,16 @@ public class UserProps : IEntity
     [MaxLength(1000, ErrorMessage = "Bio must be 1000 characters or fewer")]
     public string? Bio { get; set; }
     
-    /// <summary> List of the user roles </summary>
+    /// <summary> List of the user roles. </summary>
     public List<Role>? Roles { get; set; }
+    
+    /// <summary> List of the user created courses. </summary>
+    public List<Course>? Courses { get; set; }
 }
 
+/// <summary>
+/// Properties that is used to log in user. 
+/// </summary>
 public class UserLogin
 {
     /// <summary> User unique email </summary>
@@ -46,6 +55,9 @@ public class UserLogin
     public string Password { get; set; } = null!;
 }
 
+/// <summary>
+/// Properties that is used to create new user. 
+/// </summary>
 public class UserRegister : UserLogin
 {
     /// <summary> Confirm password </summary>
@@ -54,6 +66,9 @@ public class UserRegister : UserLogin
     public string ConfirmPassword { get; set; } = null!;
 }
 
+/// <summary>
+/// Properties that is used to change password. 
+/// </summary>
 public class PasswordReset
 {
     /// <summary> User password </summary>

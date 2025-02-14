@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tonbite.Api.Http;
-using Tonbite.Api.Models;
+using Tonbite.Api.Model;
 
 namespace Tonbite.Api.Controllers;
 
