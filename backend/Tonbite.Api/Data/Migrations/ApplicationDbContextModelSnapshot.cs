@@ -22,7 +22,44 @@ namespace Tonbite.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Tonbite.Api.Models.RefreshToken", b =>
+            modelBuilder.Entity("Tonbite.Api.Model.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasMaxLength(10000)
+                        .HasColumnType("character varying(10000)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("integer");
+
+                    b.Property<double?>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("WalletAddress")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("Tonbite.Api.Model.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +88,7 @@ namespace Tonbite.Api.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Tonbite.Api.Models.Role", b =>
+            modelBuilder.Entity("Tonbite.Api.Model.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -73,7 +110,7 @@ namespace Tonbite.Api.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("Tonbite.Api.Models.User", b =>
+            modelBuilder.Entity("Tonbite.Api.Model.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,9 +140,20 @@ namespace Tonbite.Api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Tonbite.Api.Models.RefreshToken", b =>
+            modelBuilder.Entity("Tonbite.Api.Model.Course", b =>
                 {
-                    b.HasOne("Tonbite.Api.Models.User", "User")
+                    b.HasOne("Tonbite.Api.Model.User", "Owner")
+                        .WithMany("Courses")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Tonbite.Api.Model.RefreshToken", b =>
+                {
+                    b.HasOne("Tonbite.Api.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -114,9 +162,9 @@ namespace Tonbite.Api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Tonbite.Api.Models.Role", b =>
+            modelBuilder.Entity("Tonbite.Api.Model.Role", b =>
                 {
-                    b.HasOne("Tonbite.Api.Models.User", "User")
+                    b.HasOne("Tonbite.Api.Model.User", "User")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -125,8 +173,10 @@ namespace Tonbite.Api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Tonbite.Api.Models.User", b =>
+            modelBuilder.Entity("Tonbite.Api.Model.User", b =>
                 {
+                    b.Navigation("Courses");
+
                     b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618

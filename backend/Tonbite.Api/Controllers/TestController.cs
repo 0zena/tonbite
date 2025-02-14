@@ -4,31 +4,32 @@ using Tonbite.Api.Identity;
 
 namespace Tonbite.Api.Controllers;
 
+[Route("/api/test")]
 public class TestController : ControllerBase
 {
     [AllowAnonymous]
-    [HttpGet("/api/test")]
+    [HttpGet("anonymous")]
     public IActionResult TestRequest()
     {
         return Ok("API TEST");
     }
     
     [Authorize]
-    [HttpGet("/api/jwt/test")]
+    [HttpGet("jwt")]
     public IActionResult TestSecureRequest()
     {
         return Ok("JWT TEST");
     }
 
     [Authorize(Policy = IdentityData.AdminUserPolicyName)]
-    [HttpGet("/api/admin/test")]
+    [HttpGet("admin-policy")]
     public IActionResult TestAdminPolicy()
     {
         return Ok("ADMIN TEST");
     }
     
     [Authorize]
-    [HttpGet("/api/claim/test")]
+    [HttpGet("admin-claim")]
     [RequiresClaim(IdentityData.AdminUserClaimName, "True")]
     public IActionResult TestClaimRequirements()
     {

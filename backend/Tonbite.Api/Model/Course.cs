@@ -1,9 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Tonbite.Api.Model;
 
 public class Course : CourseProps, IEntity
 {
     /// <inheritdoc />
     public int Id { get; set; }
+    
+    /// <summary> Course owner. </summary>
+    public required User Owner { get; set; }
 }
 
 /// <summary>
@@ -12,9 +17,13 @@ public class Course : CourseProps, IEntity
 public class CourseProps
 {
     /// <summary> Course name. </summary>
+    [Required(ErrorMessage = "Course Name is required.")]
+    [MaxLength(250, ErrorMessage = "Maximum length is {1}")]
     public required string Name { get; set; }
     
     /// <summary> Short course description. </summary>
+    [Required(ErrorMessage = "Course Description is required.")]
+    [MaxLength(10000, ErrorMessage = "Maximum length is {1}")]
     public required string Bio { get; set; }
     
     /// <summary> Wallet send transaction to. </summary>
@@ -25,7 +34,4 @@ public class CourseProps
     
     /// <summary> DateTime when course was created. </summary>
     public DateTime Created { get; set; }
-    
-    /// <summary> Course owner. </summary>
-    public required User Owner { get; set; }
 }

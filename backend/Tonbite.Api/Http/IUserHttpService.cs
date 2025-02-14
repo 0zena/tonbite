@@ -9,4 +9,8 @@ public interface IUserHttpService
     string GenerateRefreshToken();
 
     void Create(UserRegister form);
+    
+    Task<User?> GetUser(string email);
+    
+    Task<UserProps?> GetUserProps(string email);
 }

@@ -18,7 +18,7 @@ public partial class UserController
         if (!ModelState.IsValid) 
             return BadRequest("User is not valid.");
         
-        var exists = _context.Users.FirstOrDefault(u => u.Email == request.Email);
+        var exists = context.Users.FirstOrDefault(u => u.Email == request.Email);
         if (exists != null)
             return Conflict("User with this email already exists.");
 
@@ -35,16 +35,14 @@ public partial class UserController
     }
     
     [HttpPost("login")]
-    public IActionResult LoginUser(
+    public async Task<IActionResult> LoginUser(
         [FromBody] UserLogin request, 
         [FromServices] IUserHttpService service)
     {
         if (!ModelState.IsValid)
             return BadRequest("User is not valid.");
         
-        var user = _context.Users
-            .Include(user => user.Roles)
-            .FirstOrDefault(u => u.Email == request.Email);
+        var user = await service.GetUser(request.Email);
         
         if (user == null)
             return Unauthorized("Invalid username or password.");
@@ -66,8 +64,8 @@ public partial class UserController
         };
         
         // Save
-        _context.Add(refreshToken);
-        _context.SaveChanges();
+        context.Add(refreshToken);
+        await context.SaveChangesAsync();
         Response.Cookies.Append("refreshToken", refreshToken.Token, new CookieOptions
         {
             Secure = true, 
@@ -83,13 +81,13 @@ public partial class UserController
     public IActionResult Logout()
     {
         var refreshToken = Request.Cookies["refreshToken"] ?? string.Empty;
-        var storedToken = _context.RefreshTokens.FirstOrDefault(t => t.Token == refreshToken);
+        var storedToken = context.RefreshTokens.FirstOrDefault(t => t.Token == refreshToken);
         
         if (storedToken == null) 
             return Ok("User already logged out.");
         
-        _context.RefreshTokens.Remove(storedToken);
-        _context.SaveChanges();
+        context.RefreshTokens.Remove(storedToken);
+        context.SaveChanges();
 
         Response.Cookies.Delete("refreshToken", new CookieOptions
         {
@@ -108,7 +106,7 @@ public partial class UserController
         if (string.IsNullOrWhiteSpace(refreshToken))
             return Unauthorized("Refresh token is not provided.");
         
-        var storedToken = _context.RefreshTokens
+        var storedToken = context.RefreshTokens
             .Include(t => t.User)
             .ThenInclude(user => user.Roles)
             .FirstOrDefault(t => t.Token == refreshToken);
@@ -118,8 +116,8 @@ public partial class UserController
         
         if (storedToken.Expires < DateTime.UtcNow)
         {
-            _context.RefreshTokens.Remove(storedToken);
-            _context.SaveChanges();
+            context.RefreshTokens.Remove(storedToken);
+            context.SaveChanges();
             return Unauthorized("User session has expired.");
         }
         
@@ -130,13 +128,13 @@ public partial class UserController
 
     [Authorize]
     [HttpPost("password/change")]
-    public async Task<IActionResult> ChangePassword([FromBody] PasswordReset form)
+    public async Task<IActionResult> ChangePassword([FromBody] PasswordReset form, [FromServices] IUserHttpService service)
     {
         if (!ModelState.IsValid)
             return BadRequest("User is not valid.");
         
         var email = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
-        var user =  await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+        var user =  await service.GetUser(email);
         
         if (user is null)
             return NotFound("User not found.");
@@ -147,8 +145,8 @@ public partial class UserController
             return Unauthorized("Invalid password.");
 
         user.Password = passwordHasher.HashPassword(user, form.NewPassword);
-        _context.Update(user);
-        await _context.SaveChangesAsync();
+        context.Update(user);
+        await context.SaveChangesAsync();
         
         return Ok("Password changed successfully.");
     }

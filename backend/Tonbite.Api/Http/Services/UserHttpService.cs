@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Tonbite.Api.Data;
 using Tonbite.Api.Identity;
@@ -79,5 +80,28 @@ public class UserHttpService : IUserHttpService
         _context.Add(user);
         _context.Add(role);
         _context.SaveChanges();
+    }
+
+    public Task<User?> GetUser(string email)
+    {
+        return _context.Users
+            .Where(u => u.Email == email)
+            .Include(u => u.Roles)
+            .Include(u => u.Courses)
+            .FirstOrDefaultAsync();
+    }
+
+    public Task<UserProps?> GetUserProps(string email)
+    {
+        return _context.Users
+            .Where(x => x.Email == email)
+            .Select(x => new UserProps
+            {
+                Id = x.Id,
+                Username = x.Username,
+                Email = x.Email,
+                Bio = x.Bio
+            })
+            .FirstOrDefaultAsync();
     }
 }

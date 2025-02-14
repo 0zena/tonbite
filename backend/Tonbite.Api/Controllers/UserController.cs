@@ -1,38 +1,22 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Tonbite.Api.Data;
+using Tonbite.Api.Http;
 using Tonbite.Api.Model;
 
 namespace Tonbite.Api.Controllers;
 
 [ApiController]
 [Route("/api/user")]
-public partial class UserController : ControllerBase
+public partial class UserController(ApplicationDbContext context) : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
-    
-    public UserController(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-    
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromServices] IUserHttpService service)
     {
         var email = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
-        var user =  await _context.Users
-            .Where(u => u.Email == email)
-            .Select(u => new
-            {
-                u.Id,
-                u.Email,
-                u.Username,
-                u.Bio
-            })
-            .FirstOrDefaultAsync();
+        var user =  await service.GetUserProps(email);
         
         return user == null
             ? NotFound() 
@@ -41,18 +25,20 @@ public partial class UserController : ControllerBase
 
     [HttpPut]
     [Authorize]
-    public async Task<IActionResult> Update([FromBody] UserProps userProps)
+    public async Task<IActionResult> Update(
+        [FromBody] UserProps userProps, 
+        [FromServices] IUserHttpService service)
     {
         if (!ModelState.IsValid) return BadRequest();
         
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userProps.Email);
+        var user = await service.GetUser(userProps.Email);
         if (user == null) return NotFound();
         
         user.Bio = userProps.Bio;
         user.Username = userProps.Username;
         
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync();
+        context.Users.Update(user);
+        await context.SaveChangesAsync();
         
         return Ok("User updated.");
     }
