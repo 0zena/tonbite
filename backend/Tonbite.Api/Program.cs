@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Tonbite.Api.Data;
 using Tonbite.Api.Http;
+using Tonbite.Api.Http.Core;
 using Tonbite.Api.Http.Services;
 using Tonbite.Api.Identity;
 using Tonbite.Api.Swagger;
@@ -19,7 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
 // Http Services
-builder.Services.AddScoped<IUserHttpService, UserHttpService>();
+builder.Services.AddScopedServices();
 
 // JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt");

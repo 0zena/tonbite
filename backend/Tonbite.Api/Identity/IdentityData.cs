@@ -1,6 +1,6 @@
 namespace Tonbite.Api.Identity;
 
-public class IdentityData
+public static class IdentityData
 {
     public const string AdminUserClaimName = "admin";
     

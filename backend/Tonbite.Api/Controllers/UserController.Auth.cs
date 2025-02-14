@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Tonbite.Api.Http;
 using Tonbite.Api.Model;
 
 namespace Tonbite.Api.Controllers;
@@ -11,9 +10,7 @@ namespace Tonbite.Api.Controllers;
 public partial class UserController
 {
     [HttpPost("register")]
-    public IActionResult RegisterUser(
-        [FromBody] UserRegister request, 
-        [FromServices] IUserHttpService service)
+    public IActionResult RegisterUser([FromBody] UserRegister request)
     {
         if (!ModelState.IsValid) 
             return BadRequest("User is not valid.");
@@ -35,9 +32,7 @@ public partial class UserController
     }
     
     [HttpPost("login")]
-    public async Task<IActionResult> LoginUser(
-        [FromBody] UserLogin request, 
-        [FromServices] IUserHttpService service)
+    public async Task<IActionResult> LoginUser([FromBody] UserLogin request)
     {
         if (!ModelState.IsValid)
             return BadRequest("User is not valid.");
@@ -99,7 +94,7 @@ public partial class UserController
     }
 
     [HttpPost("token/refresh")]
-    public IActionResult RefreshToken([FromServices] IUserHttpService service)
+    public IActionResult RefreshToken()
     {
         var refreshToken = Request.Cookies["refreshToken"];
 
@@ -128,7 +123,7 @@ public partial class UserController
 
     [Authorize]
     [HttpPost("password/change")]
-    public async Task<IActionResult> ChangePassword([FromBody] PasswordReset form, [FromServices] IUserHttpService service)
+    public async Task<IActionResult> ChangePassword([FromBody] PasswordReset form)
     {
         if (!ModelState.IsValid)
             return BadRequest("User is not valid.");

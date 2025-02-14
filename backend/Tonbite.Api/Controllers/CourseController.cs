@@ -9,10 +9,8 @@ namespace Tonbite.Api.Controllers;
 
 [Authorize]
 [Route("/api/courses")]
-public class CourseController(ApplicationDbContext context) : ControllerBase
+public class CourseController(ApplicationDbContext context, ICourseHttpService service) : ControllerBase
 {
-    private readonly ApplicationDbContext _context = context;
-
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] CourseProps props,
@@ -22,18 +20,8 @@ public class CourseController(ApplicationDbContext context) : ControllerBase
         var user = await userService.GetUser(email);
         if (user == null) return NotFound("User not found.");
         
-        var course = new Course
-        {
-            Name = props.Name,
-            Bio = props.Bio,
-            WalletAddress = props.WalletAddress,
-            Price = props.Price,
-            Created = DateTime.UtcNow,
-            Owner = user
-        };
-        
-        _context.Add(course);
-        await _context.SaveChangesAsync();
+        context.Add(service.Create(props, user));
+        await context.SaveChangesAsync();
         
         return Ok("Course saved.");
     }
