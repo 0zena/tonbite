@@ -1,9 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Tonbite.Api.Model;
 
 public class Role : RoleProps, IEntity
 {
     /// <inheritdoc />
-    public int Id { get; set; }
+    [Key]
+    public long Id { get; set; }
     
     /// <summary> User of the role </summary>
     public required User User { get; set; }

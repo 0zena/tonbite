@@ -9,7 +9,7 @@ public interface IUserHttpService
     /// <param name="email">Users unique email.</param>
     /// <param name="isAdmin">Does user have admin role or not.</param>
     /// <returns>Access token as a string.</returns>
-    string GenerateAccessToken(int userId, string email, string isAdmin);
+    string GenerateAccessToken(long userId, string email, string isAdmin);
     
     /// <summary> Generates refresh token. </summary>
     /// <returns>Regenerate token. Must be stored in database and sent as HTTP-only cookie.</returns>
@@ -22,10 +22,10 @@ public interface IUserHttpService
     /// <summary> Get specific user from database. </summary>
     /// <param name="email">Search key.</param>
     /// <returns>All users data from database.</returns>
-    Task<User?> GetUser(int id);
+    Task<User?> GetUser(long id);
     
     /// <summary> Get specific user fields from database. </summary>
     /// <param name="email"></param>
     /// <returns>Only specific user fields.</returns>
-    Task<UserProps?> GetUserProps(int id);
+    Task<UserProps?> GetUserProps(long id);
 }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tonbite.Api.Model;
 
@@ -22,7 +23,8 @@ public class User : UserProps
 public class UserProps : IEntity
 {
     /// <inheritdoc />
-    public int Id { get; set; }
+    [Key]
+    public long Id { get; set; }
 
     /// <summary> Username </summary>
     [MaxLength(12, ErrorMessage = "Username cannot be longer than 12 characters.")]

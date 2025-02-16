@@ -24,11 +24,11 @@ namespace Tonbite.Api.Migrations
 
             modelBuilder.Entity("Tonbite.Api.Model.Course", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Bio")
                         .IsRequired()
@@ -43,8 +43,8 @@ namespace Tonbite.Api.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("integer");
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
 
                     b.Property<double?>("Price")
                         .HasColumnType("double precision");
@@ -61,11 +61,11 @@ namespace Tonbite.Api.Migrations
 
             modelBuilder.Entity("Tonbite.Api.Model.RefreshToken", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Expires")
                         .HasColumnType("timestamp with time zone");
@@ -78,8 +78,8 @@ namespace Tonbite.Api.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("character varying(512)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -90,18 +90,18 @@ namespace Tonbite.Api.Migrations
 
             modelBuilder.Entity("Tonbite.Api.Model.Role", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -112,11 +112,11 @@ namespace Tonbite.Api.Migrations
 
             modelBuilder.Entity("Tonbite.Api.Model.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Bio")
                         .HasMaxLength(1000)

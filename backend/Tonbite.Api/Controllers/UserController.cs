@@ -15,7 +15,7 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
     [Authorize]
     public async Task<IActionResult> Get()
     {
-        var id = int.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
+        var id = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
         var user =  await service.GetUserProps(id);
         
         return user == null

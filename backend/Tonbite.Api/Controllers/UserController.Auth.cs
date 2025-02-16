@@ -130,7 +130,7 @@ public partial class UserController
         if (!ModelState.IsValid)
             return BadRequest("User is not valid.");
         
-        var id = int.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
+        var id = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
         var user =  await service.GetUser(id);
         
         if (user is null)

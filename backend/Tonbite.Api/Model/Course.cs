@@ -1,11 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tonbite.Api.Model;
 
 public class Course : CourseProps, IEntity
 {
     /// <inheritdoc />
-    public int Id { get; set; }
+    [Key]
+    public long Id { get; set; }
     
     /// <summary> Course owner. </summary>
     public required User Owner { get; set; }
