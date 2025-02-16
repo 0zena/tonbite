@@ -1,4 +1,6 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Button, Link } from "@heroui/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@heroui/navbar";
+import { Button } from "@heroui/button";
+import { Link } from "@heroui/link";
 import { useAuth } from "../../provider/AuthProvider.tsx";
 import { Icons } from "../../utils";
 import { Icon } from "../icon/Icon.tsx";

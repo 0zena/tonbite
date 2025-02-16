@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { UserService } from "../../../services";
 import { UserType } from "../../../states";
-import { Tabs, Tab, CircularProgress, Card } from "@heroui/react";
+import { Tabs, Tab } from "@heroui/tabs";
+import { CircularProgress } from "@heroui/progress";
+import { Card } from "@heroui/card";
 import { ChangePasswordForm } from "./ChangePasswordForm.tsx";
 import { EditProfileForm } from "./EditProfileForm.tsx";
-import {AdvancedSettingsForm} from "./AdvancedSettingsForm.tsx";
+import { AdvancedSettingsForm } from "./AdvancedSettingsForm.tsx";
 
 export const ProfileManagePage = () => {
     const [user, getUser] = useState<UserType | undefined>();

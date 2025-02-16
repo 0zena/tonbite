@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { UserType } from "../../states";
 import { UserService } from "../../services";
-import { CircularProgress } from "@heroui/react";
+import { CircularProgress } from "@heroui/progress";
 
 export const ProfilePage = () => {
     const [user, getUser] = useState<UserType | undefined>();

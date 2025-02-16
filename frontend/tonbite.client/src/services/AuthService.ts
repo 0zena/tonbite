@@ -48,7 +48,7 @@ export class AuthService {
 
     public static async ChangePassword(form: ChangePasswordProps): Promise<string | undefined> {
         try {
-            const response = await api.post("/user/password/change", form);
+            const response = await api.put("/user/password/change", form);
             return response.data;
         } catch (error: unknown) {
             return HTTPResponseHandler.HandleError(error);

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
 import { AuthService } from "../../../services";
 import { ChangePasswordProps, ChangePasswordSchema } from "../../../states";
 import { ConfirmModal, useConfirmModal } from "../../../components";

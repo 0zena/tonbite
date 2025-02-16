@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Button, Input } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormProps, RegisterFormSchema } from "../../states";
 import { AuthService } from "../../services";
