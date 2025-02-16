@@ -77,20 +77,20 @@ public class UserHttpService(IConfiguration configuration, ApplicationDbContext 
     }
 
     /// <inheritdoc /> 
-    public Task<User?> GetUser(string email)
+    public Task<User?> GetUser(int id)
     {
         return context.Users
-            .Where(u => u.Email == email)
+            .Where(u => u.Id == id)
             .Include(u => u.Roles)
             .Include(u => u.Courses)
             .FirstOrDefaultAsync();
     }
 
     /// <inheritdoc /> 
-    public Task<UserProps?> GetUserProps(string email)
+    public Task<UserProps?> GetUserProps(int id)
     {
         return context.Users
-            .Where(x => x.Email == email)
+            .Where(x => x.Id == id)
             .Select(x => new UserProps
             {
                 Id = x.Id,

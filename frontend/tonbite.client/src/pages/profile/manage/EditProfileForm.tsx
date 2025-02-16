@@ -16,6 +16,7 @@ export const EditProfileForm = ({user}: {user: UserType}) => {
         setMessage("");
         if (!await confirmAction()) return;
 
+        form.id = user.id;
         const response = await UserService.Update(form);
         if (response != undefined)
             setMessage(response);

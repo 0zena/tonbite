@@ -15,21 +15,21 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
     [Authorize]
     public async Task<IActionResult> Get()
     {
-        var email = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
-        var user =  await service.GetUserProps(email);
+        var id = int.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
+        var user =  await service.GetUserProps(id);
         
         return user == null
             ? NotFound() 
             : Ok(user);
     }
 
-    [HttpPut]
+    [HttpPatch]
     [Authorize]
     public async Task<IActionResult> Update([FromBody] UserProps userProps)
     {
         if (!ModelState.IsValid) return BadRequest();
         
-        var user = await service.GetUser(userProps.Email);
+        var user = await service.GetUser(userProps.Id);
         if (user == null) return NotFound();
         
         user.Bio = userProps.Bio;

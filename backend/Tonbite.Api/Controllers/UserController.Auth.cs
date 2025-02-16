@@ -37,7 +37,9 @@ public partial class UserController
         if (!ModelState.IsValid)
             return BadRequest("User is not valid.");
         
-        var user = await service.GetUser(request.Email);
+        var user = await context.Users
+            .Include(user => user.Roles!)
+            .FirstOrDefaultAsync(u => u.Email == request.Email);
         
         if (user == null)
             return Unauthorized("Invalid username or password.");
@@ -122,14 +124,14 @@ public partial class UserController
     }
 
     [Authorize]
-    [HttpPost("password/change")]
+    [HttpPut("password/change")]
     public async Task<IActionResult> ChangePassword([FromBody] PasswordReset form)
     {
         if (!ModelState.IsValid)
             return BadRequest("User is not valid.");
         
-        var email = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
-        var user =  await service.GetUser(email);
+        var id = int.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
+        var user =  await service.GetUser(id);
         
         if (user is null)
             return NotFound("User not found.");

@@ -16,8 +16,8 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
         [FromBody] CourseProps props,
         [FromServices] IUserHttpService userService)
     {
-        var email = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
-        var user = await userService.GetUser(email);
+        var id = int.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
+        var user = await userService.GetUser(id);
         if (user == null) return NotFound("User not found.");
         
         context.Add(service.Create(props, user));

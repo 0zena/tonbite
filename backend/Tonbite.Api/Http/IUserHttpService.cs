@@ -22,10 +22,10 @@ public interface IUserHttpService
     /// <summary> Get specific user from database. </summary>
     /// <param name="email">Search key.</param>
     /// <returns>All users data from database.</returns>
-    Task<User?> GetUser(string email);
+    Task<User?> GetUser(int id);
     
     /// <summary> Get specific user fields from database. </summary>
     /// <param name="email"></param>
     /// <returns>Only specific user fields.</returns>
-    Task<UserProps?> GetUserProps(string email);
+    Task<UserProps?> GetUserProps(int id);
 }
