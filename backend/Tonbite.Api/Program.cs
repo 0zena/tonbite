@@ -5,9 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Tonbite.Api.Data;
-using Tonbite.Api.Http;
 using Tonbite.Api.Http.Core;
-using Tonbite.Api.Http.Services;
 using Tonbite.Api.Identity;
 using Tonbite.Api.Swagger;
 
