@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserService } from "../../../services";
 import { useState } from "react";
-import { ConfirmModal, useConfirmModal } from "../../../components";
+import { ConfirmModal, useConfirmModal, ValidationError } from "../../../components";
 
 export const EditProfileForm = ({user}: {user: UserType}) => {
     const { register, handleSubmit, formState: { errors } } = useForm<UserType>({ resolver: zodResolver(UserSchema) });
@@ -28,19 +28,19 @@ export const EditProfileForm = ({user}: {user: UserType}) => {
                    placeholder={"Add username"}
                    defaultValue={user.username}
                    {...register("username")} />
-            {errors.username && (<p className="text-danger text-tiny mt-1">{errors.username.message}</p>)}
+            <ValidationError error={errors.username} />
             <Input label={"Email"}
                    readOnly={true}
                    value={user.email}
                    type={"email"}
                    {...register("email")} />
-            {errors.email && (<p className="text-danger text-tiny mt-1">{errors.email.message}</p>)}
+            <ValidationError error={errors.email} />
             <Textarea label={"Bio"}
                       minRows={4}
                       placeholder={"Describe yourself"}
                       defaultValue={user.bio}
                       {...register("bio")} className={"h-fit"} />
-            {errors.bio && (<p className="text-danger text-tiny mt-1">{errors.bio.message}</p>)}
+            <ValidationError error={errors.bio} />
             {message && <p className="text-danger text-tiny mt-1">{message}</p>}
             <span className={"flex w-full justify-end"}>
                 <Button type="submit" className={"ml-auto"} color={"danger"}>Save</Button>

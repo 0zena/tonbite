@@ -36,7 +36,7 @@ const AuthProvider = ({ children } : { children: ReactNode}) => {
                 else logout();
             }).catch(() => { logout(); });
         }
-    }, [token]);
+    }, [logout, token]);
 
     const contextValue = useMemo(
         () => ({
@@ -45,7 +45,7 @@ const AuthProvider = ({ children } : { children: ReactNode}) => {
             isAuthenticated: !!token,
             logout,
         }),
-        [token]
+        [logout, token]
     );
 
     return (

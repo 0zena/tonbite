@@ -6,9 +6,12 @@ import { Input } from "@heroui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormProps, LoginFormSchema } from "../../states";
 import { AuthService } from "../../services";
+import { ValidationError } from "../../components";
+import { useAuth } from "../../provider/AuthProvider.tsx";
 
 export default function LoginForm() {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<LoginFormProps>({ resolver: zodResolver(LoginFormSchema)});
+    const { setToken } = useAuth();
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
@@ -18,7 +21,7 @@ export default function LoginForm() {
             setMessage(response);
         else {
             navigate("/");
-            location.reload();
+            setToken(localStorage.getItem("accessToken"));
         }
 
         reset();
@@ -30,12 +33,12 @@ export default function LoginForm() {
                    isRequired
                    type="email"
                    {...register("email")} />
-            {errors.email && (<p className="text-danger text-tiny mt-1">{errors.email.message}</p>)}
+            <ValidationError error={errors.email} />
             <Input label="password"
                    isRequired
                    type="password"
                    {...register("password")} />
-            {errors.password && (<p className="text-danger text-tiny mt-1">{errors.password.message}</p>)}
+            <ValidationError error={errors.password} />
             {message && <p className="text-danger text-tiny mt-1">{message}</p>}
             <Button type="submit">Login</Button>
         </form>

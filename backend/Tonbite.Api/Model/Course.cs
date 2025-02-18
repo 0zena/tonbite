@@ -10,6 +10,9 @@ public class Course : CourseProps, IEntity
     
     /// <summary> Course owner. </summary>
     public required User Owner { get; set; }
+    
+    /// <summary> List of course steps. </summary>
+    public List<CourseStep>? Steps { get; set; }
 }
 
 /// <summary>
@@ -24,7 +27,7 @@ public class CourseProps
     
     /// <summary> Short course description. </summary>
     [Required(ErrorMessage = "Course Description is required.")]
-    [MaxLength(10000, ErrorMessage = "Maximum length is {1}")]
+    [MaxLength(1000, ErrorMessage = "Maximum length is {1}")]
     public required string Bio { get; set; }
     
     /// <summary> Wallet send transaction to. </summary>

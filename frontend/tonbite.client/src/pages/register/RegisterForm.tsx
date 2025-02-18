@@ -6,6 +6,7 @@ import { Input } from "@heroui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormProps, RegisterFormSchema } from "../../states";
 import { AuthService } from "../../services";
+import { ValidationError } from "../../components";
 
 export default function RegisterForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormProps>({ resolver: zodResolver(RegisterFormSchema) });
@@ -24,17 +25,17 @@ export default function RegisterForm() {
             <Input label="email"
                    isRequired
                    {...register("email")} />
-            {errors.email && (<p className="text-danger text-tiny mt-1">{errors.email.message}</p>)}
+            <ValidationError error={errors.email} />
             <Input label="password"
                    isRequired
                    type="password"
                    {...register("password")} />
-            {errors.password && (<p className="text-danger text-tiny mt-1">{errors.password.message}</p>)}
+            <ValidationError error={errors.password} />
             <Input label="confirm password"
                    isRequired
                    type="password"
                    {...register("confirmPassword")} />
-            {errors.confirmPassword && (<p className="text-danger text-tiny mt-1">{errors.confirmPassword.message}</p>)}
+            <ValidationError error={errors.confirmPassword} />
             {message && <p className="text-danger text-tiny mt-1">{message}</p>}
             <Button type="submit">Register</Button>
         </form>

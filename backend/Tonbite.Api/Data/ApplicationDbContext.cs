@@ -5,7 +5,9 @@ namespace Tonbite.Api.Data;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
+    public DbSet<Role> Roles { get; set; }
     public DbSet<Course> Courses { get; set; }
+    public DbSet<CourseStep> CourseSteps { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 }

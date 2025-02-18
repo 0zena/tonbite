@@ -5,7 +5,7 @@ import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { AuthService } from "../../../services";
 import { ChangePasswordProps, ChangePasswordSchema } from "../../../states";
-import { ConfirmModal, useConfirmModal } from "../../../components";
+import { ConfirmModal, useConfirmModal, ValidationError } from "../../../components";
 
 export const ChangePasswordForm = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<ChangePasswordProps>({ resolver: zodResolver(ChangePasswordSchema) });
@@ -28,20 +28,18 @@ export const ChangePasswordForm = () => {
                isRequired
                type="password"
                {...register("password")} />
-        {errors.password && (<p className="text-danger text-tiny mt-1">{errors.password.message}</p>)}
+        <ValidationError error={errors.password} />
         <Input label="new password"
                isRequired
                type="password"
                {...register("newPassword")} />
-        {errors.newPassword && (<p className="text-danger text-tiny mt-1">{errors.newPassword.message}</p>)}
+        <ValidationError error={errors.newPassword} />
         <Input label="confirm new password"
                isRequired
                type="password"
                {...register("confirmPassword")} />
-        {errors.confirmPassword && (<p className="text-danger text-tiny mt-1">{errors.confirmPassword.message}</p>)}
-
+        <ValidationError error={errors.confirmPassword} />
         {message && <p className="text-danger text-tiny mt-1">{message}</p>}
-
         <span className={"flex w-full justify-end"}>
             <Button type="submit" className={"ml-auto"} color={"danger"}>Change</Button>
         </span>

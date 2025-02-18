@@ -32,8 +32,8 @@ namespace Tonbite.Api.Migrations
 
                     b.Property<string>("Bio")
                         .IsRequired()
-                        .HasMaxLength(10000)
-                        .HasColumnType("character varying(10000)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
@@ -57,6 +57,42 @@ namespace Tonbite.Api.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("Tonbite.Api.Model.CourseStep", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(20000)
+                        .HasColumnType("character varying(20000)");
+
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CourseSteps");
                 });
 
             modelBuilder.Entity("Tonbite.Api.Model.RefreshToken", b =>
@@ -107,7 +143,7 @@ namespace Tonbite.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Tonbite.Api.Model.User", b =>
@@ -151,6 +187,17 @@ namespace Tonbite.Api.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("Tonbite.Api.Model.CourseStep", b =>
+                {
+                    b.HasOne("Tonbite.Api.Model.Course", "Course")
+                        .WithMany("Steps")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("Tonbite.Api.Model.RefreshToken", b =>
                 {
                     b.HasOne("Tonbite.Api.Model.User", "User")
@@ -171,6 +218,11 @@ namespace Tonbite.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Tonbite.Api.Model.Course", b =>
+                {
+                    b.Navigation("Steps");
                 });
 
             modelBuilder.Entity("Tonbite.Api.Model.User", b =>

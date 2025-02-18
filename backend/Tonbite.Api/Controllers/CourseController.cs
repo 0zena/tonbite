@@ -16,14 +16,23 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
         [FromBody] CourseProps props,
         [FromServices] IUserHttpService userService)
     {
+        if (!ModelState.IsValid)
+            return BadRequest();
+        
         var id = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
         var user = await userService.GetUser(id);
-        if (user == null) return NotFound("User not found.");
+        if (user == null)
+            return NotFound("User not found.");
         
-        context.Add(service.Create(props, user));
-        await context.SaveChangesAsync();
+        await context.SaveAsync(service.Create(props, user));
         
         return Ok("Course saved.");
+    }
+
+    [HttpGet]
+    public IActionResult Get()
+    {
+        return Ok();
     }
     
     [HttpGet]
@@ -35,9 +44,12 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
 
     [HttpPut]
     [Route("{id:long}")]
-    public IActionResult Update([FromRoute] long id)
+    public async Task<IActionResult> Update([FromRoute] long id, [FromBody] Course course)
     {
-        return Ok();
+        if (!ModelState.IsValid) return BadRequest();
+        await context.UpdateAsync(course);
+        
+        return Ok("course successfully updated.");
     }
 
     [HttpDelete]

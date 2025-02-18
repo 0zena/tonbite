@@ -1,6 +1,9 @@
 export type { ChangePasswordProps } from "./ChangePasswordProps.ts";
 export { ChangePasswordSchema } from "./ChangePasswordProps.ts";
 
+export type { CourseType } from "./Course.ts";
+export { CourseSchema } from "./Course.ts";
+
 export type { LoginFormProps } from "./LoginFormProps.ts";
 export { LoginFormSchema } from "./LoginFormProps.ts";
 
