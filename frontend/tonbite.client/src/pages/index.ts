@@ -1,3 +1,4 @@
+export { CreateCoursePage } from "./course/CreateCoursePage.tsx";
 export { NotFoundError } from "./error/NotFoundError.tsx";
 export { HomePage } from "./home/HomePage.tsx";
 export { LoginPage } from "./login/LoginPage.tsx";

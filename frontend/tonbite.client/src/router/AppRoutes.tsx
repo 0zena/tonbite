@@ -1,5 +1,13 @@
 import { ProtectedRoute } from "../components";
-import { HomePage, LoginPage, NotFoundError, ProfileManagePage, ProfilePage, RegisterPage } from "../pages";
+import {
+    HomePage,
+    LoginPage,
+    NotFoundError,
+    ProfileManagePage,
+    ProfilePage,
+    RegisterPage,
+    CreateCoursePage
+} from "../pages";
 
 export const publicRoutes = [
     {
@@ -35,7 +43,11 @@ export const authorizedRoutes = [
             {
                 path: "/profile/manage",
                 element: <ProfileManagePage />,
-            }
+            },
+            {
+                path: "/create",
+                element: <CreateCoursePage />,
+            },
         ],
     },
 ];

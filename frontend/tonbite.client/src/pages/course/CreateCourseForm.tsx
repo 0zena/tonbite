@@ -1,43 +1,42 @@
-import { Input, Textarea } from "@heroui/input";
-import { Card } from "@heroui/card";
 import Toncoin from "../../assets/toncoin.svg";
-import { CourseType, CourseSchema } from "../../states";
+import { Input, Textarea } from "@heroui/input";
+import { Button } from "@heroui/button";
+import { Card } from "@heroui/card";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@heroui/button";
+import { CourseService } from "../../services/CourseService.ts";
 import { ValidationError } from "../../components";
+import { CourseType, CourseSchema } from "../../states";
 
 export const CreateCourseForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<CourseType>({ resolver: zodResolver(CourseSchema)});
 
-    const Submit = (form: CourseType) => {
-        console.log(form);
+    const Submit = async (form: CourseType) => {
+        const response = await CourseService.Create(form);
+        console.log(response);
     }
 
     return (
-        <Card className={"p-4"}>
+        <Card className={"p-6"}>
             <form onSubmit={handleSubmit(Submit)} className={"space-y-4"}>
                 <Input label={"Title"}
                        placeholder={"TON blockchain benefits"}
                        {...register("name")}  />
                 <ValidationError error={errors.name} />
-
                 <Textarea label={"Bio"}
                           placeholder={"In this course..."}
                           {...register("bio")}  />
                 <ValidationError error={errors.bio} />
-
                 <Input label={"Wallet address"}
                        placeholder={"Your TON wallet"}
                        {...register("walletAddress")}  />
                 <ValidationError error={errors.walletAddress} />
-
                 <Input label={"Price"}
-                       placeholder={"0.00"}
-                       type="number"
                        step={"any"}
+                       type={"number"}
+                       placeholder={"0.00"}
                        endContent={"TON"} min={0}
-                       startContent={<img src={Toncoin} alt="TON" className="w-5 h-5" />}
+                       startContent={<img src={Toncoin} alt="TON" className="size-5" />}
                        {...register("price", { valueAsNumber: true })} />
                 <ValidationError error={errors.price} />
 

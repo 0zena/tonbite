@@ -12,6 +12,10 @@ export const AppNavbar = () => {
             name: "Home",
             path: "/",
         },
+        {
+            name: "Create",
+            path: "/create",
+        },
     ];
 
     return (
