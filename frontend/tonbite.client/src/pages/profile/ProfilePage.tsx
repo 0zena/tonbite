@@ -22,7 +22,7 @@ export const ProfilePage = () => {
                         <Divider />
                         <div className={"p-6"}>
                             {user.courses?.length ? (
-                                <CourseList data={user.courses} />
+                                <CourseList data={user.courses} showStatus={true} />
                             ) : (
                                 <p>No courses yet</p>
                             )}
