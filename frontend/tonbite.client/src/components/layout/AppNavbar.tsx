@@ -23,7 +23,7 @@ export const AppNavbar = () => {
             <NavbarContent>
                 <NavbarMenuToggle className="sm:hidden" />
                 <NavbarBrand>
-                    <h2>Tonbite</h2>
+                    <h2 className={"text-xl"}>Tonbite</h2>
                 </NavbarBrand>
             </NavbarContent>
             <NavbarContent className={"max-sm:hidden"} justify={"center"}>
