@@ -57,7 +57,7 @@ public partial class UserController
         {
             Token = service.GenerateRefreshToken(),
             Expires = DateTime.UtcNow.AddHours(12),
-            User = user
+            Owner = user
         };
         
         // Save
@@ -104,7 +104,7 @@ public partial class UserController
             return Unauthorized("Refresh token is not provided.");
         
         var storedToken = context.RefreshTokens
-            .Include(t => t.User)
+            .Include(t => t.Owner)
             .ThenInclude(user => user.Roles)
             .FirstOrDefault(t => t.Token == refreshToken);
 
@@ -118,8 +118,8 @@ public partial class UserController
             return Unauthorized("User session has expired.");
         }
         
-        var isAdmin = storedToken.User.Roles!.Exists(r => r.Name == nameof(Roles.Admin));
-        var accessToken = service.GenerateAccessToken(storedToken.User.Id, storedToken.User.Email, isAdmin.ToString());
+        var isAdmin = storedToken.Owner.Roles!.Exists(r => r.Name == nameof(Roles.Admin));
+        var accessToken = service.GenerateAccessToken(storedToken.Owner.Id, storedToken.Owner.Email, isAdmin.ToString());
         return Ok(new { accessToken });
     }
 

@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Tonbite.Api.Model;
 
@@ -7,9 +9,13 @@ public class Role : RoleProps, IEntity
     /// <inheritdoc />
     [Key]
     public long Id { get; set; }
+
+    [NotMapped] 
+    public long? UserId => Owner.Id;
     
     /// <summary> User of the role </summary>
-    public required User User { get; set; }
+    [JsonIgnore]
+    public User Owner { get; init; } = null!;
 }
 
 /// <summary>

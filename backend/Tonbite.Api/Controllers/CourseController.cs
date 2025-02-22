@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tonbite.Api.Data;
 using Tonbite.Api.Http;
 using Tonbite.Api.Model;
@@ -22,11 +23,11 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
         var id = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
         var user = await userService.GetUser(id);
         if (user == null)
-            return NotFound("User not found.");
+            return NotFound();
+
+        var course = await context.CreateAsync(service.Create(props, user));
         
-        await context.SaveAsync(service.Create(props, user));
-        
-        return Ok("Course saved.");
+        return Ok(course);
     }
 
     [HttpGet]
@@ -37,9 +38,16 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
     
     [HttpGet]
     [Route("{id:long}")]
-    public IActionResult Get([FromRoute] long id)
+    public async Task<IActionResult> Get([FromRoute] long id)
     {
-        return Ok();
+        var course = await context.Courses
+            .Include(x => x.Owner)
+            .Include(x => x.Steps)
+            .FirstOrDefaultAsync(x => x.Id == id);
+        
+        return course != null 
+            ? Ok(course)
+            : NotFound();
     }
 
     [HttpPut]
@@ -48,14 +56,19 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
     {
         if (!ModelState.IsValid) return BadRequest();
         await context.UpdateAsync(course);
-        
-        return Ok("course successfully updated.");
+        return Ok(await context.UpdateAsync(course));
     }
 
     [HttpDelete]
     [Route("{id:long}")]
-    public IActionResult Delete([FromRoute] long id)
+    public async Task<IActionResult> Delete([FromRoute] long id)
     {
-        return Ok();
+        var course = context.Courses
+            .FirstOrDefault(x => x.Id == id);
+        
+        if (course != null)
+            await context.DeleteAsync(course);
+        
+        return Ok(course?.Id);
     }
 }

@@ -13,7 +13,7 @@ export const ProfileManagePage = () => {
 
     useEffect(() => {
         UserService.Get().then((res) => getUser(res));
-    }, [user]);
+    }, []);
 
     return <main>
         <div className="flex w-full flex-col space-y-4 items-center">

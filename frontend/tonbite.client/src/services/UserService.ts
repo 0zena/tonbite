@@ -6,8 +6,7 @@ export class UserService {
         try {
             const response = await api.get("/user");
             return response.data as UserType;
-        } catch (error) {
-            console.log(error);
+        } catch {
             return undefined;
         }
     }
@@ -16,8 +15,7 @@ export class UserService {
         try {
             const response = await api.patch("/user", form);
             return response.data;
-        } catch (error) {
-            console.log(error);
+        } catch {
             return undefined;
         }
     }

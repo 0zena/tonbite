@@ -6,7 +6,8 @@ import {
     ProfileManagePage,
     ProfilePage,
     RegisterPage,
-    CreateCoursePage
+    CreateCoursePage,
+    CoursePage,
 } from "../pages";
 
 export const publicRoutes = [
@@ -47,6 +48,10 @@ export const authorizedRoutes = [
             {
                 path: "/create",
                 element: <CreateCoursePage />,
+            },
+            {
+                path: "/courses/:id",
+                element: <CoursePage />,
             },
         ],
     },

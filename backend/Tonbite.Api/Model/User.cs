@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tonbite.Api.Model;
 
@@ -8,12 +9,6 @@ public class User : UserProps
     [DataType(DataType.Password)]
     [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; } = null!;
-    
-    /// <summary> List of the user roles. </summary>
-    public List<Role>? Roles { get; set; }
-    
-    /// <summary> List of the user created courses. </summary>
-    public List<Course>? Courses { get; set; }
 }
 
 /// <summary>
@@ -38,6 +33,12 @@ public class UserProps : IEntity
     /// <summary> User profile bio </summary>
     [MaxLength(1000, ErrorMessage = "Bio must be 1000 characters or fewer")]
     public string? Bio { get; set; }
+    
+    /// <summary> List of the user roles. </summary>
+    public List<Role>? Roles { get; set; }
+    
+    /// <summary> List of the user created courses. </summary>
+    public List<Course>? Courses { get; set; }
 }
 
 /// <summary>

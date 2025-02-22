@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Tonbite.Api.Model;
 
@@ -7,9 +9,13 @@ public class CourseStep : CourseStepProps, IEntity
     /// <inheritdoc />
     [Key]
     public long Id { get; set; }
+
+    [NotMapped]
+    public long? ParentId => Course.Id;
     
     /// <summary> Course which course step belongs to. </summary>
-    public required Course Course { get; set; }
+    [JsonIgnore]
+    public Course Course { get; init; } = null!;
 }
 
 public class CourseStepProps

@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Tonbite.Api.Model;
 
@@ -8,8 +10,12 @@ public class Course : CourseProps, IEntity
     [Key]
     public long Id { get; set; }
     
+    [NotMapped]
+    public long? UserId => Owner.Id;
+    
     /// <summary> Course owner. </summary>
-    public required User Owner { get; set; }
+    [JsonIgnore]
+    public User Owner { get; init; } = null!;
     
     /// <summary> List of course steps. </summary>
     public List<CourseStep>? Steps { get; set; }
@@ -38,4 +44,12 @@ public class CourseProps
     
     /// <summary> DateTime when course was created. </summary>
     public DateTime Created { get; set; }
+    
+    public Visibility Visibility { get; set; }
+}
+
+public enum Visibility
+{
+    Private = 0,
+    Public = 1
 }

@@ -16,7 +16,6 @@ const AuthProvider = ({ children } : { children: ReactNode}) => {
     const [ token, setToken ] = useState(localStorage.getItem("accessToken"));
     const [tonConnectUI] = useTonConnectUI();
 
-
     const isTokenExpired = (token: string) : boolean => {
         const decoded = jwtDecode<JwtPayload>(token);
         if (decoded.exp != undefined)

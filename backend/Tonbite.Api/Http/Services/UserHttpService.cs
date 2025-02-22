@@ -66,7 +66,7 @@ public class UserHttpService(IConfiguration configuration, ApplicationDbContext 
         var role = new Role
         {
             Name = "User",
-            User = user
+            Owner = user
         };
         
         user.Password = passwordHasher.HashPassword(user, form.Password);

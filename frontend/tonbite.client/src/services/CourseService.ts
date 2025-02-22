@@ -1,14 +1,22 @@
 import { CourseType } from "../states";
 import { api } from "./Api.ts";
-import { HTTPResponseHandler } from "./extensions/HTTPResponseHandler.ts";
 
 export class CourseService {
-    public static async Create(form: CourseType): Promise<string> {
+    public static async Create(form: CourseType): Promise<CourseType | undefined> {
         try {
             const result = await api.post("/courses", form);
-            return result.data as string;
-        } catch (error: unknown) {
-            return HTTPResponseHandler.HandleError(error);
+            return result.data as CourseType;
+        } catch {
+            return undefined;
+        }
+    }
+
+    public static async Get(id: string | undefined): Promise<CourseType | undefined> {
+        try {
+            const result = await api.get(`/courses/${id}`);
+            return result.data as CourseType | undefined;
+        } catch {
+            return undefined;
         }
     }
 }

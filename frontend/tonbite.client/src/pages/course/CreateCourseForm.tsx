@@ -7,13 +7,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CourseService } from "../../services/CourseService.ts";
 import { ValidationError } from "../../components";
 import { CourseType, CourseSchema } from "../../states";
+import {useNavigate} from "react-router-dom";
 
 export const CreateCourseForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<CourseType>({ resolver: zodResolver(CourseSchema)});
+    const navigate = useNavigate();
 
     const Submit = async (form: CourseType) => {
-        const response = await CourseService.Create(form);
-        console.log(response);
+        const course = await CourseService.Create(form);
+        if (course != undefined)
+            navigate(`/courses/${course.id}`);
     }
 
     return (

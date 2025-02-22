@@ -49,6 +49,9 @@ namespace Tonbite.Api.Migrations
                     b.Property<double?>("Price")
                         .HasColumnType("double precision");
 
+                    b.Property<int>("Visibility")
+                        .HasColumnType("integer");
+
                     b.Property<string>("WalletAddress")
                         .HasColumnType("text");
 
@@ -106,20 +109,17 @@ namespace Tonbite.Api.Migrations
                     b.Property<DateTime>("Expires")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("boolean");
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("character varying(512)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("RefreshTokens");
                 });
@@ -136,12 +136,12 @@ namespace Tonbite.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("UserId")
+                    b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Roles");
                 });
@@ -200,24 +200,24 @@ namespace Tonbite.Api.Migrations
 
             modelBuilder.Entity("Tonbite.Api.Model.RefreshToken", b =>
                 {
-                    b.HasOne("Tonbite.Api.Model.User", "User")
+                    b.HasOne("Tonbite.Api.Model.User", "Owner")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Tonbite.Api.Model.Role", b =>
                 {
-                    b.HasOne("Tonbite.Api.Model.User", "User")
+                    b.HasOne("Tonbite.Api.Model.User", "Owner")
                         .WithMany("Roles")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Tonbite.Api.Model.Course", b =>
