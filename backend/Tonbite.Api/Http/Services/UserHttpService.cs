@@ -82,22 +82,26 @@ public class UserHttpService(IConfiguration configuration, ApplicationDbContext 
         return context.Users
             .Where(u => u.Id == id)
             .Include(u => u.Roles)
-            .Include(u => u.Courses)
             .FirstOrDefaultAsync();
     }
 
     /// <inheritdoc /> 
-    public Task<UserProps?> GetUserProps(long id)
+    public Task<UserProps?> GetUserProps(long id, bool courses, bool roles)
     {
         return context.Users
-            .Where(x => x.Id == id)
+            .Include(x => x.Roles)!
+            .ThenInclude(x => x.Owner)
+            .Include(x => x.Courses)!
+            .ThenInclude(x => x.Owner)
             .Select(x => new UserProps
             {
                 Id = x.Id,
                 Username = x.Username,
                 Email = x.Email,
-                Bio = x.Bio
+                Bio = x.Bio,
+                Roles = roles ? x.Roles : null,
+                Courses = courses ? x.Courses : null,
             })
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

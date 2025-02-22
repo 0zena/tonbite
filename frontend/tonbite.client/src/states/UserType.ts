@@ -1,10 +1,12 @@
 import { z, ZodType } from "zod";
+import { CourseType } from "./Course.ts";
 
 export type UserType = {
     id?: number;
     email: string;
     username?: string;
     bio?: string;
+    courses?: CourseType[];
 }
 
 export const UserSchema: ZodType<UserType> = z.object({

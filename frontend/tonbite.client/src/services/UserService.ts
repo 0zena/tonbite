@@ -2,9 +2,14 @@ import { UserType } from "../states";
 import { api } from "./index.ts";
 
 export class UserService {
-    public static async Get() : Promise<UserType | undefined> {
+    public static async Get(includeCourses = false, includeRoles = false) : Promise<UserType | undefined> {
         try {
-            const response = await api.get("/user");
+            const response = await api.get("/user", {
+                params: {
+                    courses: includeCourses,
+                    roles: includeRoles,
+                }
+            });
             return response.data as UserType;
         } catch {
             return undefined;

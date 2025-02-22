@@ -20,12 +20,14 @@ public interface IUserHttpService
     void Create(UserRegister form);
     
     /// <summary> Get specific user from database. </summary>
-    /// <param name="email">Search key.</param>
+    /// <param name="id">Search key.</param>
     /// <returns>All users data from database.</returns>
     Task<User?> GetUser(long id);
-    
+
     /// <summary> Get specific user fields from database. </summary>
-    /// <param name="email"></param>
+    /// <param name="id"></param>
+    /// <param name="courses">Include courses in response or not.</param>
+    /// <param name="roles">Include roles in response or not</param>
     /// <returns>Only specific user fields.</returns>
-    Task<UserProps?> GetUserProps(long id);
+    Task<UserProps?> GetUserProps(long id, bool courses, bool roles);
 }

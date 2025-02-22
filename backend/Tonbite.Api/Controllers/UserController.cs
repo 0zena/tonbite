@@ -13,10 +13,12 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
 {
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get(
+        [FromQuery] bool courses, 
+        [FromQuery] bool roles)
     {
         var id = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
-        var user =  await service.GetUserProps(id);
+        var user =  await service.GetUserProps(id, courses, roles);
         
         return user == null
             ? NotFound() 
