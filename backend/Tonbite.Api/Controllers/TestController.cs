@@ -9,30 +9,18 @@ public class TestController : ControllerBase
 {
     [AllowAnonymous]
     [HttpGet("anonymous")]
-    public IActionResult TestRequest()
-    {
-        return Ok("API TEST");
-    }
-    
+    public IActionResult TestRequest() => Ok("API TEST");
+
     [Authorize]
     [HttpGet("jwt")]
-    public IActionResult TestSecureRequest()
-    {
-        return Ok("JWT TEST");
-    }
+    public IActionResult TestSecureRequest() => Ok("JWT TEST");
 
     [Authorize(Policy = IdentityData.AdminUserPolicyName)]
     [HttpGet("admin-policy")]
-    public IActionResult TestAdminPolicy()
-    {
-        return Ok("ADMIN TEST");
-    }
+    public IActionResult TestAdminPolicy() => Ok("ADMIN TEST");
     
     [Authorize]
     [HttpGet("admin-claim")]
     [RequiresClaim(IdentityData.AdminUserClaimName, "True")]
-    public IActionResult TestClaimRequirements()
-    {
-        return Ok("CLAIM TEST");
-    }
+    public IActionResult TestClaimRequirements() => Ok("CLAIM TEST");
 }

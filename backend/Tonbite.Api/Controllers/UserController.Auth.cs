@@ -49,10 +49,10 @@ public partial class UserController
         if (result == PasswordVerificationResult.Failed)
             return Unauthorized("Invalid username or password.");
 
-
         // Tokens
         var isAdmin = user.Roles!.Exists(r => r.Name == nameof(Roles.Admin));
-        var accessToken = service.GenerateAccessToken(user.Id, user.Email, isAdmin.ToString());
+        var isCreator = user.Roles!.Exists(r => r.Name == nameof(Roles.Creator));
+        var accessToken = service.GenerateAccessToken(user.Id, user.Email, isAdmin, isCreator);
         var refreshToken = new RefreshToken
         {
             Token = service.GenerateRefreshToken(),
@@ -119,7 +119,8 @@ public partial class UserController
         }
         
         var isAdmin = storedToken.Owner.Roles!.Exists(r => r.Name == nameof(Roles.Admin));
-        var accessToken = service.GenerateAccessToken(storedToken.Owner.Id, storedToken.Owner.Email, isAdmin.ToString());
+        var isCreator = storedToken.Owner.Roles!.Exists(r => r.Name == nameof(Roles.Creator));
+        var accessToken = service.GenerateAccessToken(storedToken.Owner.Id, storedToken.Owner.Email, isAdmin, isCreator);
         return Ok(new { accessToken });
     }
 

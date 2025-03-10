@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tonbite.Api.Data;
 using Tonbite.Api.Http;
+using Tonbite.Api.Identity;
 using Tonbite.Api.Model;
 
 namespace Tonbite.Api.Controllers;
@@ -13,6 +14,7 @@ namespace Tonbite.Api.Controllers;
 public class CourseController(ApplicationDbContext context, ICourseHttpService service) : ControllerBase
 {
     [HttpPost]
+    [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
     public async Task<IActionResult> Create(
         [FromBody] CourseProps props,
         [FromServices] IUserHttpService userService)

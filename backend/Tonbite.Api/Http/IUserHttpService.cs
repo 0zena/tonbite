@@ -8,8 +8,9 @@ public interface IUserHttpService
     /// <param name="userId">Users unique identifier.</param>
     /// <param name="email">Users unique email.</param>
     /// <param name="isAdmin">Does user have admin role or not.</param>
+    /// <param name="isCreator">Does user have creator role or not.</param>
     /// <returns>Access token as a string.</returns>
-    string GenerateAccessToken(long userId, string email, string isAdmin);
+    string GenerateAccessToken(long userId, string email, bool isAdmin, bool isCreator);
     
     /// <summary> Generates refresh token. </summary>
     /// <returns>Regenerate token. Must be stored in database and sent as HTTP-only cookie.</returns>

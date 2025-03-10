@@ -15,14 +15,15 @@ namespace Tonbite.Api.Http.Services;
 public class UserHttpService(IConfiguration configuration, ApplicationDbContext context) : IUserHttpService
 {
     /// <inheritdoc /> 
-    public string GenerateAccessToken(long userId, string email, string isAdmin)
+    public string GenerateAccessToken(long userId, string email, bool isAdmin, bool isCreator)
     {
         var claims = new List<Claim>
         {
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (JwtRegisteredClaimNames.NameId, userId.ToString()),
             new (JwtRegisteredClaimNames.Email, email),
-            new (IdentityData.AdminUserClaimName, isAdmin)
+            new (IdentityData.AdminUserClaimName, isAdmin.ToString()),
+            new (IdentityData.CreatorUserClaimName, isCreator.ToString())
         };
         
         var jwtSecret = configuration["Jwt:Key"];
