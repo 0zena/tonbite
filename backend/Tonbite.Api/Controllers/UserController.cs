@@ -51,6 +51,6 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
         user.Username = userProps.Username;
         
         await context.UpdateAsync(user);
-        return Ok("User updated.");
+        return Ok(user);
     }
 }

@@ -16,10 +16,10 @@ export class UserService {
         }
     }
 
-    public static async Update(form: UserType) : Promise<string | undefined> {
+    public static async Update(form: UserType) : Promise<UserType | undefined> {
         try {
             const response = await api.patch("/user", form);
-            return response.data;
+            return response.data as UserType | undefined;
         } catch {
             return undefined;
         }

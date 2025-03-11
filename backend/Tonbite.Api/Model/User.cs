@@ -1,11 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Tonbite.Api.Model;
 
 public class User : UserProps
 {
     /// <summary> User password </summary>
+    [JsonIgnore]
     [DataType(DataType.Password)]
     [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; } = null!;

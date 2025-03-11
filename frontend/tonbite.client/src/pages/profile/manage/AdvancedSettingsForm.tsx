@@ -13,8 +13,12 @@ export const AdvancedSettingsForm = ({roles}: {roles: RoleType[] | undefined}) =
     }
 
     return (
-        (!roles?.hasRole("Creator") &&
-            <Button onPress={BecomeCreator}>Become Creator</Button>
-        )
+        <div>
+            {roles?.hasRole("Creator") ? (
+                <p>Your profile is already upgraded to creator account.</p>
+            ) : (
+                <Button onPress={BecomeCreator}>Become Creator</Button>
+            )}
+        </div>
     );
 }

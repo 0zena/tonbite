@@ -6,11 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserService } from "../../../services";
 import { useState } from "react";
 import { ConfirmModal, useConfirmModal, ValidationError } from "../../../components";
+import { useAuth } from "../../../provider/AuthProvider.tsx";
 
 export const EditProfileForm = ({user}: {user: UserType}) => {
     const { register, handleSubmit, formState: { errors } } = useForm<UserType>({ resolver: zodResolver(UserSchema) });
     const { isOpen, onOpenChange, confirmAction, handleConfirmResult } = useConfirmModal();
-    const [message, setMessage] = useState("");
+    const { setClient } = useAuth();
+    const [ message, setMessage ] = useState("");
 
     const Submit = async (form: UserType) => {
         setMessage("");
@@ -18,8 +20,10 @@ export const EditProfileForm = ({user}: {user: UserType}) => {
 
         form.id = user.id;
         const response = await UserService.Update(form);
-        if (response != undefined)
-            setMessage(response);
+        if (response != undefined) {
+            setClient(response);
+            setMessage("User updated successfully.");
+        }
     }
 
     return (
