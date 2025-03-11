@@ -1,7 +1,10 @@
 import { Button } from "@heroui/button";
+import {RoleType} from "../../../states";
 
-export const AdvancedSettingsForm = () => {
+export const AdvancedSettingsForm = ({roles}: {roles: RoleType[] | undefined}) => {
     return (
-        <Button>Become Creator</Button>
+        (!roles?.hasRole("Creator") &&
+            <Button>Become Creator</Button>
+        )
     );
 }

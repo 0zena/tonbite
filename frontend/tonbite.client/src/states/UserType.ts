@@ -1,11 +1,13 @@
 import { z, ZodType } from "zod";
 import { CourseType } from "./Course.ts";
+import { RoleType } from "./Role.ts";
 
 export type UserType = {
     id?: number;
     email: string;
     username?: string;
     bio?: string;
+    roles?: RoleType[];
     courses?: CourseType[];
 }
 

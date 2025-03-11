@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Tonbite.Api.Data;
 using Tonbite.Api.Model;
 
 namespace Tonbite.Api.Controllers;
@@ -113,8 +114,12 @@ public partial class UserController
         
         if (storedToken.Expires < DateTime.UtcNow)
         {
-            context.RefreshTokens.Remove(storedToken);
-            context.SaveChanges();
+            context.DeleteAsync(storedToken);
+            Response.Cookies.Delete("refreshToken", new CookieOptions
+            {
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
             return Unauthorized("User session has expired.");
         }
         

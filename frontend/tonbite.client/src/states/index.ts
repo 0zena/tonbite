@@ -10,5 +10,8 @@ export { LoginFormSchema } from "./LoginFormProps.ts";
 export type { RegisterFormProps } from "./RegisterFormProps.ts";
 export { RegisterFormSchema } from "./RegisterFormProps.ts";
 
+export type { RoleType } from "./Role.ts";
+export { RoleSchema } from "./Role.ts";
+
 export type { UserType } from "./UserType.ts";
 export { UserSchema } from "./UserType.ts";

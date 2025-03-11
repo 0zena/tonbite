@@ -1,28 +1,22 @@
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { UserType } from "../../states";
-import { UserService } from "../../services";
 import { CircularProgress } from "@heroui/progress";
 import { CourseList } from "../../components";
 import { Divider } from "@heroui/divider";
+import { useAuth } from "../../provider/AuthProvider.tsx";
 
 export const ProfilePage = () => {
-    const [user, getUser] = useState<UserType | undefined>();
-
-    useEffect(() => {
-        UserService.Get(true).then((res) => getUser(res));
-    }, []);
+    const { client } = useAuth();
 
     return (
         <main>
-            { user != undefined ? (
+            { client != undefined ? (
                     <div>
                         <NavLink to={"manage"} title={"Manage profile"}>Manage</NavLink>
-                        <h2>{user.username ?? user.email}</h2>
+                        <h2>{client.username ?? client.email}</h2>
                         <Divider />
                         <div className={"p-6"}>
-                            {user.courses?.length ? (
-                                <CourseList data={user.courses} showStatus={true} />
+                            {client.courses?.length ? (
+                                <CourseList data={client.courses} showStatus={true} />
                             ) : (
                                 <p>No courses yet</p>
                             )}

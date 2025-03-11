@@ -1,31 +1,25 @@
-import { useEffect, useState } from "react";
-import { UserService } from "../../../services";
-import { UserType } from "../../../states";
 import { Tabs, Tab } from "@heroui/tabs";
 import { CircularProgress } from "@heroui/progress";
 import { Card } from "@heroui/card";
 import { ChangePasswordForm } from "./ChangePasswordForm.tsx";
 import { EditProfileForm } from "./EditProfileForm.tsx";
 import { AdvancedSettingsForm } from "./AdvancedSettingsForm.tsx";
+import { useAuth } from "../../../provider/AuthProvider.tsx";
 
 export const ProfileManagePage = () => {
-    const [user, getUser] = useState<UserType | undefined>();
-
-    useEffect(() => {
-        UserService.Get().then((res) => getUser(res));
-    }, []);
+    const { client } = useAuth();
 
     return <main>
         <div className="flex w-full flex-col space-y-4 items-center">
             <h1>Manage Profile</h1>
 
-            {user != undefined
+            {client != undefined
                 ? (
                     <Card className={"flex w-fit h-max p-6"}>
                         <Tabs placement={"top"}>
                             <Tab key={"profile"} title={"Profile"}>
                                 <div className={"flex justify-center"}>
-                                    <EditProfileForm user={user} />
+                                    <EditProfileForm user={client} />
                                 </div>
                             </Tab>
                             <Tab key={"changePassword"} title={"Change Password"} className={"w-full"}>
@@ -34,7 +28,7 @@ export const ProfileManagePage = () => {
                                 </div>
                             </Tab>
                             <Tab key={"advanced"} title={"Advanced"}>
-                                <AdvancedSettingsForm />
+                                <AdvancedSettingsForm roles={client.roles} />
                             </Tab>
                         </Tabs>
                     </Card>
