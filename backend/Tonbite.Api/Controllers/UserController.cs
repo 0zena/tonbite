@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tonbite.Api.Data;
 using Tonbite.Api.Http;
 using Tonbite.Api.Model;
@@ -11,8 +12,8 @@ namespace Tonbite.Api.Controllers;
 [Route("/api/user")]
 public partial class UserController(ApplicationDbContext context, IUserHttpService service) : ControllerBase
 {
-    [HttpGet]
     [Authorize]
+    [HttpGet]
     public async Task<IActionResult> Get(
         [FromQuery] bool courses, 
         [FromQuery] bool roles)
@@ -25,8 +26,20 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
             : Ok(user);
     }
 
-    [HttpPatch]
     [Authorize]
+    [HttpGet("{id:long}/courses")]
+    public IActionResult GetCourses([FromRoute] long id)
+    {
+        var courses = context.Courses
+            .Where(x => x.Owner.Id == id)
+            .Include(x => x.Owner)
+            .Include(x => x.Steps);
+        
+        return Ok(courses);
+    }
+    
+    [Authorize]
+    [HttpPatch]
     public async Task<IActionResult> Update([FromBody] UserProps userProps)
     {
         if (!ModelState.IsValid) return BadRequest();

@@ -1,4 +1,4 @@
-import { UserType } from "../states";
+import {CourseType, UserType} from "../states";
 import { api } from "./index.ts";
 
 export class UserService {
@@ -20,6 +20,15 @@ export class UserService {
         try {
             const response = await api.patch("/user", form);
             return response.data;
+        } catch {
+            return undefined;
+        }
+    }
+
+    public static async GetCourses(id: number | undefined): Promise<CourseType[] | undefined> {
+        try {
+            const result = await api.get(`/user/${id}/courses`);
+            return result.data as CourseType[] | undefined;
         } catch {
             return undefined;
         }
