@@ -11,7 +11,7 @@ namespace Tonbite.Api.Controllers;
 public partial class UserController
 {
     [HttpPost("register")]
-    public IActionResult RegisterUser([FromBody] UserRegister request)
+    public async Task<IActionResult> RegisterUser([FromBody] UserRegister request)
     {
         if (!ModelState.IsValid) 
             return BadRequest("User is not valid.");
@@ -22,7 +22,7 @@ public partial class UserController
 
         try 
         {
-            service.Create(request);
+            await service.Create(request);
         }
         catch (Exception e)
         {
@@ -152,5 +152,21 @@ public partial class UserController
         await context.SaveChangesAsync();
         
         return Ok("Password changed successfully.");
+    }
+    
+    [Authorize]
+    [HttpPost("{id:long}/role/creator")]
+    public async Task<IActionResult> BecomeCreator([FromRoute] long id)
+    {
+        var user = context.Users
+            .Include(x => x.Roles)
+            .FirstOrDefault(x => x.Id == id);
+
+        user!.Roles ??= [];
+        if (!user.Roles.Exists(x => x.Name == nameof(Roles.Creator)))
+            user.Roles?.Add(new() { Name = nameof(Roles.Creator), Owner = user });
+
+        await context.UpdateAsync(user);
+        return Ok("User became creator.");
     }
 }

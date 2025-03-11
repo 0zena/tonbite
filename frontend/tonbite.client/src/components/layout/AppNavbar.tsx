@@ -23,7 +23,7 @@ export const AppNavbar = () => {
     const { client, isAuthenticated, logout } = useAuth();
     const menuItems = [
         ...publicItems,
-        ...(client?.roles?.find(x => x.name === "Creator" || "Admin") ? protectedItems : []),
+        ...(client?.roles?.find(x => x.name === "Creator" || x.name === "Admin") ? protectedItems : []),
     ];
 
     return (

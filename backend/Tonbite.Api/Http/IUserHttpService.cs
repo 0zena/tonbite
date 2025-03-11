@@ -18,7 +18,7 @@ public interface IUserHttpService
 
     /// <summary> Creates and saves in database a new user. </summary>
     /// <param name="form">Data which is used to create a user.</param>
-    void Create(UserRegister form);
+    Task Create(UserRegister form);
     
     /// <summary> Get specific user from database. </summary>
     /// <param name="id">Search key.</param>

@@ -10,6 +10,7 @@ using Tonbite.Api.Model;
 namespace Tonbite.Api.Controllers;
 
 [Authorize]
+[ApiController]
 [Route("/api/courses")]
 public class CourseController(ApplicationDbContext context, ICourseHttpService service) : ControllerBase
 {

@@ -33,8 +33,10 @@ const AuthProvider = ({ children } : { children: ReactNode}) => {
     };
 
     useEffect(() => {
-        UserService.Get(false, true).then(res => setClient(res));
-    }, []);
+        if (token) {
+            UserService.Get(false, true).then(res => setClient(res));
+        }
+    }, [token]);
 
     useEffect(() => {
         if (!token || isTokenExpired(token)) {

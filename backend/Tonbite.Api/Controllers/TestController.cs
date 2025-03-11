@@ -4,6 +4,7 @@ using Tonbite.Api.Identity;
 
 namespace Tonbite.Api.Controllers;
 
+[ApiController]
 [Route("/api/test")]
 public class TestController : ControllerBase
 {

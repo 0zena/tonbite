@@ -54,4 +54,8 @@ export class AuthService {
             return HTTPResponseHandler.HandleError(error);
         }
     }
+
+    public static async BecomeCreator(id: number) {
+        await api.post(`/user/${id}/role/creator`);
+    }
 }

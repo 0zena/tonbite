@@ -50,9 +50,7 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
         user.Bio = userProps.Bio;
         user.Username = userProps.Username;
         
-        context.Users.Update(user);
-        await context.SaveChangesAsync();
-        
+        await context.UpdateAsync(user);
         return Ok("User updated.");
     }
 }

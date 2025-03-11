@@ -58,7 +58,7 @@ public class UserHttpService(IConfiguration configuration, ApplicationDbContext 
     }
 
     /// <inheritdoc /> 
-    public void Create(UserRegister form)
+    public Task Create(UserRegister form)
     {
         var passwordHasher = new PasswordHasher<User>();
         
@@ -70,11 +70,12 @@ public class UserHttpService(IConfiguration configuration, ApplicationDbContext 
             Owner = user
         };
         
+        user.Roles ??= [];
         user.Password = passwordHasher.HashPassword(user, form.Password);
 
-        context.Add(user);
-        context.Add(role);
-        context.SaveChanges();
+        context.Users.Add(user);
+        context.Roles.Add(role);
+        return context.SaveChangesAsync();
     }
 
     /// <inheritdoc /> 
