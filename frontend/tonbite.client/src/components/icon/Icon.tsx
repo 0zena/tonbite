@@ -1,3 +1,3 @@
 export const Icon = ({ icon }: { icon: string}) => {
-    return <i className={"material-icons"}>{icon}</i>;
+    return <i className={"material-symbols-outlined"}>{icon}</i>;
 }
