@@ -55,6 +55,7 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
 
     [HttpPut]
     [Route("{id:long}")]
+    [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
     public async Task<IActionResult> Update([FromRoute] long id, [FromBody] Course course)
     {
         if (!ModelState.IsValid) return BadRequest();
@@ -64,6 +65,7 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
 
     [HttpDelete]
     [Route("{id:long}")]
+    [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
     public async Task<IActionResult> Delete([FromRoute] long id)
     {
         var course = context.Courses

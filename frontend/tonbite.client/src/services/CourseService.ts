@@ -19,4 +19,13 @@ export class CourseService {
             return undefined;
         }
     }
+
+    public static async Delete(id: string | undefined): Promise<string | undefined> {
+        try {
+            const result = await api.delete(`/courses/${id}`);
+            return result.data;
+        } catch {
+            return undefined;
+        }
+    }
 }

@@ -16,17 +16,17 @@ namespace Tonbite.Api.Identity;
 /// If <c>true</c>, the user must have this claim.  
 /// If <c>false</c>, the user must not have this claim.
 /// </param>
-/// <param name="claimName2">The name of the claim to check.</param>
-/// <param name="claimValue2">
+/// <param name="altClaimName">The name of the claim to check.</param>
+/// <param name="altClaimValue">
 /// If <c>true</c>, the user must have this claim.  
 /// If <c>false</c>, the user must not have this claim.
 /// </param>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public class RequiresOneOfClaimAttribute(string claimName, string claimValue, string claimName2, string claimValue2) : Attribute, IAuthorizationFilter
+public class RequiresOneOfClaimAttribute(string claimName, string claimValue, string altClaimName, string altClaimValue) : Attribute, IAuthorizationFilter
 {
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        if (!context.HttpContext.User.HasClaim(claimName, claimValue) && !context.HttpContext.User.HasClaim(claimName2, claimValue2))
+        if (!context.HttpContext.User.HasClaim(claimName, claimValue) && !context.HttpContext.User.HasClaim(altClaimName, altClaimValue))
             context.Result = new ForbidResult();
     }
 }

@@ -7,6 +7,7 @@ import { Icon } from "../icon/Icon.tsx";
 
 const publicItems = [
     {
+        icon: Icons.HOME,
         name: "Home",
         path: "/",
     },
@@ -14,6 +15,7 @@ const publicItems = [
 
 const protectedItems = [
     {
+        icon: Icons.CREATE,
         name: "Create",
         path: "/create",
     },
@@ -23,7 +25,7 @@ export const AppNavbar = () => {
     const { client, isAuthenticated, logout } = useAuth();
     const menuItems = [
         ...publicItems,
-        ...(client?.roles?.find(x => x.name === "Creator" || x.name === "Admin") ? protectedItems : []),
+        ...(client?.roles?.hasOneOfRole("Creator", "Admin") ? protectedItems : []),
     ];
 
     return (
@@ -37,7 +39,10 @@ export const AppNavbar = () => {
             <NavbarContent className={"max-sm:hidden"} justify={"center"}>
                 {menuItems.map((item, index) => (
                     <NavbarItem key={index}>
-                        <Link color={"foreground"} href={item.path}>{item.name}</Link>
+                        <Button as={Link} variant={"light"} href={item.path} className={"space-x-2"}>
+                            <Icon icon={item.icon} />
+                            {item.name}
+                        </Button>
                     </NavbarItem>
                 ))}
             </NavbarContent>
@@ -65,7 +70,10 @@ export const AppNavbar = () => {
             <NavbarMenu>
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={index}>
-                        <Button as={Link} variant={"light"} href={item.path}>{item.name}</Button>
+                        <Button as={Link} variant={"light"} href={item.path} className={"space-x-4 w-full"}>
+                            <Icon icon={item.icon} />
+                            {item.name}
+                        </Button>
                     </NavbarMenuItem>
                 ))}
             </NavbarMenu>
