@@ -41,16 +41,12 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
     
     [HttpGet]
     [Route("{id:long}")]
-    public async Task<IActionResult> Get([FromRoute] long id)
+    public async Task<Course?> Get([FromRoute] long id)
     {
-        var course = await context.Courses
+        return await context.Courses
             .Include(x => x.Owner)
             .Include(x => x.Steps)
             .FirstOrDefaultAsync(x => x.Id == id);
-        
-        return course != null 
-            ? Ok(course)
-            : NotFound();
     }
 
     [HttpPut]

@@ -13,5 +13,8 @@ export { RegisterFormSchema } from "./RegisterFormProps.ts";
 export type { RoleType } from "./Role.ts";
 export { RoleSchema } from "./Role.ts";
 
+export type { TransactionType } from "./Transaction.ts";
+export { TransactionSchema } from "./Transaction.ts";
+
 export type { UserType } from "./UserType.ts";
 export { UserSchema } from "./UserType.ts";

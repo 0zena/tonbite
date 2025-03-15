@@ -32,8 +32,7 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
     {
         var courses = context.Courses
             .Where(x => x.Owner.Id == id)
-            .Include(x => x.Owner)
-            .Include(x => x.Steps);
+            .Include(x => x.Owner);
         
         return Ok(courses);
     }
