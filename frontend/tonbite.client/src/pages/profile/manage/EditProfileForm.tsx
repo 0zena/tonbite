@@ -19,7 +19,7 @@ export const EditProfileForm = ({user}: {user: UserType}) => {
         if (!await confirmAction()) return;
 
         form.id = user.id;
-        const response = await UserService.Update(form);
+        const response = await UserService.update(form);
         if (response != undefined) {
             setClient(response);
             setMessage("User updated successfully.");

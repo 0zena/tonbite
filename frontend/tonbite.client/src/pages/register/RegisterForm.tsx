@@ -14,7 +14,7 @@ export default function RegisterForm() {
     const navigate = useNavigate();
 
     const Submit = async (form: RegisterFormProps) => {
-        const response = await AuthService.Register(form);
+        const response = await AuthService.register(form);
         if (response != undefined)
             setMessage(response);
         else navigate("/login");

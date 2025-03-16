@@ -20,7 +20,7 @@ export const CoursePage = () => {
 
     const Delete = async () => {
         if (!await confirmAction()) return;
-        const result = await CourseService.Delete(id);
+        const result = await CourseService.delete(id);
         if (result != undefined)
             navigate("/");
     }
@@ -28,11 +28,9 @@ export const CoursePage = () => {
     const Pay = async () => {
         if (course?.walletAddress == undefined || course?.price == undefined) return;
         const sender = new TransactionHandler();
-        const transaction = sender.CreateTransaction(course.walletAddress, course.price);
+        const transaction = sender.createTransaction(course.walletAddress, course.price);
 
         try {
-            await tonConnectUI.sendTransaction(transaction, sender.DefaultModalOptions);
-
             const form: TransactionType = {
                 ownerId: client!.id!,
                 recipientId: course!.userId!,
@@ -41,14 +39,15 @@ export const CoursePage = () => {
                 amount: course!.price!.toString(),
             }
 
-            await TransactionService.Send(form);
+            await tonConnectUI.sendTransaction(transaction, sender.defaultModalOptions);
+            await TransactionService.send(form);
         } catch (error) {
             console.log("transaction failed " + error);
         }
     }
 
     useEffect(() => {
-        CourseService.Get(id).then(r => setCourse(r));
+        CourseService.get(id).then(r => setCourse(r));
     }, [id]);
 
     const visibilityName = course?.visibility !== undefined ? Visibility[course.visibility] : '';

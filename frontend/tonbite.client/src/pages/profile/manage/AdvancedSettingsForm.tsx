@@ -8,7 +8,7 @@ export const AdvancedSettingsForm = ({roles}: {roles: RoleType[] | undefined}) =
 
     const BecomeCreator = async () => {
         if (client) {
-            await AuthService.BecomeCreator(client.id!);
+            await AuthService.becomeCreator(client.id!);
         }
     }
 

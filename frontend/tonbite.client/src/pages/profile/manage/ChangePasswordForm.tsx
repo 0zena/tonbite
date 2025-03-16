@@ -16,7 +16,7 @@ export const ChangePasswordForm = () => {
         setMessage("");
         if (!await confirmAction()) return;
 
-        const result = await AuthService.ChangePassword(form);
+        const result = await AuthService.changePassword(form);
         if (result !== undefined)
             setMessage(result)
 

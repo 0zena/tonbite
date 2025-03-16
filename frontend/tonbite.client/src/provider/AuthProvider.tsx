@@ -28,19 +28,19 @@ const AuthProvider = ({ children } : { children: ReactNode}) => {
     }
 
     const logout = () => {
-        AuthService.Logout().then(() => { setToken(null); });
+        AuthService.logout().then(() => { setToken(null); });
         tonConnectUI.disconnect().then();
     };
 
     useEffect(() => {
         if (token) {
-            UserService.Get(false, true).then(res => setClient(res));
+            UserService.get(false, true).then(res => setClient(res));
         }
     }, [token]);
 
     useEffect(() => {
         if (!token || isTokenExpired(token)) {
-            AuthService.RefreshToken().then((token) => {
+            AuthService.refreshToken().then((token) => {
                 if (token) setToken(token);
                 else logout();
             }).catch(() => { logout(); });

@@ -6,7 +6,7 @@ export class HTTPResponseHandler {
      * @param {unknown} error - any HTTP response error;
      * @returns {string} User-friendly HTTP error message
      */
-    public static HandleError(error: unknown): string {
+    public static handleError(error: unknown): string {
         if (axios.isAxiosError(error) && error.response) {
             return error.response.data || "An error occurred";
         }

@@ -15,7 +15,7 @@ export const CreateCourseForm = () => {
     const navigate = useNavigate();
 
     const Submit = async (form: CourseType) => {
-        const course = await CourseService.Create(form);
+        const course = await CourseService.create(form);
         if (course != undefined)
             navigate(`/courses/${course.id}`);
     }

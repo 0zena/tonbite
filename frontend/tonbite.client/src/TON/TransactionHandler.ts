@@ -3,18 +3,18 @@ import { ActionConfiguration } from "@tonconnect/ui";
 
 export class TransactionHandler
 {
-    public DefaultModalOptions: ActionConfiguration = {
+    public defaultModalOptions: ActionConfiguration = {
         modals: ["success", "error", "before"],
     }
 
-    private DefaultTransactionOptions: SendTransactionRequest = {
+    private readonly defaultTransactionOptions: SendTransactionRequest = {
         validUntil: Date.now() + 5 * 60 * 1000, // 5min
         messages: [],
     }
 
-    public CreateTransaction = (address: string, amount: number): SendTransactionRequest => {
+    public createTransaction = (address: string, amount: number): SendTransactionRequest => {
         return {
-            ...this.DefaultTransactionOptions,
+            ...this.defaultTransactionOptions,
             messages: [
                 {
                     address: address ?? "",

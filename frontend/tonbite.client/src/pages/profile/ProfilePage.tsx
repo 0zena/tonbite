@@ -14,7 +14,7 @@ export const ProfilePage = () => {
     useEffect(() => {
         if (client?.id) {
             UserService
-                .GetCourses(client.id)
+                .getCourses(client.id)
                 .then(res => setCourses(res));
         }
     }, [client?.id]);

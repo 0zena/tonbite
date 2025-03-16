@@ -16,7 +16,7 @@ export default function LoginForm() {
     const navigate = useNavigate();
 
     const Submit = async (form: LoginFormProps) => {
-        const response = await AuthService.Login(form);
+        const response = await AuthService.login(form);
         if (response != undefined)
             setMessage(response);
         else {
