@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tonbite.Api.Data;
 using Tonbite.Api.Model;
 
@@ -10,6 +11,13 @@ namespace Tonbite.Api.Controllers;
 [Route("api/transactions")]
 public class TransactionController(ApplicationDbContext context) : ControllerBase
 {
+    [HttpGet]
+    [Route("{id:long}")]
+    public Task<Transaction?> Get([FromRoute] long id) 
+        => context.Transactions
+            .Include(x => x.Sender)
+            .SingleOrDefaultAsync(t => t.Id == id);
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] TransactionProps request)
     {
@@ -21,7 +29,6 @@ public class TransactionController(ApplicationDbContext context) : ControllerBas
         var transaction = new Transaction
         {
             Sender = sender,
-            Recipient = recipient,
             RecipientId = recipient.Id,
             SenderAddress = request.SenderAddress,
             RecipientAddress = request.RecipientAddress,
