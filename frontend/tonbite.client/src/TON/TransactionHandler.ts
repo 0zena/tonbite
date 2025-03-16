@@ -17,8 +17,8 @@ export class TransactionHandler
             ...this.defaultTransactionOptions,
             messages: [
                 {
-                    address: address ?? "",
-                    amount: ((amount ?? 0) * 1000000000).toString(),
+                    address: address ?? '',
+                    amount: ((amount ?? 0) * Math.pow(10, 9)).toString(),
                 },
             ],
         };

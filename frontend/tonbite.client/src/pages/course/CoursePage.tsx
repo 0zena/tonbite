@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { CourseType, TransactionType } from "../../states";
-import { CourseService, TransactionService } from "../../services";
-import { useNavigate, useParams } from "react-router-dom";
-import { Visibility } from "../../states/Course.ts";
-import { useAuth } from "../../provider/AuthProvider.tsx";
-import { Button } from "@heroui/button";
-import { ConfirmModal, useConfirmModal } from "../../components";
 import { TonConnectButton, useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
 import { TransactionHandler } from "../../TON/TransactionHandler.ts";
+import { CourseService, TransactionService } from "../../services";
+import { ConfirmModal, useConfirmModal } from "../../components";
+import { CourseType, TransactionType } from "../../states";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../provider/AuthProvider.tsx";
+import { Visibility } from "../../states/Course.ts";
+import { useEffect, useState } from "react";
+import { Button } from "@heroui/button";
 
 export const CoursePage = () => {
     const {isOpen, onOpenChange, confirmAction, handleConfirmResult} = useConfirmModal();

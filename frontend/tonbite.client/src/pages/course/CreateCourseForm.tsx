@@ -4,11 +4,11 @@ import { Button } from "@heroui/button";
 import { Card } from "@heroui/card";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CourseService } from "../../services/CourseService.ts";
-import {Icon, ValidationError} from "../../components";
+import { CourseService } from "../../services";
+import { Icon, ValidationError } from "../../components";
 import { CourseType, CourseSchema } from "../../states";
-import {useNavigate} from "react-router-dom";
-import {Icons} from "../../utils";
+import { useNavigate } from "react-router-dom";
+import { Icons } from "../../utils";
 
 export const CreateCourseForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<CourseType>({ resolver: zodResolver(CourseSchema)});
