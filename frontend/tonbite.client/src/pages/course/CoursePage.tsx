@@ -1,31 +1,22 @@
 import { useEffect, useState } from "react";
-import {CourseType, TransactionType} from "../../states";
-import {CourseService, TransactionService} from "../../services";
+import { CourseType, TransactionType } from "../../states";
+import { CourseService, TransactionService } from "../../services";
 import { useNavigate, useParams } from "react-router-dom";
 import { Visibility } from "../../states/Course.ts";
 import { useAuth } from "../../provider/AuthProvider.tsx";
 import { Button } from "@heroui/button";
 import { ConfirmModal, useConfirmModal } from "../../components";
-import {SendTransactionRequest, useTonConnectUI, TonConnectButton, useTonAddress } from '@tonconnect/ui-react';
+import { TonConnectButton, useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
+import { TransactionHandler } from "../../TON/TransactionHandler.ts";
 
 export const CoursePage = () => {
-    const { isOpen, onOpenChange, confirmAction, handleConfirmResult } = useConfirmModal();
+    const {isOpen, onOpenChange, confirmAction, handleConfirmResult} = useConfirmModal();
     const [course, setCourse] = useState<CourseType | undefined>();
+    const navigate = useNavigate();
     const clientAddress = useTonAddress();
     const [tonConnectUI] = useTonConnectUI();
-    const navigate = useNavigate();
-    const {id} = useParams();
     const {client} = useAuth();
-
-    const transaction: SendTransactionRequest = {
-        validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes
-        messages: [
-            {
-                address: course?.walletAddress ?? "",
-                amount: ((course?.price ?? 0) * 1000000000).toString(),
-            },
-        ],
-    };
+    const {id} = useParams();
 
     const Delete = async () => {
         if (!await confirmAction()) return;
@@ -35,8 +26,12 @@ export const CoursePage = () => {
     }
 
     const Pay = async () => {
+        if (course?.walletAddress == undefined || course?.price == undefined) return;
+        const sender = new TransactionHandler();
+        const transaction = sender.CreateTransaction(course.walletAddress, course.price);
+
         try {
-            await tonConnectUI.sendTransaction(transaction, {modals: ['success']});
+            await tonConnectUI.sendTransaction(transaction, sender.DefaultModalOptions);
 
             const form: TransactionType = {
                 ownerId: client!.id!,
