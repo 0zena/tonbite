@@ -10,32 +10,42 @@ public class Transaction : TransactionProps, IEntity
     [Key]
     public long Id { get; set; }
     
+    /// <summary> User that sent transaction. </summary>
     [JsonIgnore]
     public required User Sender { get; init; }
     
-    [JsonIgnore]
+    /// <summary> User that must receive transaction. </summary>
     [NotMapped]
+    [JsonIgnore]
     public required User Recipient { get; init; }
 
+    /// <summary> Date and Time when transaction was made. </summary>
     public DateTime Time { get; init; }
 
     /// <inheritdoc />
     [NotMapped]
-    public override long? SenderId => Sender?.Id;
+    public override long? OwnerId => Sender.Id;
 
     /// <inheritdoc />
-    public override long? RecipientId => Recipient?.Id;
+    public override long? RecipientId => Recipient.Id;
 }
 
+/// <summary> Props that is used to create a new instance of <see cref="Transaction" />. </summary>
 public class TransactionProps
 {
-    public string SenderAddress { get; set; }
-    public string RecipientAddress { get; set; }
+    /// <summary> Transaction sender (<see cref="Transaction.Sender" />) address. </summary>
+    public required string SenderAddress { get; set; }
     
+    /// <summary> Transaction recipient (<see cref="Transaction.Recipient" />) address. </summary>
+    public required string RecipientAddress { get; set; }
+    
+    /// <summary> ID of <see cref="Transaction.Sender" /> that send transaction. </summary>
     [NotMapped]
-    public virtual long? SenderId { get; set; }
+    public virtual long? OwnerId { get; set; }
     
+    /// <summary> ID of <see cref="Transaction.Recipient" /> that must receive transaction. </summary>
     public virtual long? RecipientId { get; set; }
-    public string Amount { get; set; }
     
+    /// <summary> Sent amount of TON. </summary>
+    public required string Amount { get; set; }
 }

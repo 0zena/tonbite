@@ -38,13 +38,14 @@ public class CourseProps
     
     /// <summary> Wallet send transaction to. </summary>
     public string? WalletAddress { get; set; }
-    
+
     /// <summary> Course purchase price. </summary>
     public double? Price { get; set; }
     
     /// <summary> DateTime when course was created. </summary>
     public DateTime Created { get; set; }
     
+    /// <summary> Visibility of the course. </summary>
     public Visibility Visibility { get; set; }
 }
 

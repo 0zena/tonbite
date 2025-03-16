@@ -8,17 +8,6 @@ import { Button } from "@heroui/button";
 import { ConfirmModal, useConfirmModal } from "../../components";
 import {SendTransactionRequest, useTonConnectUI, TonConnectButton, useTonAddress } from '@tonconnect/ui-react';
 
-const transaction: SendTransactionRequest = {
-    validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes
-    messages: [
-        {
-            address:
-                "UQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJKZ", // message destination in user-friendly format
-            amount: "20000000",
-        },
-    ],
-};
-
 export const CoursePage = () => {
     const { isOpen, onOpenChange, confirmAction, handleConfirmResult } = useConfirmModal();
     const [course, setCourse] = useState<CourseType | undefined>();
@@ -27,6 +16,16 @@ export const CoursePage = () => {
     const navigate = useNavigate();
     const {id} = useParams();
     const {client} = useAuth();
+
+    const transaction: SendTransactionRequest = {
+        validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes
+        messages: [
+            {
+                address: course?.walletAddress ?? "",
+                amount: ((course?.price ?? 0) * 1000000000).toString(),
+            },
+        ],
+    };
 
     const Delete = async () => {
         if (!await confirmAction()) return;
@@ -37,29 +36,20 @@ export const CoursePage = () => {
 
     const Pay = async () => {
         try {
-            const result = await tonConnectUI.sendTransaction(transaction, {
-                modals: ['before', 'success', 'error'],
-                notifications: ['before', 'success', 'error'],
+            await tonConnectUI.sendTransaction(transaction, {modals: ['success']});
 
-            });
-
-            console.log("transaction success " + result);
-
-        } catch (error) {
-            console.log("transaction failed " + error);
-        } finally {
             const form: TransactionType = {
-                senderId: client!.id!,
+                ownerId: client!.id!,
                 recipientId: course!.userId!,
                 senderAddress: clientAddress,
                 recipientAddress: course!.walletAddress!,
-                amount: "20000000",
+                amount: course!.price!.toString(),
             }
 
-            const result = await TransactionService.Send(form);
-            console.log("transaction saved " + result);
+            await TransactionService.Send(form);
+        } catch (error) {
+            console.log("transaction failed " + error);
         }
-
     }
 
     useEffect(() => {

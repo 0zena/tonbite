@@ -146,6 +146,42 @@ namespace Tonbite.Api.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("Tonbite.Api.Model.Transaction", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Amount")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RecipientAddress")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long?>("RecipientId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SenderAddress")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("SenderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Transactions");
+                });
+
             modelBuilder.Entity("Tonbite.Api.Model.User", b =>
                 {
                     b.Property<long>("Id")
@@ -218,6 +254,17 @@ namespace Tonbite.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Tonbite.Api.Model.Transaction", b =>
+                {
+                    b.HasOne("Tonbite.Api.Model.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Tonbite.Api.Model.Course", b =>

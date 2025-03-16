@@ -2,7 +2,7 @@ import { z, ZodType } from "zod";
 
 export type TransactionType = {
     id?: number;
-    senderId: number;
+    ownerId: number;
     recipientId: number;
     senderAddress: string;
     recipientAddress: string;
@@ -12,7 +12,7 @@ export type TransactionType = {
 
 export const TransactionSchema: ZodType<TransactionType> = z.object({
     id: z.number().optional(),
-    senderId: z.number(),
+    ownerId: z.number(),
     recipientId: z.number(),
     senderAddress: z.string(),
     recipientAddress: z.string(),

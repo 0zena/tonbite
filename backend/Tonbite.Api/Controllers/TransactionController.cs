@@ -14,7 +14,7 @@ public class TransactionController(ApplicationDbContext context) : ControllerBas
     public async Task<IActionResult> Create([FromBody] TransactionProps request)
     {
         if (!ModelState.IsValid) return BadRequest();
-        var sender = await context.Users.FindAsync(request.SenderId);
+        var sender = await context.Users.FindAsync(request.OwnerId);
         var recipient = await context.Users.FindAsync(request.RecipientId);
         if (sender is null || recipient is null) return BadRequest();
         
@@ -22,6 +22,7 @@ public class TransactionController(ApplicationDbContext context) : ControllerBas
         {
             Sender = sender,
             Recipient = recipient,
+            RecipientId = recipient.Id,
             SenderAddress = request.SenderAddress,
             RecipientAddress = request.RecipientAddress,
             Amount = request.Amount,
