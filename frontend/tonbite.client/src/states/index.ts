@@ -2,7 +2,7 @@ export type { ChangePasswordProps } from "./ChangePasswordProps.ts";
 export { ChangePasswordSchema } from "./ChangePasswordProps.ts";
 
 export type { CourseType } from "./Course.ts";
-export { CourseSchema } from "./Course.ts";
+export { CourseSchema, copyFrom } from "./Course.ts";
 
 export type { CourseStepType } from "./CourseStep.ts";
 export { CourseStepSchema } from "./CourseStep.ts";

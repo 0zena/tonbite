@@ -6,4 +6,5 @@ export class Icons
     static readonly HOME = "home";
     static readonly LOGOUT = "logout";
     static readonly PROFILE = "account_circle";
+    static readonly MENU = "more_vert";
 }

@@ -1,9 +1,16 @@
 import { z, ZodType } from "zod";
-import {CourseStepType} from "./CourseStep.ts";
+import { CourseStepType } from "./CourseStep.ts";
 
 export enum Visibility {
     private = 0,
     public = 1,
+}
+
+export function copyFrom(source: CourseType, target: CourseType) {
+    source.name = target.name;
+    source.bio = target.bio;
+    source.walletAddress = target.walletAddress;
+    source.price = target.price;
 }
 
 export type CourseType = {

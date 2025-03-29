@@ -11,11 +11,11 @@ public class Course : CourseProps, IEntity
     public long Id { get; set; }
     
     [NotMapped]
-    public long? UserId => Owner.Id;
+    public long? UserId => Owner?.Id;
     
     /// <summary> Course owner. </summary>
     [JsonIgnore]
-    public User Owner { get; init; } = null!;
+    public User? Owner { get; set; }
     
     /// <summary> List of course steps. </summary>
     public List<CourseStep>? Steps { get; set; }

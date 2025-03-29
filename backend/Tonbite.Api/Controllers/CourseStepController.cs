@@ -20,10 +20,10 @@ public class CourseStepController(ApplicationDbContext context, ICourseStepHttpS
             .FirstOrDefaultAsync(x => x.Id == id);
 
     [HttpPost]
-    public async Task<CourseStep> Create([FromBody] CourseStepProps props)
+    public async Task<ActionResult<CourseStep>> Create([FromBody] CourseStepProps props)
     {
         var course = await context.Courses.FirstOrDefaultAsync(x => x.Id == props.ParentId);
-        if (course == null) return default;
+        if (course == null) return BadRequest();
         return await context.CreateAsync(service.Create(props, course));
     }
 }

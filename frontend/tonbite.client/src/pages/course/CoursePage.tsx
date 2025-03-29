@@ -1,18 +1,21 @@
-import { TonConnectButton, useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
+import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
 import { TransactionHandler } from "../../TON/TransactionHandler.ts";
 import { CourseService, TransactionService } from "../../services";
-import { ConfirmModal, useConfirmModal } from "../../components";
 import { CourseType, TransactionType } from "../../states";
-import { NotFoundError } from "../error/NotFoundError.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../provider/AuthProvider.tsx";
-import { Visibility } from "../../states/Course.ts";
 import { useEffect, useState } from "react";
+
 import { Button } from "@heroui/button";
+import { CourseSummary } from "./CourseSummary.tsx";
+import { ConfirmModal, useConfirmModal, CourseMenuButton } from "../../components";
+import { Visibility } from "../../states/Course.ts";
+import {CreateCourseForm} from "./CreateCourseForm.tsx";
 
 export const CoursePage = () => {
     const {isOpen, onOpenChange, confirmAction, handleConfirmResult} = useConfirmModal();
     const [course, setCourse] = useState<CourseType | undefined>();
+    const [edititng, setEditing] = useState<boolean>(false);
     const navigate = useNavigate();
     const clientAddress = useTonAddress();
     const [tonConnectUI] = useTonConnectUI();
@@ -20,6 +23,11 @@ export const CoursePage = () => {
     const {id} = useParams();
 
     const Created = course?.created ? new Date().toLocaleDateString() : "null";
+    const visibilityName = course?.visibility !== undefined ? Visibility[course.visibility] : '';
+
+    const Edit = () => {
+        if (!edititng) setEditing(true);
+    }
 
     const Delete = async () => {
         if (!await confirmAction()) return;
@@ -53,41 +61,27 @@ export const CoursePage = () => {
         CourseService.get(id).then(r => setCourse(r));
     }, [id]);
 
-    const visibilityName = course?.visibility !== undefined ? Visibility[course.visibility] : '';
-
     return (
-        <main>
-            {client?.id === course?.userId || client?.roles?.hasRole("Admin") ? (
-                <>
-                    <ConfirmModal isOpen={isOpen}
-                                  onOpenChange={onOpenChange}
-                                  onConfirm={handleConfirmResult}
-                                  title="Delete Course?"
-                                  message="Are you sure you want to delete this course? This action cannot be undone." />
-                    <Button onPress={Delete}>Delete</Button>
-                </>
-            ) : (<p>Purchase Course.</p>)}
+        <main className={"space-y-6 mt-6"}>
+            <header className={"flex justify-center items-center gap-4"}>
+                {client?.id === course?.userId || client?.roles?.hasRole("Admin") ? (
+                    <>
+                        <ConfirmModal isOpen={isOpen}
+                                      onOpenChange={onOpenChange}
+                                      onConfirm={handleConfirmResult}
+                                      title="Delete Course?"
+                                      message="Are you sure you want to delete this course? This action cannot be undone." />
+                        <CourseMenuButton onEdit={Edit} onDelete={Delete} />
+                    </>
+                ) : (<Button onPress={Pay} variant={"flat"} color={"primary"}>Buy</Button>)}
+                <p className={"text-primary border-r pr-4"}>{course?.price} TON</p>
+                <p className={"text-danger"}>{visibilityName}</p>
+                <p>{Created}</p>
+            </header>
 
-            <Button onPress={Pay}>
-                Send transaction
-            </Button>
-
-            <TonConnectButton />
-
-            {course != undefined ? (
-                <div className={"flex flex-col w-full items-center"}>
-                    <h1 className={"font-bold max-md:text-2xl md:text-4xl"}>{course.name}</h1>
-                    <div className={"text-start p-6 max-w-[900px]"}>
-                        <p>{course.bio}</p>
-                        <p>{Created}</p>
-                        <p>{visibilityName}</p>
-                    </div>
-
-                    <Button>Add Step</Button>
-                </div>
-            ) : (
-                <NotFoundError />
-            )}
+            {edititng ? (
+                <CreateCourseForm course={course} editing={edititng} />
+            ) : (<CourseSummary course={course} />)}
         </main>
     )
 }

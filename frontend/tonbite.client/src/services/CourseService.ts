@@ -20,6 +20,15 @@ export class CourseService {
         }
     }
 
+    public static async update(form: CourseType): Promise<CourseType | undefined> {
+        try {
+            const result = await api.put(`/courses/${form.id}`, form);
+            return result.data as CourseType | undefined;
+        } catch {
+            return undefined;
+        }
+    }
+
     public static async delete(id: string | undefined): Promise<string | undefined> {
         try {
             const result = await api.delete(`/courses/${id}`);

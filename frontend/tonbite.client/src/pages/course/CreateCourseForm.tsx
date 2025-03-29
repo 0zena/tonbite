@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CourseService } from "../../services";
-import { CourseType, CourseSchema } from "../../states";
+import { CourseType, CourseSchema, copyFrom } from "../../states";
 import { useNavigate } from "react-router-dom";
 import { Icons } from "../../utils";
 
@@ -12,34 +12,44 @@ import { Input, Textarea } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Card } from "@heroui/card";
 
-export const CreateCourseForm = () => {
+export const CreateCourseForm = ({course = {} as CourseType, editing = false}) => {
     const { register, handleSubmit, formState: { errors } } = useForm<CourseType>({ resolver: zodResolver(CourseSchema)});
     const navigate = useNavigate();
 
     const Submit = async (form: CourseType) => {
-        const course = await CourseService.create(form);
-        if (course != undefined)
-            navigate(`/courses/${course.id}`);
+        let result: CourseType | undefined;
+        if (course?.id == undefined || course === undefined) {
+            result = await CourseService.create(form);
+        } else {
+            copyFrom(course, form);
+            result = await CourseService.update(course);
+        }
+
+        if (result != undefined)
+            navigate(`/courses/${result.id}`);
     }
 
     return (
         <Card className={"p-6 space-y-6"}>
-            <h2 className={"text-xl"}>Create a new Course</h2>
-            <p>You will be able to add steps later.</p>
+            <h2 className={"text-xl"}>{editing ? ("Edit Course") : ("Create a new Course")}</h2>
+            <p>{editing ? ("Add steps below") : ("You will be able to add steps later.")}</p>
             <form onSubmit={handleSubmit(Submit)} className={"space-y-4"}>
                 <span className={"flex flex-col md:w-2/3"}>
                     <Input label={"Title"}
+                           defaultValue={course?.name}
                            placeholder={"TON blockchain benefits"}
                            {...register("name")} />
                     <ValidationError error={errors.name} />
                 </span>
                 <Textarea label={"Bio"}
+                          defaultValue={course?.bio}
                           placeholder={"In this course..."}
                           {...register("bio")} />
                 <ValidationError error={errors.bio} />
                 <div className={"grid grid-cols-1 md:grid-cols-3 max-md:space-y-4 md:space-x-4"}>
                     <span className={"col-span-2"}>
                         <Input label={"Wallet address"}
+                               defaultValue={course?.walletAddress}
                                placeholder={"Your TON wallet"}
                                {...register("walletAddress")}  />
                         <ValidationError error={errors.walletAddress} />
@@ -50,6 +60,7 @@ export const CreateCourseForm = () => {
                                type={"number"}
                                placeholder={"0.00"}
                                endContent={"TON"} min={0}
+                               defaultValue={course?.price?.toString()}
                                startContent={<img src={Toncoin} alt="TON" className="size-5" />}
                                {...register("price", { valueAsNumber: true })} />
                         <ValidationError error={errors.price} />
@@ -59,7 +70,7 @@ export const CreateCourseForm = () => {
                 <span className={"flex w-full justify-end"}>
                     <Button color="primary" type={"submit"}>
                         <Icon icon={Icons.ADD} />
-                        Create
+                        {editing ? ("Save") : ("Create")}
                     </Button>
                 </span>
             </form>
