@@ -1,6 +1,7 @@
 import { SendTransactionRequest } from "@tonconnect/ui-react";
 import { ActionConfiguration } from "@tonconnect/ui";
 
+// https://docs.ton.org/v3/guidelines/ton-connect/frameworks/react#sending-transactions
 export class TransactionHandler
 {
     public defaultModalOptions: ActionConfiguration = {

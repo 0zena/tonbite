@@ -26,9 +26,9 @@ export class AuthService {
     public static async logout() {
         // TODO: refactor request
         try {
-            await api.post("/user/logout");
-            delete api.defaults.headers.common["Authorization"];
             localStorage.removeItem("accessToken");
+            delete api.defaults.headers.common["Authorization"];
+            await api.post("/user/logout");
         } catch {
             return;
         }

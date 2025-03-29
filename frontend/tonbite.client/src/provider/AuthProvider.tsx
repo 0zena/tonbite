@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import {createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState} from "react";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { AuthService, UserService } from "../services";
@@ -21,16 +21,18 @@ const AuthProvider = ({ children } : { children: ReactNode}) => {
     const [tonConnectUI] = useTonConnectUI();
 
     const isTokenExpired = (token: string) : boolean => {
+        if (!token) return false;
         const decoded = jwtDecode<JwtPayload>(token);
         if (decoded.exp != undefined)
             return decoded.exp < Math.floor(Date.now() / 1000)
         return true;
     }
 
-    const logout = () => {
+    const logout = useCallback(() => {
+        if (!token) return;
         AuthService.logout().then(() => { setToken(null); });
         tonConnectUI.disconnect().then();
-    };
+    }, [token, setToken, tonConnectUI]);
 
     useEffect(() => {
         if (token) {

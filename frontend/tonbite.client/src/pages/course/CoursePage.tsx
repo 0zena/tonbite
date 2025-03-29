@@ -3,6 +3,7 @@ import { TransactionHandler } from "../../TON/TransactionHandler.ts";
 import { CourseService, TransactionService } from "../../services";
 import { ConfirmModal, useConfirmModal } from "../../components";
 import { CourseType, TransactionType } from "../../states";
+import { NotFoundError } from "../error/NotFoundError.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../provider/AuthProvider.tsx";
 import { Visibility } from "../../states/Course.ts";
@@ -17,6 +18,8 @@ export const CoursePage = () => {
     const [tonConnectUI] = useTonConnectUI();
     const {client} = useAuth();
     const {id} = useParams();
+
+    const Created = course?.created ? new Date().toLocaleDateString() : "null";
 
     const Delete = async () => {
         if (!await confirmAction()) return;
@@ -63,7 +66,7 @@ export const CoursePage = () => {
                                   message="Are you sure you want to delete this course? This action cannot be undone." />
                     <Button onPress={Delete}>Delete</Button>
                 </>
-            ) : (<>Purchase Course.</>)}
+            ) : (<p>Purchase Course.</p>)}
 
             <Button onPress={Pay}>
                 Send transaction
@@ -72,13 +75,18 @@ export const CoursePage = () => {
             <TonConnectButton />
 
             {course != undefined ? (
-                <div className={"text-start"}>
-                    <p>{course.name}</p>
-                    <p>{course.bio}</p>
-                    <p>{visibilityName}</p>
+                <div className={"flex flex-col w-full items-center"}>
+                    <h1 className={"font-bold max-md:text-2xl md:text-4xl"}>{course.name}</h1>
+                    <div className={"text-start p-6 max-w-[900px]"}>
+                        <p>{course.bio}</p>
+                        <p>{Created}</p>
+                        <p>{visibilityName}</p>
+                    </div>
+
+                    <Button>Add Step</Button>
                 </div>
             ) : (
-                <>progress</>
+                <NotFoundError />
             )}
         </main>
     )

@@ -5,16 +5,13 @@ namespace Tonbite.Api.Http.Services;
 public class CourseHttpService : ICourseHttpService
 {
     /// <inheritdoc /> 
-    public Course Create(CourseProps props, User user)
+    public Course Create(CourseProps props, User user) => new()
     {
-        return new()
-        {
-            Name = props.Name,
-            Bio = props.Bio,
-            WalletAddress = props.WalletAddress,
-            Price = props.Price,
-            Created = DateTime.UtcNow,
-            Owner = user
-        };
-    }
+        Name = props.Name,
+        Bio = props.Bio,
+        WalletAddress = props.WalletAddress,
+        Price = props.Price,
+        Created = DateTime.UtcNow,
+        Owner = user
+    };
 }

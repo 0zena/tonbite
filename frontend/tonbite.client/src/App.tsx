@@ -8,7 +8,7 @@ import { AppNavbar } from "./components";
 
 function App() {
     return (
-        <TonConnectUIProvider manifestUrl="https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/public/tonconnect-manifest.json">
+        <TonConnectUIProvider manifestUrl="https://ton.vote/tonconnect-manifest.json">
             <AuthProvider>
                 <HeroUIProvider>
                     <AppNavbar />

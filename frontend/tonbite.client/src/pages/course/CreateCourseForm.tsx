@@ -1,14 +1,16 @@
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CourseService } from "../../services";
+import { CourseType, CourseSchema } from "../../states";
+import { useNavigate } from "react-router-dom";
+import { Icons } from "../../utils";
+
+// UI components
+import { Icon, ValidationError } from "../../components";
 import Toncoin from "../../assets/toncoin.svg";
 import { Input, Textarea } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Card } from "@heroui/card";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CourseService } from "../../services";
-import { Icon, ValidationError } from "../../components";
-import { CourseType, CourseSchema } from "../../states";
-import { useNavigate } from "react-router-dom";
-import { Icons } from "../../utils";
 
 export const CreateCourseForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<CourseType>({ resolver: zodResolver(CourseSchema)});
@@ -33,7 +35,7 @@ export const CreateCourseForm = () => {
                 </span>
                 <Textarea label={"Bio"}
                           placeholder={"In this course..."}
-                          {...register("bio")}  />
+                          {...register("bio")} />
                 <ValidationError error={errors.bio} />
                 <div className={"grid grid-cols-1 md:grid-cols-3 max-md:space-y-4 md:space-x-4"}>
                     <span className={"col-span-2"}>
