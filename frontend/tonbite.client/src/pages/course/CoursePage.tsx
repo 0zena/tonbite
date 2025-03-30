@@ -6,9 +6,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../provider/AuthProvider.tsx";
 import { useEffect, useState } from "react";
 
+// UI Components
 import { Button } from "@heroui/button";
 import { CourseSummary } from "./CourseSummary.tsx";
-import {ConfirmModal, useConfirmModal, CourseMenuButton, CreateCourseStepButton} from "../../components";
+import { ConfirmModal, useConfirmModal, CourseMenuButton, CreateCourseStepButton } from "../../components";
 import { Visibility } from "../../states/Course.ts";
 import { CreateCourseForm } from "./CreateCourseForm.tsx";
 import Toncoin from "../../assets/toncoin.svg";
@@ -25,6 +26,10 @@ export const CoursePage = () => {
 
     const Created = course?.created ? new Date().toLocaleDateString() : "null";
     const visibilityName = course?.visibility !== undefined ? Visibility[course.visibility] : '';
+
+    useEffect(() => {
+        CourseService.get(id).then(r => setCourse(r));
+    }, [id]);
 
     const Edit = () => {
         setEditing(!editing);
@@ -57,10 +62,6 @@ export const CoursePage = () => {
             console.log("transaction failed " + error);
         }
     }
-
-    useEffect(() => {
-        CourseService.get(id).then(r => setCourse(r));
-    }, [id]);
 
     return (
         <main className={"space-y-6 mt-6"}>

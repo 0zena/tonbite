@@ -11,7 +11,7 @@ import { Button } from "@heroui/button";
 import { Card } from "@heroui/card";
 
 export const CreateCourseStepForm = ({courseId}: {courseId: number}) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<CourseStepType>({ resolver: zodResolver(CourseStepSchema)});
+    const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<CourseStepType>({ resolver: zodResolver(CourseStepSchema)});
 
     const Submit = async (form: CourseStepType) => {
         form.parentId = courseId;
@@ -29,7 +29,11 @@ export const CreateCourseStepForm = ({courseId}: {courseId: number}) => {
                     placeholder={"In this part of the course..."}
                     {...register("bio")} />
                 <ValidationError error={errors.bio} />
-                <TextEditor />
+                <TextEditor value={watch("content")}
+                            defaultValue={""}
+                            onChange={(val) => setValue("content", val)}
+                            placeholder={"Write something..."} />
+                <ValidationError error={errors.content} />
                 <span className={"flex w-full justify-end"}>
                     <Button color="primary" type={"submit"}>
                         <Icon icon={Icons.ADD} />
