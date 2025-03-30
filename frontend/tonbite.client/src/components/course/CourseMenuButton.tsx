@@ -4,22 +4,23 @@ import { Icon } from "../icon/Icon.tsx";
 import { Icons } from "../../utils";
 
 interface MenuItemActions {
+    editing: boolean;
     onEdit: () => void;
     onDelete: () => void;
 }
 
-const menuItems = [
-    {
-      key: "edit",
-      label: "Edit Course",
-    },
-    {
-        key: "delete",
-        label: "Delete Course",
-    },
-]
+export const CourseMenuButton = ({ editing, onEdit, onDelete }: MenuItemActions) => {
+    const menuItems = [
+        {
+            key: "edit",
+            label: editing ? "Cancel Editing Course" : "Edit Course",
+        },
+        {
+            key: "delete",
+            label: "Delete Course",
+        },
+    ]
 
-export const CourseMenuButton = ({ onEdit, onDelete }: MenuItemActions) => {
     const click = (key: string) => {
         switch (key) {
             case "edit":

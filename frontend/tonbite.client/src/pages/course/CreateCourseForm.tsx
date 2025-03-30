@@ -12,7 +12,13 @@ import { Input, Textarea } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Card } from "@heroui/card";
 
-export const CreateCourseForm = ({course = {} as CourseType, editing = false}) => {
+interface CreateCourseFormProps {
+    course?: CourseType;
+    editing?: boolean;
+    onSubmit?: () => void;
+}
+
+export const CreateCourseForm = ({course = {} as CourseType, editing = false, onSubmit}: CreateCourseFormProps) => {
     const { register, handleSubmit, formState: { errors } } = useForm<CourseType>({ resolver: zodResolver(CourseSchema)});
     const navigate = useNavigate();
 
@@ -20,13 +26,14 @@ export const CreateCourseForm = ({course = {} as CourseType, editing = false}) =
         let result: CourseType | undefined;
         if (course?.id == undefined || course === undefined) {
             result = await CourseService.create(form);
+            if (result != undefined)
+                navigate(`/courses/${result.id}`);
         } else {
             copyFrom(course, form);
             result = await CourseService.update(course);
+            if (result != undefined && onSubmit != undefined)
+                onSubmit();
         }
-
-        if (result != undefined)
-            navigate(`/courses/${result.id}`);
     }
 
     return (
@@ -67,8 +74,15 @@ export const CreateCourseForm = ({course = {} as CourseType, editing = false}) =
                     </span>
                 </div>
 
-                <span className={"flex w-full justify-end"}>
-                    <Button color="primary" type={"submit"}>
+                <span className={"flex w-full"}>
+                    {editing && (
+                        <Button color="warning" variant={"light"} onPress={onSubmit}>
+                            <Icon icon={Icons.CANCEL} />
+                            Cancel
+                        </Button>
+                    )}
+
+                    <Button color="primary" type={"submit"} className={"ml-auto"}>
                         <Icon icon={Icons.ADD} />
                         {editing ? ("Save") : ("Create")}
                     </Button>

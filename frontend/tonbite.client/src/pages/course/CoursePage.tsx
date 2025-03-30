@@ -10,12 +10,13 @@ import { Button } from "@heroui/button";
 import { CourseSummary } from "./CourseSummary.tsx";
 import { ConfirmModal, useConfirmModal, CourseMenuButton } from "../../components";
 import { Visibility } from "../../states/Course.ts";
-import {CreateCourseForm} from "./CreateCourseForm.tsx";
+import { CreateCourseForm } from "./CreateCourseForm.tsx";
+import Toncoin from "../../assets/toncoin.svg";
 
 export const CoursePage = () => {
     const {isOpen, onOpenChange, confirmAction, handleConfirmResult} = useConfirmModal();
     const [course, setCourse] = useState<CourseType | undefined>();
-    const [edititng, setEditing] = useState<boolean>(false);
+    const [editing, setEditing] = useState<boolean>(false);
     const navigate = useNavigate();
     const clientAddress = useTonAddress();
     const [tonConnectUI] = useTonConnectUI();
@@ -26,7 +27,7 @@ export const CoursePage = () => {
     const visibilityName = course?.visibility !== undefined ? Visibility[course.visibility] : '';
 
     const Edit = () => {
-        if (!edititng) setEditing(true);
+        setEditing(!editing);
     }
 
     const Delete = async () => {
@@ -71,16 +72,16 @@ export const CoursePage = () => {
                                       onConfirm={handleConfirmResult}
                                       title="Delete Course?"
                                       message="Are you sure you want to delete this course? This action cannot be undone." />
-                        <CourseMenuButton onEdit={Edit} onDelete={Delete} />
+                        <CourseMenuButton editing={editing} onEdit={Edit} onDelete={Delete} />
                     </>
                 ) : (<Button onPress={Pay} variant={"flat"} color={"primary"}>Buy</Button>)}
-                <p className={"text-primary border-r pr-4"}>{course?.price} TON</p>
+                <p className={"flex items-center gap-2 text-primary border-r pr-4"}><img src={Toncoin} alt={"toncoin"} className={"size-5"} />{course?.price} TON</p>
                 <p className={"text-danger"}>{visibilityName}</p>
                 <p>{Created}</p>
             </header>
 
-            {edititng ? (
-                <CreateCourseForm course={course} editing={edititng} />
+            {editing ? (
+                <CreateCourseForm course={course} editing={editing} onSubmit={Edit} />
             ) : (<CourseSummary course={course} />)}
         </main>
     )
