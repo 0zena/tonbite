@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@heroui/button";
 import { CourseSummary } from "./CourseSummary.tsx";
-import { ConfirmModal, useConfirmModal, CourseMenuButton } from "../../components";
+import {ConfirmModal, useConfirmModal, CourseMenuButton, CreateCourseStepButton} from "../../components";
 import { Visibility } from "../../states/Course.ts";
 import { CreateCourseForm } from "./CreateCourseForm.tsx";
 import Toncoin from "../../assets/toncoin.svg";
@@ -38,7 +38,7 @@ export const CoursePage = () => {
     }
 
     const Pay = async () => {
-        if (course?.walletAddress == undefined || course?.price == undefined) return;
+        if (!course?.walletAddress || !course?.price) return;
         const sender = new TransactionHandler();
         const transaction = sender.createTransaction(course.walletAddress, course.price);
 
@@ -81,7 +81,10 @@ export const CoursePage = () => {
             </header>
 
             {editing ? (
-                <CreateCourseForm course={course} editing={editing} onSubmit={Edit} />
+                <>
+                    <CreateCourseForm course={course} editing={editing} onSubmit={Edit} />
+                    <CreateCourseStepButton />
+                </>
             ) : (<CourseSummary course={course} />)}
         </main>
     )

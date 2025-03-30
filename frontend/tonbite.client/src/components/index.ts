@@ -4,3 +4,5 @@ export { AppNavbar } from "./layout/AppNavbar.tsx";
 export { ProtectedRoute } from "./auth/ProtectedRoute.tsx";
 export { Icon } from "./icon/Icon.tsx";
 export { CourseMenuButton, CourseList, CourseCard } from "./course";
+export { CreateCourseStepButton } from "./courseStep/CreateCourseStepButton.tsx";
+export { TextEditor } from "./textEditor/TextEditor.tsx";

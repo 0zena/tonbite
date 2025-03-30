@@ -9,6 +9,7 @@ import {
     CreateCoursePage,
     CoursePage,
 } from "../pages";
+import {CreateCourseStepPage} from "../pages/courseStep/CreateCourseStepPage.tsx";
 
 export const publicRoutes = [
     {
@@ -52,6 +53,10 @@ export const authorizedRoutes = [
             {
                 path: "/courses/:id",
                 element: <CoursePage />,
+            },
+            {
+                path: "/courses/:id/create-step",
+                element: <CreateCourseStepPage />,
             },
         ],
     },

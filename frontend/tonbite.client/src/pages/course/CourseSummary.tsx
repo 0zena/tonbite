@@ -1,5 +1,4 @@
 import { CourseType } from "../../states";
-import { Button } from "@heroui/button";
 import { NotFoundError } from "../error/NotFoundError.tsx";
 
 export const CourseSummary = ({course}: {course: CourseType | undefined}) => {
@@ -11,8 +10,6 @@ export const CourseSummary = ({course}: {course: CourseType | undefined}) => {
                     <div className={"text-start p-4 max-w-[900px]"}>
                         <p>{course.bio}</p>
                     </div>
-
-                    <Button>Add Step</Button>
                 </div>
             ) : (
                 <NotFoundError />

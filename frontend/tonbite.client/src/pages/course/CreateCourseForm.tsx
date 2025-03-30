@@ -24,14 +24,14 @@ export const CreateCourseForm = ({course = {} as CourseType, editing = false, on
 
     const Submit = async (form: CourseType) => {
         let result: CourseType | undefined;
-        if (course?.id == undefined || course === undefined) {
+        if (!course?.id || !course) {
             result = await CourseService.create(form);
-            if (result != undefined)
+            if (result)
                 navigate(`/courses/${result.id}`);
         } else {
             copyFrom(course, form);
             result = await CourseService.update(course);
-            if (result != undefined && onSubmit != undefined)
+            if (result && onSubmit)
                 onSubmit();
         }
     }

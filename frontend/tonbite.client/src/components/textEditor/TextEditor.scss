@@ -1,0 +1,24 @@
+@import "quill/dist/quill.snow.css";
+
+.text-editor {
+  .ql-editor::before {
+    @apply text-white opacity-50;
+  }
+
+  .ql-toolbar {
+    @apply border-0 border-b bg-inherit;
+  }
+
+  .ql-container {
+    @apply border-0;
+  }
+
+  .ql-picker-options, .ql-picker-label {
+    @apply bg-inherit text-white rounded-lg;
+  }
+
+  .ql-tooltip {
+    @apply left-0 #{!important};
+    @apply bg-inherit text-white shadow-none rounded-lg;
+  }
+}
