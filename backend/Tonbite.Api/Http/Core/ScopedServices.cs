@@ -11,5 +11,6 @@ public static class ScopedServices
         services.AddScoped<IUserHttpService, UserHttpService>();
         services.AddScoped<ICourseHttpService, CourseHttpService>();
         services.AddScoped<ICourseStepHttpService, CourseStepHttpService>();
+        services.AddScoped<ITransactionHttpService, TransactionHttpService>();
     }
 }
