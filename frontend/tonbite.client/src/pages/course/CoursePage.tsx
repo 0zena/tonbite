@@ -13,6 +13,7 @@ import { ConfirmModal, useConfirmModal, CourseMenuButton, CreateCourseStepButton
 import { Visibility } from "../../states/Course.ts";
 import { CreateCourseForm } from "./CreateCourseForm.tsx";
 import Toncoin from "../../assets/toncoin.svg";
+import {CourseStepList} from "../../components/courseStep/CourseStepList.tsx";
 
 export const CoursePage = () => {
     const {isOpen, onOpenChange, confirmAction, handleConfirmResult} = useConfirmModal();
@@ -84,6 +85,9 @@ export const CoursePage = () => {
             {editing ? (
                 <>
                     <CreateCourseForm course={course} editing={editing} onSubmit={Edit} />
+                    {course!.steps && (
+                        <CourseStepList data={course!.steps} />
+                    )}
                     <CreateCourseStepButton />
                 </>
             ) : (<CourseSummary course={course} />)}
