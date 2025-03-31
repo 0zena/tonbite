@@ -11,11 +11,11 @@ public class CourseStep : CourseStepProps, IEntity
     public long Id { get; set; }
 
     [NotMapped]
-    public override long? ParentId => Course.Id;
+    public override long? ParentId => Course?.Id;
     
     /// <summary> Course which course step belongs to. </summary>
     [JsonIgnore]
-    public Course Course { get; init; } = null!;
+    public Course? Course { get; set; }
 }
 
 public class CourseStepProps

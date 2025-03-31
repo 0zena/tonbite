@@ -9,4 +9,6 @@ public interface ICourseHttpService
     /// <param name="user">Course owner.</param>
     /// <returns>New course instance.</returns>
     Course Create(CourseProps props, User user);
+
+    Task<Course?> Get(long id, bool includeSteps);
 }

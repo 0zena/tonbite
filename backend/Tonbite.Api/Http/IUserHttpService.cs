@@ -30,5 +30,5 @@ public interface IUserHttpService
     /// <param name="courses">Include courses in response or not.</param>
     /// <param name="roles">Include roles in response or not</param>
     /// <returns>Only specific user fields.</returns>
-    Task<UserProps?> GetUserProps(long id, bool courses, bool roles);
+    Task<User?> GetUserProps(long id, bool courses, bool roles);
 }

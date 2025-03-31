@@ -11,9 +11,14 @@ export class CourseService {
         }
     }
 
-    public static async get(id: string | undefined): Promise<CourseType | undefined> {
+    public static async get(id: string | undefined, includeSteps = false): Promise<CourseType | undefined> {
         try {
-            const result = await api.get(`/courses/${id}`);
+            const result = await api.get(`/courses/${id}`,
+            {
+                params: {
+                    steps: includeSteps,
+                },
+            });
             return result.data as CourseType | undefined;
         } catch {
             return undefined;

@@ -28,7 +28,7 @@ export const CoursePage = () => {
     const visibilityName = course?.visibility !== undefined ? Visibility[course.visibility] : '';
 
     useEffect(() => {
-        CourseService.get(id).then(r => setCourse(r));
+        CourseService.get(id, true).then(r => setCourse(r));
     }, [id]);
 
     const Edit = () => {

@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Tonbite.Api.Data;
 using Tonbite.Api.Http;
 using Tonbite.Api.Identity;
@@ -16,7 +15,7 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
 {
     [HttpPost]
     [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
-    public async Task<IActionResult> Create(
+    public async Task<ActionResult<Course>> Create(
         [FromBody] CourseProps props,
         [FromServices] IUserHttpService userService)
     {
@@ -28,9 +27,7 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
         if (user == null)
             return NotFound();
 
-        var course = await context.CreateAsync(service.Create(props, user));
-        
-        return Ok(course);
+        return await context.CreateAsync(service.Create(props, user));
     }
 
     [HttpGet]
@@ -41,19 +38,21 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
     
     [HttpGet]
     [Route("{id:long}")]
-    public async Task<Course?> Get([FromRoute] long id) 
-        => await context.Courses
-            .Include(x => x.Owner)
-            .Include(x => x.Steps)
-            .FirstOrDefaultAsync(x => x.Id == id);
+    public async Task<Course?> Get([FromRoute] long id, [FromQuery] bool steps)
+    {
+        return await service.Get(id, steps);
+    }
 
     [HttpPut]
     [Route("{id:long}")]
     [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
-    public async Task<ActionResult<Course>> Update([FromRoute] long id, [FromBody] Course form)
+    public async Task<ActionResult<Course>> Update(
+        [FromRoute] long id, 
+        [FromBody] Course form,
+        [FromServices] IUserHttpService userService)
     {
         if (!ModelState.IsValid) return BadRequest();
-        var user = context.Users.FirstOrDefault(x => x.Id == form.UserId);
+        var user = await userService.GetUser(id); 
         form.Owner = user;
         return Ok(await context.UpdateAsync(form));
     }
@@ -63,8 +62,7 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
     [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
     public async Task<IActionResult> Delete([FromRoute] long id)
     {
-        var course = context.Courses
-            .FirstOrDefault(x => x.Id == id);
+        var course = context.Courses.FirstOrDefault(x => x.Id == id);
         
         if (course != null)
             await context.DeleteAsync(course);
