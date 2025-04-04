@@ -29,7 +29,7 @@ export const AppNavbar = () => {
     ];
 
     return (
-        <Navbar>
+        <Navbar className={"backdrop-saturate-100 bg-inherit"}>
             <NavbarContent>
                 <NavbarMenuToggle className="sm:hidden" />
                 <NavbarBrand>

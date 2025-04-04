@@ -17,6 +17,10 @@
     @apply bg-inherit text-white rounded-lg;
   }
 
+  .ql-picker-options {
+    @apply bg-zinc-800;
+  }
+
   .ql-tooltip {
     @apply left-0 #{!important};
     @apply bg-inherit text-white shadow-none rounded-lg;
