@@ -40,7 +40,7 @@ public class UserProps : IEntity
     public List<Role>? Roles { get; set; }
     
     /// <summary> List of the user created courses. </summary>
-    public List<Course>? Courses { get; set; }
+    public List<UserCourse>? Courses { get; set; }
 }
 
 /// <summary>

@@ -1,4 +1,4 @@
-import { CourseType } from "../states";
+import {CourseType, UserCourseType} from "../states";
 import { api } from "./Api.ts";
 
 export class CourseService {
@@ -38,6 +38,15 @@ export class CourseService {
         try {
             const result = await api.delete(`/courses/${id}`);
             return result.data;
+        } catch {
+            return undefined;
+        }
+    }
+
+    public static async purchase(id: string | undefined): Promise<UserCourseType | undefined> {
+        try {
+            const result = await api.post(`/courses/${id}/purchase`);
+            return result.data as UserCourseType | undefined;
         } catch {
             return undefined;
         }

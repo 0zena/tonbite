@@ -1,12 +1,11 @@
-import {CourseType, UserType} from "../states";
+import { CourseType, UserType, UserCourseStatus } from "../states";
 import { api } from "./index.ts";
 
 export class UserService {
-    public static async get(includeCourses = false, includeRoles = false) : Promise<UserType | undefined> {
+    public static async get(includeRoles = false) : Promise<UserType | undefined> {
         try {
             const response = await api.get("/user", {
                 params: {
-                    courses: includeCourses,
                     roles: includeRoles,
                 }
             });
@@ -25,9 +24,13 @@ export class UserService {
         }
     }
 
-    public static async getCourses(id: number | undefined): Promise<CourseType[] | undefined> {
+    public static async getCourses(id: number | undefined, status: UserCourseStatus): Promise<CourseType[] | undefined> {
         try {
-            const result = await api.get(`/user/${id}/courses`);
+            const result = await api.get(`/user/${id}/courses`, {
+                params: {
+                    status: status,
+                }
+            });
             return result.data as CourseType[] | undefined;
         } catch {
             return undefined;

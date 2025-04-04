@@ -19,16 +19,10 @@ public interface IUserHttpService
     /// <summary> Creates and saves in database a new user. </summary>
     /// <param name="form">Data which is used to create a user.</param>
     Task Create(UserRegister form);
-    
+
     /// <summary> Get specific user from database. </summary>
     /// <param name="id">Search key.</param>
-    /// <returns>All users data from database.</returns>
-    Task<User?> GetUser(long id);
-
-    /// <summary> Get specific user fields from database. </summary>
-    /// <param name="id"></param>
-    /// <param name="courses">Include courses in response or not.</param>
     /// <param name="roles">Include roles in response or not</param>
-    /// <returns>Only specific user fields.</returns>
-    Task<User?> GetUserProps(long id, bool courses, bool roles);
+    /// <returns>All users data from database.</returns>
+    Task<User?> GetUser(long id, bool roles = true);
 }

@@ -1,6 +1,5 @@
 import { Tabs, Tab } from "@heroui/tabs";
 import { CircularProgress } from "@heroui/progress";
-import { Card } from "@heroui/card";
 import { ChangePasswordForm } from "./ChangePasswordForm.tsx";
 import { EditProfileForm } from "./EditProfileForm.tsx";
 import { AdvancedSettingsForm } from "./AdvancedSettingsForm.tsx";
@@ -15,7 +14,7 @@ export const ProfileManagePage = () => {
 
             {client != undefined
                 ? (
-                    <Card className={"flex w-fit h-max p-6"}>
+                    <div className={"flex w-fit h-max p-6"}>
                         <Tabs placement={"top"}>
                             <Tab key={"profile"} title={"Profile"}>
                                 <div className={"flex justify-center"}>
@@ -31,7 +30,7 @@ export const ProfileManagePage = () => {
                                 <AdvancedSettingsForm roles={client.roles} />
                             </Tab>
                         </Tabs>
-                    </Card>
+                    </div>
                 ) : (
                     <CircularProgress className={"justify-self-center"} />
                 )

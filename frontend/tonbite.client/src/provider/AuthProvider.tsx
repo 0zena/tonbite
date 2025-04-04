@@ -36,7 +36,7 @@ const AuthProvider = ({ children } : { children: ReactNode}) => {
 
     useEffect(() => {
         if (token) {
-            UserService.get(false, true).then(res => setClient(res));
+            UserService.get(true).then(res => setClient(res));
         }
     }, [token]);
 

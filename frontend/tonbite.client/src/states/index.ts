@@ -19,5 +19,8 @@ export { RoleSchema } from "./Role.ts";
 export type { TransactionType } from "./Transaction.ts";
 export { TransactionSchema } from "./Transaction.ts";
 
+export type { UserCourseType } from "./UserCourse.ts";
+export { UserCourseStatus } from "./UserCourse.ts";
+
 export type { UserType } from "./UserType.ts";
 export { UserSchema } from "./UserType.ts";

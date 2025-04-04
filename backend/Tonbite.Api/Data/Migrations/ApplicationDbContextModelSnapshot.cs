@@ -43,9 +43,6 @@ namespace Tonbite.Api.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
-                    b.Property<long>("OwnerId")
-                        .HasColumnType("bigint");
-
                     b.Property<double?>("Price")
                         .HasColumnType("double precision");
 
@@ -56,8 +53,6 @@ namespace Tonbite.Api.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("Courses");
                 });
@@ -212,15 +207,25 @@ namespace Tonbite.Api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Tonbite.Api.Model.Course", b =>
+            modelBuilder.Entity("Tonbite.Api.Model.UserCourse", b =>
                 {
-                    b.HasOne("Tonbite.Api.Model.User", "Owner")
-                        .WithMany("Courses")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
-                    b.Navigation("Owner");
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("UserCourses");
                 });
 
             modelBuilder.Entity("Tonbite.Api.Model.CourseStep", b =>
@@ -267,9 +272,30 @@ namespace Tonbite.Api.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("Tonbite.Api.Model.UserCourse", b =>
+                {
+                    b.HasOne("Tonbite.Api.Model.Course", "Course")
+                        .WithMany("Users")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tonbite.Api.Model.User", "User")
+                        .WithMany("Courses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Tonbite.Api.Model.Course", b =>
                 {
                     b.Navigation("Steps");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Tonbite.Api.Model.User", b =>

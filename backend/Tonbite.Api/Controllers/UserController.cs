@@ -14,32 +14,29 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
 {
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> Get(
-        [FromQuery] bool courses, 
-        [FromQuery] bool roles)
+    public async Task<ActionResult<User?>> Get([FromQuery] bool roles)
     {
         var id = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
-        var user =  await service.GetUserProps(id, courses, roles);
-        
-        return user == null
-            ? NotFound() 
-            : Ok(user);
+        var user =  await service.GetUser(id, roles);
+
+        return user;
     }
 
     [Authorize]
     [HttpGet("{id:long}/courses")]
-    public IActionResult GetCourses([FromRoute] long id)
+    public async Task<ActionResult<List<Course?>>> GetUserCourses([FromRoute] long id, [FromQuery] UserCourseStatus status)
     {
-        var courses = context.Courses
-            .Where(x => x.Owner.Id == id)
-            .Include(x => x.Owner);
-        
-        return Ok(courses);
+        return await context.UserCourses
+            .Where(x => x.User!.Id == id && x.Status == status)
+            .Include(x => x.Course)
+            .Include(x => x.User)
+            .Select(x => x.Course)  
+            .ToListAsync();
     }
     
     [Authorize]
     [HttpPatch]
-    public async Task<IActionResult> Update([FromBody] UserProps userProps)
+    public async Task<ActionResult<User>> Update([FromBody] UserProps userProps)
     {
         if (!ModelState.IsValid) return BadRequest();
         
@@ -50,6 +47,6 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
         user.Username = userProps.Username;
         
         await context.UpdateAsync(user);
-        return Ok(user);
+        return user;
     }
 }

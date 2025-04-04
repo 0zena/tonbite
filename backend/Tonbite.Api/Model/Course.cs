@@ -10,15 +10,17 @@ public class Course : CourseProps, IEntity
     [Key]
     public long Id { get; set; }
     
-    [NotMapped]
-    public long? UserId => Owner?.Id;
-    
-    /// <summary> Course owner. </summary>
-    [JsonIgnore]
-    public User? Owner { get; set; }
-    
     /// <summary> List of course steps. </summary>
     public List<CourseStep>? Steps { get; set; }
+
+    public void CopyFrom(Course other)
+    {
+        Name = other.Name;
+        Bio = other.Bio;
+        WalletAddress = other.WalletAddress;
+        Price = other.Price;
+        Visibility = other.Visibility;
+    }
 }
 
 /// <summary>
@@ -47,6 +49,8 @@ public class CourseProps
     
     /// <summary> Visibility of the course. </summary>
     public Visibility Visibility { get; set; }
+    
+    public List<UserCourse>? Users { get; set; }
 }
 
 public enum Visibility

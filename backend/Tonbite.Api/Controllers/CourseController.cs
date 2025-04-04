@@ -14,7 +14,6 @@ namespace Tonbite.Api.Controllers;
 public class CourseController(ApplicationDbContext context, ICourseHttpService service) : ControllerBase
 {
     [HttpPost]
-    [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
     public async Task<ActionResult<Course>> Create(
         [FromBody] CourseProps props,
         [FromServices] IUserHttpService userService)
@@ -27,7 +26,9 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
         if (user == null)
             return NotFound();
 
-        return await context.CreateAsync(service.Create(props, user));
+        var course = service.Create(props, user);
+        
+        return await context.CreateAsync(course);
     }
 
     [HttpGet]
@@ -52,9 +53,10 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
         [FromServices] IUserHttpService userService)
     {
         if (!ModelState.IsValid) return BadRequest();
-        var user = await userService.GetUser(id); 
-        form.Owner = user;
-        return Ok(await context.UpdateAsync(form));
+        var course = await service.Get(id, false);
+        if (course == null) return NotFound();
+        course.CopyFrom(form);
+        return Ok(await context.UpdateAsync(course));
     }
 
     [HttpDelete]
@@ -68,5 +70,25 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
             await context.DeleteAsync(course);
         
         return Ok(course?.Id);
+    }
+
+    [HttpPost]
+    [Route("{id:long}/purchase")]
+    public async Task<ActionResult<object>> Purchase([FromRoute] long id, [FromServices] IUserHttpService userService)
+    {
+        var userId = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
+        var user =  await userService.GetUser(userId, false);
+        var course = await service.Get(id, false);
+        if (user == null || course == null) return NotFound();
+
+        var userCourse = new UserCourse
+        {
+            User = user,
+            Course = course,
+            Status = UserCourseStatus.Purchased,
+            CreatedAt = DateTime.UtcNow
+        };
+        
+        return await context.CreateAsync(userCourse);
     }
 }

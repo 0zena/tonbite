@@ -1,5 +1,6 @@
 import { z, ZodType } from "zod";
 import { CourseStepType } from "./CourseStep.ts";
+import {UserCourseType} from "./UserCourse.ts";
 
 export enum Visibility {
     private = 0,
@@ -23,6 +24,7 @@ export type CourseType = {
     userId?: number;
     visibility?: Visibility;
     steps?: CourseStepType[];
+    users?: UserCourseType[];
 }
 
 export const CourseSchema: ZodType<CourseType> = z.object({
