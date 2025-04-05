@@ -1,19 +1,21 @@
-import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
-import { TransactionHandler } from "../../TON/TransactionHandler.ts";
-import { CourseService, TransactionService } from "../../services";
-import { CourseType, TransactionType } from "../../states";
-import { useAuth } from "../../provider/AuthProvider.tsx";
-import { useNavigate, useParams} from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useTonAddress, useTonConnectUI} from '@tonconnect/ui-react';
+import {TransactionHandler} from "../../TON/TransactionHandler.ts";
+import {CourseService, TransactionService} from "../../services";
+import {CourseType, TransactionType} from "../../states";
+import {useAuth} from "../../provider/AuthProvider.tsx";
+import {useNavigate, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 
 // UI Components
-import { CourseSummary } from "./CourseSummary.tsx";
-import { ConfirmModal, CreateCourseStepButton, useConfirmModal } from "../../components";
-import { Visibility} from "../../states/Course.ts";
-import { CreateCourseForm } from "./CreateCourseForm.tsx";
+import {CourseSummary} from "./CourseSummary.tsx";
+import {ConfirmModal, CreateCourseStepButton, useConfirmModal} from "../../components";
+import {Visibility} from "../../states/Course.ts";
+import {CreateCourseForm} from "./CreateCourseForm.tsx";
 import Toncoin from "../../assets/toncoin.svg";
-import { CourseStepList } from "../../components/courseStep/CourseStepList.tsx";
-import { CourseHeaderAction } from "./CourseHeaderAction.tsx";
+import {CourseStepList} from "../../components/courseStep/CourseStepList.tsx";
+import {CourseHeaderAction} from "./CourseHeaderAction.tsx";
+import {NotFoundError} from "../error/NotFoundError.tsx";
+import {Chip} from "@heroui/chip";
 
 export const CoursePage = () => {
     const {isOpen, onOpenChange, confirmAction, handleConfirmResult} = useConfirmModal();
@@ -31,6 +33,16 @@ export const CoursePage = () => {
     useEffect(() => {
         CourseService.get(id, true).then(r => setCourse(r));
     }, [id]);
+
+    const ChangeVisibility = async () => {
+        let visibility: Visibility;
+        if (course!.visibility === Visibility.public)
+            visibility = Visibility.private;
+        else visibility = Visibility.public;
+
+        const response = await CourseService.changeVisibility(id, visibility)
+        if (response) setCourse(response);
+    }
 
     const Edit = () => {
         setEditing(!editing);
@@ -65,6 +77,9 @@ export const CoursePage = () => {
         }
     }
 
+    if (!course || course?.visibility === Visibility.private && !course?.users?.isCourseOwner(client))
+        return <NotFoundError />
+
     return (
         <main className={"space-y-6 mt-6"}>
             <ConfirmModal isOpen={isOpen}
@@ -75,12 +90,14 @@ export const CoursePage = () => {
 
             <header className={"flex justify-center items-center gap-4"}>
                 <CourseHeaderAction editing={editing} client={client} course={course}
-                                    Buy={Buy} Delete={Delete} Edit={Edit} />
-                <p className={"flex items-center gap-2 bg-zinc-700 px-3 py-1 rounded-full shadow-md"}>
-                    <img src={Toncoin} alt={"toncoin"} className={"size-5"} />{course?.price} TON
-                </p>
-                <p className={"text-danger"}>{visibilityName}</p>
-                <p>{Created}</p>
+                                    Buy={Buy} Delete={Delete} Edit={Edit} Change={ChangeVisibility} />
+                <Chip radius="sm"
+                      variant="bordered"
+                      startContent={<img src={Toncoin} alt={"toncoin"} className={"size-4"} />}>
+                    {course?.price === 0 ? "Free" : `${course?.price} TON`}
+                </Chip>
+                <Chip radius="sm" variant="dot" color={"secondary"}>{Created}</Chip>
+                <Chip radius="sm" variant="dot" color={"danger"}>{visibilityName}</Chip>
             </header>
 
             {editing ? (

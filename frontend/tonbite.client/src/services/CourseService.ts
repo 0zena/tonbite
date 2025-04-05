@@ -1,5 +1,6 @@
-import {CourseType, UserCourseType} from "../states";
+import { CourseType, UserCourseType } from "../states";
 import { api } from "./Api.ts";
+import { Visibility } from "../states/Course.ts";
 
 export class CourseService {
     public static async create(form: CourseType): Promise<CourseType | undefined> {
@@ -47,6 +48,19 @@ export class CourseService {
         try {
             const result = await api.post(`/courses/${id}/purchase`);
             return result.data as UserCourseType | undefined;
+        } catch {
+            return undefined;
+        }
+    }
+
+    public static async changeVisibility(id: string | undefined, visibility: Visibility): Promise<CourseType | undefined> {
+        try {
+            const result = await api.put(`/courses/${id}/visibility/change`, {}, {
+                params: {
+                    visibility: visibility,
+                }
+            });
+            return result.data as CourseType | undefined;
         } catch {
             return undefined;
         }

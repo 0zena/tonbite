@@ -14,6 +14,7 @@ namespace Tonbite.Api.Controllers;
 public class CourseController(ApplicationDbContext context, ICourseHttpService service) : ControllerBase
 {
     [HttpPost]
+    [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
     public async Task<ActionResult<Course>> Create(
         [FromBody] CourseProps props,
         [FromServices] IUserHttpService userService)
@@ -90,5 +91,18 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
         };
         
         return await context.CreateAsync(userCourse);
+    }
+
+    [HttpPut]
+    [Route("{id:long}/visibility/change")]
+    [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
+    public async Task<ActionResult<Course>> ChangeVisibility([FromRoute] long id, [FromQuery] Visibility visibility)
+    {
+        Console.WriteLine((int)visibility);
+        var course = await service.Get(id, false);
+        if (course!.Visibility == visibility) return course;
+        course.Visibility = visibility;
+        
+        return await context.UpdateAsync(course);
     }
 }
