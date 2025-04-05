@@ -1,5 +1,5 @@
 import { api } from "./index.ts";
-import { RegisterFormProps, LoginFormProps,ChangePasswordProps } from "../states";
+import { RegisterFormProps, LoginFormProps, ChangePasswordProps, UserType } from "../states";
 import { HTTPResponseHandler } from "./extensions/HTTPResponseHandler.ts";
 
 export class AuthService {
@@ -25,13 +25,10 @@ export class AuthService {
 
     public static async logout() {
         // TODO: refactor request
-        try {
-            localStorage.removeItem("accessToken");
-            delete api.defaults.headers.common["Authorization"];
-            await api.post("/user/logout");
-        } catch {
-            return;
-        }
+        localStorage.removeItem("accessToken");
+        delete api.defaults.headers.common["Authorization"];
+        await api.post("/user/logout");
+
     }
 
     public static async refreshToken() : Promise<string | null> {
@@ -55,7 +52,12 @@ export class AuthService {
         }
     }
 
-    public static async becomeCreator(id: number) {
-        await api.post(`/user/${id}/role/creator`);
+    public static async becomeCreator(id: number): Promise<UserType | undefined> {
+        try {
+            const response = await api.post(`/user/${id}/role/creator`);
+            return response.data as UserType | undefined;
+        } catch {
+            return undefined;
+        }
     }
 }

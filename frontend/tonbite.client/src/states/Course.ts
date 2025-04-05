@@ -1,6 +1,6 @@
 import { z, ZodType } from "zod";
 import { CourseStepType } from "./CourseStep.ts";
-import {UserCourseType} from "./UserCourse.ts";
+import { UserCourseType } from "./UserCourse.ts";
 
 export enum Visibility {
     private = 0,

@@ -2,9 +2,9 @@ import { useAuth } from "../../provider/AuthProvider.tsx";
 
 // Components
 import { Divider } from "@heroui/divider";
-import { NavLink } from "react-router-dom";
 import { CircularProgress } from "@heroui/progress";
 import { UserCourses } from "./UserCourses.tsx";
+import { UserSummary } from "./UserSummary.tsx";
 
 export const ProfilePage = () => {
     const { client } = useAuth();
@@ -13,8 +13,7 @@ export const ProfilePage = () => {
         <main>
             { client != undefined ? (
                     <div>
-                        <NavLink to={"manage"} title={"Manage profile"}>Manage</NavLink>
-                        <h2>{client.username ?? client.email}</h2>
+                        <UserSummary user={client} />
                         <Divider />
                         <UserCourses client={client} />
                     </div>

@@ -10,7 +10,7 @@ export const ProfileManagePage = () => {
 
     return <main>
         <div className="flex w-full flex-col space-y-4 items-center">
-            <h1>Manage Profile</h1>
+            <h1 className={"text-2xl text-gradient font-bold"}>Manage Profile</h1>
 
             {client != undefined
                 ? (

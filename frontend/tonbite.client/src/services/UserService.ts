@@ -17,7 +17,7 @@ export class UserService {
 
     public static async update(form: UserType) : Promise<UserType | undefined> {
         try {
-            const response = await api.patch("/user", form);
+            const response = await api.put("/user", form);
             return response.data as UserType | undefined;
         } catch {
             return undefined;
