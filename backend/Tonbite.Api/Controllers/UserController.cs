@@ -24,10 +24,10 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
 
     [Authorize]
     [HttpGet("{id:long}/courses")]
-    public async Task<ActionResult<List<Course?>>> GetUserCourses([FromRoute] long id, [FromQuery] UserCourseStatus status)
+    public async Task<List<Course>> GetUserCourses([FromRoute] long id, [FromQuery] UserCourseStatus status)
     {
         return await context.UserCourses
-            .Where(x => x.User!.Id == id && x.Status == status)
+            .Where(x => x.User.Id == id && x.Status == status)
             .Include(x => x.Course)
             .Include(x => x.User)
             .Select(x => x.Course)  
@@ -35,16 +35,14 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
     }
     
     [Authorize]
-    [HttpPatch]
+    [HttpPut]
     public async Task<ActionResult<User>> Update([FromBody] UserProps userProps)
     {
         if (!ModelState.IsValid) return BadRequest();
         
         var user = await service.GetUser(userProps.Id);
         if (user == null) return NotFound();
-        
-        user.Bio = userProps.Bio;
-        user.Username = userProps.Username;
+        user.CopyFrom(userProps);
         
         await context.UpdateAsync(user);
         return user;

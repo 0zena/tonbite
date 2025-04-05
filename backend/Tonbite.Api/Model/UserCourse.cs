@@ -20,11 +20,14 @@ public class UserCourse
     [JsonIgnore]
     public Course Course { get; set; } = null!;
     
+    /// <summary> Relation status. </summary>
     public UserCourseStatus? Status { get; set; }
 
+    /// <summary> Time when relation was created. </summary>
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
 
+/// <summary> Status types of UserCourse relation. </summary>
 public enum UserCourseStatus
 {
     Creator = 0,

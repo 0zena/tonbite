@@ -11,6 +11,12 @@ public class User : UserProps
     [DataType(DataType.Password)]
     [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; } = null!;
+
+    public void CopyFrom(UserProps other)
+    {
+        Username = other.Username;
+        Bio = other.Bio;
+    }
 }
 
 /// <summary>

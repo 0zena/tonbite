@@ -156,7 +156,7 @@ public partial class UserController
     
     [Authorize]
     [HttpPost("{id:long}/role/creator")]
-    public async Task<IActionResult> BecomeCreator([FromRoute] long id)
+    public async Task<ActionResult<User>> BecomeCreator([FromRoute] long id)
     {
         var user = context.Users
             .Include(x => x.Roles)
@@ -166,7 +166,6 @@ public partial class UserController
         if (!user.Roles.Exists(x => x.Name == nameof(Roles.Creator)))
             user.Roles?.Add(new() { Name = nameof(Roles.Creator), Owner = user });
 
-        await context.UpdateAsync(user);
-        return Ok("User became creator.");
+        return await context.UpdateAsync(user);
     }
 }
