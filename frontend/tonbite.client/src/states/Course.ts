@@ -21,7 +21,6 @@ export type CourseType = {
     walletAddress?: string;
     price?: number;
     created?: string;
-    userId?: number;
     visibility?: Visibility;
     steps?: CourseStepType[];
     users?: UserCourseType[];

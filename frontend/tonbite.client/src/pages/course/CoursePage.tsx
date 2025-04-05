@@ -1,7 +1,7 @@
 import {useTonAddress, useTonConnectUI} from '@tonconnect/ui-react';
 import {TransactionHandler} from "../../TON/TransactionHandler.ts";
 import {CourseService, TransactionService} from "../../services";
-import {CourseType, TransactionType} from "../../states";
+import {CourseType, TransactionType, UserCourseStatus} from "../../states";
 import {useAuth} from "../../provider/AuthProvider.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
@@ -63,7 +63,7 @@ export const CoursePage = () => {
         try {
             const form: TransactionType = {
                 ownerId: client!.id!,
-                recipientId: course!.userId!,
+                recipientId: course!.users!.find(x => x.status === UserCourseStatus.creator)!.userId!,
                 senderAddress: clientAddress,
                 recipientAddress: course!.walletAddress!,
                 amount: course!.price!.toString(),

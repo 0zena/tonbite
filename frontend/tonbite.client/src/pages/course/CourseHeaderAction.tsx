@@ -3,6 +3,7 @@ import { CourseType, UserType } from "../../states";
 // UI Components
 import { Button } from "@heroui/button";
 import { CourseMenuButton } from "../../components";
+import {TonConnectButton} from "@tonconnect/ui-react";
 
 interface CourseHeaderActionProps {
     course?: CourseType;
@@ -20,5 +21,10 @@ export const CourseHeaderAction = ({course, client, editing, Buy, Edit, Delete, 
     else if (course?.users?.isCourseBuyer(client))
         return <p>Purchased</p>
     else
-        return <Button onPress={Buy} variant={"flat"} color={"primary"}>Buy</Button>
+        return (
+            <>
+                <TonConnectButton />
+                <Button onPress={Buy} variant={"flat"} color={"primary"}>Buy</Button>
+            </>
+        )
 }

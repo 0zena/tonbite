@@ -40,8 +40,19 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
     
     [HttpGet]
     [Route("{id:long}")]
-    public async Task<Course?> Get([FromRoute] long id, [FromQuery] bool steps)
+    public async Task<ActionResult<Course?>> Get(
+        [FromRoute] long id, 
+        [FromQuery] bool steps)
     {
+        var userId = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
+        var course = await service.Get(id, steps);
+
+        if (course?.Visibility == Visibility.Private
+            && course.Users?.FirstOrDefault(x =>
+                x.UserId == userId &&
+                x.Status == UserCourseStatus.Creator) == null)
+            return Forbid();
+        
         return await service.Get(id, steps);
     }
 
@@ -50,14 +61,14 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
     [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
     public async Task<ActionResult<Course>> Update(
         [FromRoute] long id, 
-        [FromBody] Course form,
+        [FromBody] CourseProps form,
         [FromServices] IUserHttpService userService)
     {
-        if (!ModelState.IsValid) return BadRequest();
         var course = await service.Get(id, false);
         if (course == null) return NotFound();
         course.CopyFrom(form);
-        return Ok(await context.UpdateAsync(course));
+        
+        return await context.UpdateAsync(course);
     }
 
     [HttpDelete]

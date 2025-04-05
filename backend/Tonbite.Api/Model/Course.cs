@@ -12,8 +12,10 @@ public class Course : CourseProps, IEntity
     
     /// <summary> List of course steps. </summary>
     public List<CourseStep>? Steps { get; set; }
+    
+    public List<UserCourse>? Users { get; set; }
 
-    public void CopyFrom(Course other)
+    public void CopyFrom(CourseProps other)
     {
         Name = other.Name;
         Bio = other.Bio;
@@ -49,8 +51,6 @@ public class CourseProps
     
     /// <summary> Visibility of the course. </summary>
     public Visibility Visibility { get; set; }
-    
-    public List<UserCourse>? Users { get; set; }
 }
 
 public enum Visibility
