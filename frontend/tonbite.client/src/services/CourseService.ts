@@ -1,6 +1,8 @@
 import { CourseType, UserCourseType } from "../states";
 import { api } from "./Api.ts";
 import { Visibility } from "../states/Course.ts";
+import {SortProps} from "./extensions/SortProps.ts";
+import {FilterProps} from "./extensions/FilterProps.ts";
 
 export class CourseService {
     public static async create(form: CourseType): Promise<CourseType | undefined> {
@@ -21,6 +23,20 @@ export class CourseService {
                 },
             });
             return result.data as CourseType | undefined;
+        } catch {
+            return undefined;
+        }
+    }
+
+    public static async getList(sort: SortProps, filter: FilterProps): Promise<CourseType[] | undefined> {
+        try {
+            const result = await api.get("courses", {
+                params: {
+                    ...sort,
+                    ...filter,
+                },
+            });
+            return result.data as CourseType[] | undefined;
         } catch {
             return undefined;
         }
