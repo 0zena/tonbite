@@ -15,6 +15,11 @@ const publicItems = [
 
 const protectedItems = [
     {
+        icon: Icons.BROWSE,
+        name: "Browse",
+        path: "/browse",
+    },
+    {
         icon: Icons.CREATE,
         name: "Create",
         path: "/create",

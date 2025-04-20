@@ -66,8 +66,9 @@ export const CreateCourseForm = ({course = {} as CourseType, editing = false, on
                                step={"any"}
                                type={"number"}
                                placeholder={"0.00"}
-                               endContent={"TON"} min={0}
-                               defaultValue={course?.price?.toString()}
+                               endContent={"TON"}
+                               min={0} max={10}
+                               defaultValue={course?.price?.toString() ?? "0"}
                                startContent={<img src={Toncoin} alt="TON" className="size-5" />}
                                {...register("price", { valueAsNumber: true })} />
                         <ValidationError error={errors.price} />

@@ -1,6 +1,8 @@
 export class Icons
 {
     static readonly ADD = "add";
+    static readonly APPLY = "check";
+    static readonly BROWSE = "feature_search";
     static readonly CANCEL = "close";
     static readonly CREATE = "add_circle";
     static readonly DELETE = "delete";
@@ -9,4 +11,5 @@ export class Icons
     static readonly PROFILE = "account_circle";
     static readonly MENU = "more_vert";
     static readonly SETTINGS = "settings";
+    static readonly FILTERS = "filter_alt";
 }
