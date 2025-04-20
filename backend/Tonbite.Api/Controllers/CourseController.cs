@@ -35,7 +35,7 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Course>>> Get([FromQuery] QuerySort sort, [FromQuery] QueryFilter filter)
+    public async Task<ActionResult<IList<Course>>> Get([FromQuery] QuerySort sort, [FromQuery] QueryFilter filter)
     {
         var total = await context.Courses
             .AsQueryable()
@@ -44,7 +44,7 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
         
         var courses = await context.Courses
             .AsQueryable()
-            .ApplySorting(sort)
+            .ApplyCourseSorting(sort)
             .ApplyPaging(filter.Page, filter.DefaultPageSize)
             .ApplyCourseFiltering(filter)
             .ToListAsync();

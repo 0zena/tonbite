@@ -5,10 +5,17 @@ namespace Tonbite.Api.Extensions;
 public static class QueryableExtensions
 {
     public static IQueryable<T> ApplySorting<T>(this IQueryable<T> query, QuerySort sortBy) 
-        => sortBy.Desc ? query.OrderDescending() : query;
+        => sortBy.Desc 
+            ? query.OrderDescending() 
+            : query;
 
     public static IQueryable<T> ApplyPaging<T>(this IQueryable<T> query, int page, int pageSize)
         => query.Skip((page - 1) * pageSize).Take(pageSize);
+
+    public static IQueryable<T> ApplyCourseSorting<T>(this IQueryable<T> query, QuerySort sortBy) where T : Course
+        => sortBy.Desc 
+            ? query.OrderByDescending(x => x.Created)
+            : query.OrderBy(x => x.Created);
     
     public static IQueryable<T> ApplyCourseFiltering<T>(this IQueryable<T> query, QueryFilter filter) where T : Course
     {
