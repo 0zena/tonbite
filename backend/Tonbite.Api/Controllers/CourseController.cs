@@ -35,13 +35,21 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
     }
 
     [HttpGet]
-    public async Task<List<Course>> Get([FromQuery] QuerySort sort, [FromQuery] QueryFilter filter)
+    public async Task<ActionResult<List<Course>>> Get([FromQuery] QuerySort sort, [FromQuery] QueryFilter filter)
     {
-        return await context.Courses
+        var total = await context.Courses
+            .AsQueryable()
+            .ApplyCourseFiltering(filter)
+            .CountAsync();
+        
+        var courses = await context.Courses
             .AsQueryable()
             .ApplySorting(sort)
+            .ApplyPaging(filter.Page, filter.DefaultPageSize)
             .ApplyCourseFiltering(filter)
             .ToListAsync();
+
+        return Ok(new { total, courses }); 
     }
     
     [HttpGet]

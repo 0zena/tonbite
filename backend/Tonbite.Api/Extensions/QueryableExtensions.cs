@@ -7,6 +7,9 @@ public static class QueryableExtensions
     public static IQueryable<T> ApplySorting<T>(this IQueryable<T> query, QuerySort sortBy) 
         => sortBy.Desc ? query.OrderDescending() : query;
 
+    public static IQueryable<T> ApplyPaging<T>(this IQueryable<T> query, int page, int pageSize)
+        => query.Skip((page - 1) * pageSize).Take(pageSize);
+    
     public static IQueryable<T> ApplyCourseFiltering<T>(this IQueryable<T> query, QueryFilter filter) where T : Course
     {
         query = query.Where(x => x.Visibility == Visibility.Public);

@@ -1,6 +1,7 @@
 import { ProtectedRoute } from "../components";
 import {
     HomePage,
+    BrowsePage,
     LoginPage,
     NotFoundError,
     ProfileManagePage,
@@ -38,6 +39,10 @@ export const authorizedRoutes = [
         path: "/",
         element: <ProtectedRoute />,
         children: [
+            {
+              path: "/browse",
+              element: <BrowsePage />,
+            },
             {
               path: "/profile",
               element: <ProfilePage />,

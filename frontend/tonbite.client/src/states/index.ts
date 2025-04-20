@@ -10,6 +10,8 @@ export { CourseStepSchema } from "./CourseStep.ts";
 export type { LoginFormProps } from "./LoginFormProps.ts";
 export { LoginFormSchema } from "./LoginFormProps.ts";
 
+export type { Pagination } from "./Pagination.ts";
+
 export type { RegisterFormProps } from "./RegisterFormProps.ts";
 export { RegisterFormSchema } from "./RegisterFormProps.ts";
 

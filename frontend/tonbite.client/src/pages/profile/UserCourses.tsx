@@ -27,7 +27,7 @@ export const UserCourses = ({client}: {client: UserType}) => {
                             <p>No courses yet</p>
                         )}
                     </Tab>
-                    <Tab key={"purchased"} title={"Bought Courses"}>
+                    <Tab key={"purchased"} title={"Purchased Courses"}>
                         {purchasedCourses?.length ? (
                             <CourseList data={purchasedCourses} showStatus={true} />
                         ) : (

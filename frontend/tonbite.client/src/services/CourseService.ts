@@ -1,4 +1,4 @@
-import { CourseType, UserCourseType } from "../states";
+import {CourseType, Pagination, UserCourseType} from "../states";
 import { api } from "./Api.ts";
 import { Visibility } from "../states/Course.ts";
 import {SortProps} from "./extensions/SortProps.ts";
@@ -28,7 +28,7 @@ export class CourseService {
         }
     }
 
-    public static async getList(sort: SortProps, filter: FilterProps): Promise<CourseType[] | undefined> {
+    public static async getList(sort: SortProps, filter: FilterProps): Promise<Pagination<CourseType> | undefined> {
         try {
             const result = await api.get("courses", {
                 params: {
@@ -36,7 +36,7 @@ export class CourseService {
                     ...filter,
                 },
             });
-            return result.data as CourseType[] | undefined;
+            return result.data as Pagination<CourseType> | undefined;
         } catch {
             return undefined;
         }
