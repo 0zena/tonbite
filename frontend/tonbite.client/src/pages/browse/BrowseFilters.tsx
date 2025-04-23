@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {FilterProps} from "../../services/extensions/FilterProps.ts";
-import {today, getLocalTimeZone, toZoned} from "@internationalized/date";
+import {today, getLocalTimeZone} from "@internationalized/date";
 
 // UI Components
 import {Icons} from "../../utils";
@@ -23,21 +23,14 @@ export const BrowseFilters = ({onApply}: BrowseFiltersProps) => {
         end: today(getLocalTimeZone()),
     });
 
-    const form: FilterProps = {}
-
-
     const Apply = () => {
+        const form: FilterProps = {}
+
         form.minPrice = price[0].toString();
         form.maxPrice = price[1].toString();
 
-        const startZoned = toZoned(date.start, getLocalTimeZone());
-        const endZoned = toZoned(date.end, getLocalTimeZone());
-
-        const startDate = startZoned.toDate();
-        const endDate = endZoned.toDate();
-
-        form.startDate = startDate.toISOString();
-        form.endDate = endDate.toISOString();
+        form.startDate = new Date(Date.UTC(date.start.year, date.start.month - 1, date.start.day)).toISOString();
+        form.endDate = new Date(Date.UTC(date.end.year, date.end.month - 1, date.end.day)).toISOString();
 
         onApply(form);
         onClose();
