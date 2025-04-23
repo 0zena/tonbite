@@ -3,4 +3,6 @@ export type FilterProps = {
     searchKey?: string;
     minPrice?: string;
     maxPrice?: string;
+    startDate?: string;
+    endDate?: string;
 }
