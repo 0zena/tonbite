@@ -7,9 +7,9 @@ import {Icons} from "../../utils";
 import {Slider} from "@heroui/slider";
 import {Button} from "@heroui/button";
 import {Icon} from "../../components";
+import {RangeCalendar} from "@heroui/calendar";
 import {DrawerContent, useDisclosure} from "@heroui/react";
 import {Drawer, DrawerHeader, DrawerBody, DrawerFooter} from "@heroui/drawer";
-import {RangeCalendar} from "@heroui/calendar";
 
 interface BrowseFiltersProps {
     onApply: (filters: FilterProps) => void;

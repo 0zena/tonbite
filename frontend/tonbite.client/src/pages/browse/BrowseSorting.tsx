@@ -10,8 +10,6 @@ interface BrowseSortingProps {
 
 export const BrowseSorting = ({onSort}: BrowseSortingProps) => {
     const setSorting = (key: string) => {
-        console.log(key);
-
         const sort: SortProps = {
             desc: key === "newest",
         };

@@ -44,7 +44,7 @@ export const BrowsePage = () => {
             <div className={"flex justify-center"}>
                 <CourseList data={courses} showStatus={false} />
             </div>
-            <Pagination variant={"bordered"} page={page} onChange={setPage} total={(Math.ceil((total / 15)))} />
+            {courses.length > 0 && (<Pagination variant={"bordered"} page={page} onChange={setPage} total={(Math.ceil((total / 15)))} />)}
         </main>
     );
 }
