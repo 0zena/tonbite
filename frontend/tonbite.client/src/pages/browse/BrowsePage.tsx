@@ -5,10 +5,10 @@ import {SortProps} from "../../services/extensions/SortProps.ts";
 import {CourseService} from "../../services";
 
 // UI Components
-import {CourseList} from "../../components";
 import {Pagination} from "@heroui/pagination";
 import {BrowseFilters} from "./BrowseFilters.tsx";
 import {BrowseSorting} from "./BrowseSorting.tsx";
+import {CourseList, SearchBar} from "../../components";
 
 export const BrowsePage = () => {
     const [courses, setCourses] = useState<CourseType[]>([]);
@@ -36,8 +36,17 @@ export const BrowsePage = () => {
         setSorting(sortBy);
     }
 
+    const ApplySearch = (key: string) => {
+        const form: FilterProps = {
+            searchKey: key,
+        }
+
+        setFilter(form);
+    }
+
     return (
         <main className={"space-between"}>
+            <SearchBar onSearch={ApplySearch} />
             <BrowseSorting onSort={ApplySorting} />
             <BrowseFilters onApply={ApplyFilters} />
 

@@ -66,8 +66,13 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
                 x.UserId == userId &&
                 x.Status == UserCourseStatus.Creator) == null)
             return Forbid();
+
+        if (course?.Users?.FirstOrDefault(x => x.UserId == userId) != null) 
+            return course;
         
-        return await service.Get(id, steps);
+        course!.Steps = [];
+        return course;
+
     }
 
     [HttpPut]

@@ -110,7 +110,9 @@ export const CoursePage = () => {
                 </>
             ) : (
                 <div className={"flex flex-col items-center gap-2"}>
-                    <CourseSummary course={course} />
+                    {(
+                        <CourseSummary course={course}/>
+                    )}
                     {course?.steps && (
                         <CourseStepList data={course?.steps} />
                     )}

@@ -15,14 +15,17 @@ const publicItems = [
 
 const protectedItems = [
     {
-        icon: Icons.BROWSE,
-        name: "Browse",
-        path: "/browse",
-    },
-    {
         icon: Icons.CREATE,
         name: "Create",
         path: "/create",
+    },
+]
+
+const authenticatedItems = [
+    {
+        icon: Icons.BROWSE,
+        name: "Browse",
+        path: "/browse",
     },
 ]
 
@@ -30,7 +33,8 @@ export const AppNavbar = () => {
     const { client, isAuthenticated, logout } = useAuth();
     const menuItems = [
         ...publicItems,
-        ...(client?.roles?.hasOneOfRole("Creator", "Admin") ? protectedItems : []),
+        ...(isAuthenticated ? authenticatedItems : []),
+        ...(isAuthenticated && client?.roles?.hasOneOfRole("Creator", "Admin") ? protectedItems : []),
     ];
 
     return (

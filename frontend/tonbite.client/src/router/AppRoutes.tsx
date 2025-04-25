@@ -1,4 +1,4 @@
-import { ProtectedRoute } from "../components";
+import { ProtectedRoute, CourseLayout } from "../components";
 import {
     HomePage,
     BrowsePage,
@@ -57,11 +57,17 @@ export const authorizedRoutes = [
             },
             {
                 path: "/courses/:id",
-                element: <CoursePage />,
-            },
-            {
-                path: "/courses/:id/create-step",
-                element: <CreateCourseStepPage />,
+                element: <CourseLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <CoursePage />,
+                    },
+                    {
+                        path: "create-step",
+                        element: <CreateCourseStepPage />,
+                    },
+                ]
             },
         ],
     },
