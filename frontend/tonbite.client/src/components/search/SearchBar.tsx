@@ -3,15 +3,22 @@ import {Input} from "@heroui/input";
 import {Button} from "@heroui/button";
 
 interface SearchBarProps {
-    onSearch: (key: string) => void;
+    value: string | undefined;
+    onSearch: (key: string | undefined) => void;
 }
 
-export const SearchBar = ({onSearch}: SearchBarProps) => {
-    const [key, setKey] = useState("");
+export const SearchBar = ({value, onSearch}: SearchBarProps) => {
+    const [key, setKey] = useState(value);
 
     const submit = () => {
         onSearch(key);
     }
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            submit();
+        }
+    };
 
     return (
         <div className="flex">
@@ -19,6 +26,7 @@ export const SearchBar = ({onSearch}: SearchBarProps) => {
                    placeholder={"Type to search..."}
                    value={key}
                    onValueChange={setKey}
+                   onKeyDown={handleKeyDown}
             />
             <Button onPress={submit}>Search</Button>
         </div>
