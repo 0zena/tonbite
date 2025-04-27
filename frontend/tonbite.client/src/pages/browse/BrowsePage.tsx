@@ -55,10 +55,12 @@ export const BrowsePage = () => {
             <SearchBar value={filter.searchKey} onSearch={ApplySearch} />
             <span className={"flex items-center justify-end space-x-4"}>
                 <BrowseSorting selected={sorting.desc ? "newest" : "oldest"} onSort={ApplySorting} />
-                <BrowseFilters onApply={ApplyFilters} />
+                <BrowseFilters current={filter} onApply={ApplyFilters} />
             </span>
 
-            <div className={"flex justify-center"}>
+            <h2 className={"text-start text-2xl font-bold"}>Available Courses</h2>
+
+            <div className={"flex justify-center pt-6 border-t"}>
                 <CourseList data={courses} showStatus={false} />
             </div>
             {courses.length > 0 && (<Pagination variant={"bordered"}

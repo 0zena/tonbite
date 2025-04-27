@@ -28,7 +28,7 @@ export const CoursePage = () => {
     const {id} = useParams();
 
     const isOwner = course?.users?.isCourseOwner(client) || client?.roles?.hasRole("Admin");
-    const Created = course?.created ? new Date().toLocaleDateString() : "null";
+    const Created = course?.created ? new Date(course?.created) : "null";
     const visibilityName = course?.visibility !== undefined ? Visibility[course.visibility] : '';
 
     useEffect(() => {
@@ -107,7 +107,7 @@ export const CoursePage = () => {
                       startContent={<img src={Toncoin} alt={"toncoin"} className={"size-4"} />}>
                     {course?.price === 0 ? "Free" : `${course?.price} TON`}
                 </Chip>
-                <Chip radius="sm" variant="dot" color={"secondary"}>{Created}</Chip>
+                <Chip radius="sm" variant="dot" color={"secondary"}>{Created.toLocaleString()}</Chip>
                 <Chip radius="sm" variant="dot" color={"danger"}>{visibilityName}</Chip>
             </header>
 

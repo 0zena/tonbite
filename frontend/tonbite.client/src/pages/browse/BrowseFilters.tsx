@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {FilterProps} from "../../services/extensions/FilterProps.ts";
-import {today, getLocalTimeZone} from "@internationalized/date";
+import {today, getLocalTimeZone, CalendarDate} from "@internationalized/date";
 
 // UI Components
 import {Icons} from "../../utils";
@@ -12,18 +12,24 @@ import {DrawerContent, useDisclosure} from "@heroui/react";
 import {Drawer, DrawerHeader, DrawerBody, DrawerFooter} from "@heroui/drawer";
 
 interface BrowseFiltersProps {
+    current: FilterProps;
     onApply: (filters: FilterProps) => void;
 }
 
-export const BrowseFilters = ({onApply}: BrowseFiltersProps) => {
+export const BrowseFilters = ({current, onApply}: BrowseFiltersProps) => {
+    const dates = {
+        start: current?.startDate ? new Date(current.startDate) : null,
+        end: current?.endDate ? new Date(current.endDate) : null,
+    }
+
     const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
-    const [price, setPrice] = useState([0, 10]);
+    const [price, setPrice] = useState([Number(current.minPrice ?? 0), Number(current.maxPrice ?? 10)]);
     const [date, setDate] = useState({
-        start: today(getLocalTimeZone()),
-        end: today(getLocalTimeZone()),
+        start: dates.start ? new CalendarDate(dates.start.getUTCFullYear(), dates.start.getUTCMonth() + 1, dates.start.getUTCDate()) : today(getLocalTimeZone()),
+        end: dates.end ? new CalendarDate(dates.end.getUTCFullYear(), dates.end.getUTCMonth() + 1, dates.end.getUTCDate()) : today(getLocalTimeZone()),
     });
 
-    const Apply = () => {
+    const apply = () => {
         const form: FilterProps = {}
 
         form.minPrice = price[0].toString();
@@ -34,6 +40,10 @@ export const BrowseFilters = ({onApply}: BrowseFiltersProps) => {
 
         onApply(form);
         onClose();
+    }
+
+    const remove = () => {
+        onApply({});
     }
 
     return (
@@ -66,7 +76,18 @@ export const BrowseFilters = ({onApply}: BrowseFiltersProps) => {
                         </div>
                     </DrawerBody>
                     <DrawerFooter>
-                        <Button startContent={<Icon icon={Icons.APPLY} />} color={"primary"} onPress={Apply}>Apply</Button>
+                        <Button startContent={<Icon icon={Icons.DELETE} />}
+                                color={"danger"}
+                                variant={"light"}
+                                onPress={remove}
+                                className={"mr-auto"}>
+                            Remove
+                        </Button>
+                        <Button startContent={<Icon icon={Icons.APPLY} />}
+                                color={"primary"}
+                                onPress={apply}>
+                            Apply
+                        </Button>
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>
