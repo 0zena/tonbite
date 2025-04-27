@@ -1,5 +1,6 @@
 .course-step-content {
   @apply text-start tracking-wide space-y-4;
+  max-width: 21cm;
 
   p {
     @apply leading-tight;

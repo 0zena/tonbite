@@ -10,11 +10,11 @@ function App() {
     return (
         <TonConnectUIProvider manifestUrl="https://ton.vote/tonconnect-manifest.json">
             <AuthProvider>
-                <HeroUIProvider>
-                    <div className="h-full">
-                        <AppNavbar />
+                <HeroUIProvider className={"app-overlay"}>
+                    <AppNavbar />
+                    <main className={"h-full p-4"}>
                         <AppRouter />
-                    </div>
+                    </main>
                 </HeroUIProvider>
             </AuthProvider>
         </TonConnectUIProvider>

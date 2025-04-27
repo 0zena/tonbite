@@ -51,7 +51,7 @@ export const BrowsePage = () => {
     }
 
     return (
-        <main className={"space-between"}>
+        <div className={"flex flex-col h-full space-between"}>
             <SearchBar value={filter.searchKey} onSearch={ApplySearch} />
             <BrowseSorting onSort={ApplySorting} />
             <BrowseFilters onApply={ApplyFilters} />
@@ -59,7 +59,12 @@ export const BrowsePage = () => {
             <div className={"flex justify-center"}>
                 <CourseList data={courses} showStatus={false} />
             </div>
-            {courses.length > 0 && (<Pagination variant={"bordered"} page={page} onChange={setPage} total={(Math.ceil((total / 15)))} />)}
-        </main>
+            {courses.length > 0 && (<Pagination variant={"bordered"}
+                                                page={page}
+                                                onChange={setPage}
+                                                total={(Math.ceil((total / 15)))}
+                                                className={"mt-auto"} />
+            )}
+        </div>
     );
 }

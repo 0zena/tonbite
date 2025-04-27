@@ -6,7 +6,7 @@ export const CourseStepContent = ({html}: {html: string}) => {
 
     return (
         <div
-            className="course-step-content prose"
+            className="course-step-content justify-self-center prose"
             dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
         />
     );
