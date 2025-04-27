@@ -104,7 +104,7 @@ export const CoursePage = () => {
                 <>
                     <CreateCourseForm course={course} editing={editing} onSubmit={Edit} />
                     {course?.steps && (
-                        <CourseStepList parentId={course.id!} data={course?.steps} />
+                        <CourseStepList data={course?.steps} />
                     )}
                     <CreateCourseStepButton />
                 </>
@@ -114,7 +114,7 @@ export const CoursePage = () => {
                         <CourseSummary course={course}/>
                     )}
                     {course?.steps && (
-                        <CourseStepList parentId={course.id!} data={course?.steps} />
+                        <CourseStepList data={course?.steps} />
                     )}
                 </div>
             )}

@@ -57,6 +57,10 @@ export const authorizedRoutes = [
                 element: <CreateCoursePage />,
             },
             {
+                path: "/course-step/:id",
+                element: <CourseStepPage />,
+            },
+            {
                 path: "/courses/:id",
                 element: <CourseLayout />,
                 children: [
@@ -68,10 +72,6 @@ export const authorizedRoutes = [
                         path: "create-step",
                         element: <CreateCourseStepPage />,
                     },
-                    {
-                        path: "course-step/:stepId",
-                        element: <CourseStepPage />,
-                    }
                 ]
             },
         ],

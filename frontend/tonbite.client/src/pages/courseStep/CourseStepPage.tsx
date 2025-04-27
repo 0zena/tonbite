@@ -5,14 +5,25 @@ import {CourseStepType} from "../../states";
 
 // UI Components
 import {CourseStepContent} from "./CourseStepContent.tsx";
+import {NotFoundError} from "../error/NotFoundError.tsx";
+import {LoadingLayout} from "../../components";
 
 export const CourseStepPage = () => {
     const [step, setStep] = useState<CourseStepType | undefined>();
-    const {stepId} = useParams();
+    const [loading, setLoading] = useState(false);
+    const {id} = useParams();
 
     useEffect(() => {
-        CourseStepService.get(stepId).then(x => setStep(x));
-    }, [stepId]);
+        setLoading(true);
+        CourseStepService.get(id).then(x => {
+            setStep(x)
+            setLoading(false);
+        });
+    }, [id]);
+
+
+    if (loading) return <LoadingLayout />;
+    if (!loading && !step) return <NotFoundError />
 
     return (
       <div className={"space-y-6"}>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tonbite.Api.Data;
 using Tonbite.Api.Model;
+using Tonbite.Api.Model.Utils;
 
 namespace Tonbite.Api.Controllers;
 
@@ -51,8 +52,8 @@ public partial class UserController
             return Unauthorized("Invalid username or password.");
 
         // Tokens
-        var isAdmin = user.Roles!.Exists(r => r.Name == nameof(Roles.Admin));
-        var isCreator = user.Roles!.Exists(r => r.Name == nameof(Roles.Creator));
+        var isAdmin = user.IsAdmin();
+        var isCreator = user.IsCreator();
         var accessToken = service.GenerateAccessToken(user.Id, user.Email, isAdmin, isCreator);
         var refreshToken = new RefreshToken
         {

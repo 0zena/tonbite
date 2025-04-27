@@ -61,6 +61,7 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
         var userId = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
         var course = await service.Get(id, steps);
 
+        // Allow fetching only creator if it is private
         if (course?.Visibility == Visibility.Private
             && course.Users?.FirstOrDefault(x =>
                 x.UserId == userId &&
