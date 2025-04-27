@@ -1,6 +1,10 @@
+import {Icons} from "../../utils";
+
+// UI Components
 import {useState} from "react";
 import {Input} from "@heroui/input";
 import {Button} from "@heroui/button";
+import {Icon} from "../icon/Icon.tsx";
 
 interface SearchBarProps {
     value: string | undefined;
@@ -25,10 +29,10 @@ export const SearchBar = ({value, onSearch}: SearchBarProps) => {
             <Input label={"Search"}
                    placeholder={"Type to search..."}
                    value={key}
+                   endContent={<Button isIconOnly startContent={<Icon icon={Icons.SEARCH} />} onPress={submit} />}
                    onValueChange={setKey}
                    onKeyDown={handleKeyDown}
             />
-            <Button onPress={submit}>Search</Button>
         </div>
     );
 }

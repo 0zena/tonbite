@@ -38,7 +38,7 @@ export const BrowseFilters = ({onApply}: BrowseFiltersProps) => {
 
     return (
         <>
-            <Button startContent={<Icon icon={Icons.FILTERS} />} color="warning" variant="flat" onPress={onOpen}>
+            <Button startContent={<Icon icon={Icons.FILTERS} />} color="secondary" variant={"faded"} onPress={onOpen}>
                 Filters
             </Button>
 

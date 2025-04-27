@@ -1,8 +1,10 @@
 import {SortProps} from "../../services/extensions/SortProps.ts";
+import {Icons} from "../../utils";
 
 // UI Components
 import {Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@heroui/dropdown";
 import {Button} from "@heroui/button";
+import {Icon} from "../../components";
 
 interface BrowseSortingProps {
     onSort: (sortBy: SortProps) => void;
@@ -21,7 +23,7 @@ export const BrowseSorting = ({onSort}: BrowseSortingProps) => {
         <>
             <Dropdown>
                 <DropdownTrigger>
-                    <Button>
+                    <Button startContent={<Icon icon={Icons.SORT} />} color={"primary"} variant={"flat"}>
                         Sort By
                     </Button>
                 </DropdownTrigger>

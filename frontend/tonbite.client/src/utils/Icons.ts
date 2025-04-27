@@ -10,6 +10,8 @@ export class Icons
     static readonly LOGOUT = "logout";
     static readonly PROFILE = "account_circle";
     static readonly MENU = "more_vert";
+    static readonly SEARCH = "search";
     static readonly SETTINGS = "settings";
+    static readonly SORT = "sort";
     static readonly FILTERS = "filter_alt";
 }

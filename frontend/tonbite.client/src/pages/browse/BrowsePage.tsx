@@ -51,10 +51,12 @@ export const BrowsePage = () => {
     }
 
     return (
-        <div className={"flex flex-col h-full space-between"}>
+        <div className={"flex flex-col h-full gap-6"}>
             <SearchBar value={filter.searchKey} onSearch={ApplySearch} />
-            <BrowseSorting onSort={ApplySorting} />
-            <BrowseFilters onApply={ApplyFilters} />
+            <span className={"flex items-center justify-end space-x-4"}>
+                <BrowseSorting onSort={ApplySorting} />
+                <BrowseFilters onApply={ApplyFilters} />
+            </span>
 
             <div className={"flex justify-center"}>
                 <CourseList data={courses} showStatus={false} />
@@ -63,7 +65,7 @@ export const BrowsePage = () => {
                                                 page={page}
                                                 onChange={setPage}
                                                 total={(Math.ceil((total / 15)))}
-                                                className={"mt-auto"} />
+                                                className={"flex mt-auto justify-center"} />
             )}
         </div>
     );
