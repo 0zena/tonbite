@@ -54,7 +54,7 @@ export const BrowsePage = () => {
         <div className={"flex flex-col h-full gap-6"}>
             <SearchBar value={filter.searchKey} onSearch={ApplySearch} />
             <span className={"flex items-center justify-end space-x-4"}>
-                <BrowseSorting onSort={ApplySorting} />
+                <BrowseSorting selected={sorting.desc ? "newest" : "oldest"} onSort={ApplySorting} />
                 <BrowseFilters onApply={ApplyFilters} />
             </span>
 

@@ -42,9 +42,9 @@ export const AppNavbar = () => {
         <Navbar className={"backdrop-saturate-100 bg-inherit"}>
             <NavbarContent>
                 <NavbarMenuToggle className="sm:hidden" />
-                <NavbarBrand className={"flex items-center space-x-4"}>
+                <NavbarBrand as={Link} href={"/"} className={"flex items-center space-x-4"}>
                     <img src={Tonbite} alt={"Tonbite Logo"} className={"size-12"} />
-                    <h2 className={"text-2xl font-bold max-md:hidden"}>Tonbite</h2>
+                    <h2 className={"text-2xl text-white font-bold max-md:hidden"}>Tonbite</h2>
                 </NavbarBrand>
             </NavbarContent>
             <NavbarContent className={"max-sm:hidden"} justify={"center"}>
