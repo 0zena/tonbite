@@ -21,7 +21,7 @@ public static class QueryableExtensions
     {
         query = query.Where(x => x.Visibility == Visibility.Public);
         
-        // BUG: EF Core does not allow to use string comparison
+        // BUG: EF Core does not allow to use string comparison 
         if (!string.IsNullOrWhiteSpace(filter.SearchKey))
             query = query.Where(x => x.Name.ToLower().Contains(filter.SearchKey.ToLower())
                                      || x.Bio.ToLower().Contains(filter.SearchKey.ToLower()));

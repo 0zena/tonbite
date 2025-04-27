@@ -1,4 +1,3 @@
-import { ProtectedRoute, CourseLayout } from "../components";
 import {
     HomePage,
     BrowsePage,
@@ -9,8 +8,10 @@ import {
     RegisterPage,
     CreateCoursePage,
     CoursePage,
+    CourseStepPage,
+    CreateCourseStepPage,
 } from "../pages";
-import {CreateCourseStepPage} from "../pages/courseStep/CreateCourseStepPage.tsx";
+import { ProtectedRoute, CourseLayout } from "../components";
 
 export const publicRoutes = [
     {
@@ -67,6 +68,10 @@ export const authorizedRoutes = [
                         path: "create-step",
                         element: <CreateCourseStepPage />,
                     },
+                    {
+                        path: "course-step/:stepId",
+                        element: <CourseStepPage />,
+                    }
                 ]
             },
         ],

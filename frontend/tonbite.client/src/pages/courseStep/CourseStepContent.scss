@@ -1,0 +1,12 @@
+.course-step-content {
+  @apply text-start tracking-wide space-y-4;
+
+  p {
+    @apply leading-tight;
+  }
+
+  a {
+    @apply text-white #{!important};
+    @apply italic underline decoration-pink-500;
+  }
+}
