@@ -1,12 +1,30 @@
-import { CourseStepType } from "../../states";
-import { Card } from "@heroui/card";
-import { Link } from "@heroui/link";
+import {CourseStepType} from "../../states";
 
-export const CourseStepCard = ({item}: {item: CourseStepType}) => {
+// UI Components
+import {Card} from "@heroui/card";
+import {Link} from "@heroui/link";
+import {CourseStepMenuButton} from "./CourseStepMenuButton.tsx";
+
+interface CourseStepCardProps {
+    item: CourseStepType;
+    isOwner: boolean;
+    editing: boolean;
+    onEdit: () => void;
+    onDelete: (id: number) => void;
+}
+
+export const CourseStepCard = ({item, isOwner, editing, onEdit, onDelete}: CourseStepCardProps) => {
+    const deleteItem = () => {
+        onDelete(item.id!);
+    }
+
     return (
-      <Card as={Link} href={`/course-step/${item.id}`} className={"p-4 hover:opacity-85"}>
-          <h3 className={"text-2xl font-bold text-blue-400"}>{item.name}</h3>
-          <h3>{item.bio}</h3>
+      <Card className={"flex flex-row p-4"}>
+          <Link href={`/course-step/${item.id}`} className={"flex flex-col w-full hover:underline"}>
+              <h3 className={"text-2xl font-bold text-blue-400"}>{item.name}</h3>
+              <h3 className={"text-white text-start w-full"}>{item.bio}</h3>
+          </Link>
+          {isOwner && (<CourseStepMenuButton editing={editing} onEdit={onEdit} onDelete={deleteItem} />)}
       </Card>
     );
 }

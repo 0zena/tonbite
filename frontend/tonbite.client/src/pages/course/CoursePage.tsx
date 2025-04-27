@@ -27,6 +27,7 @@ export const CoursePage = () => {
     const {client} = useAuth();
     const {id} = useParams();
 
+    const isOwner = course?.users?.isCourseOwner(client) || client?.roles?.hasRole("Admin");
     const Created = course?.created ? new Date().toLocaleDateString() : "null";
     const visibilityName = course?.visibility !== undefined ? Visibility[course.visibility] : '';
 
@@ -34,7 +35,7 @@ export const CoursePage = () => {
         CourseService.get(id, true).then(r => setCourse(r));
     }, [id]);
 
-    const ChangeVisibility = async () => {
+    const changeVisibility = async () => {
         let visibility: Visibility;
         if (course!.visibility === Visibility.public)
             visibility = Visibility.private;
@@ -44,18 +45,18 @@ export const CoursePage = () => {
         if (response) setCourse(response);
     }
 
-    const Edit = () => {
+    const edit = () => {
         setEditing(!editing);
     }
 
-    const Delete = async () => {
+    const remove = async () => {
         if (!await confirmAction()) return;
         const result = await CourseService.delete(id);
         if (result != undefined)
             navigate("/");
     }
 
-    const Buy = async () => {
+    const buy = async () => {
         if (!course?.walletAddress || !course?.price) return;
         const sender = new TransactionHandler();
         const transaction = sender.createTransaction(course.walletAddress, course.price);
@@ -77,6 +78,16 @@ export const CoursePage = () => {
         }
     }
 
+    const stepDeleted = (id: number) => {
+        setCourse(prev => {
+            if (!prev) return prev;
+            return {
+                ...prev,
+                steps: prev.steps?.filter(step => step.id !== id)
+            };
+        });
+    }
+
     if (!course || course?.visibility === Visibility.private && !course?.users?.isCourseOwner(client))
         return <NotFoundError />
 
@@ -90,7 +101,7 @@ export const CoursePage = () => {
 
             <header className={"flex justify-center items-center gap-4"}>
                 <CourseHeaderAction editing={editing} client={client} course={course}
-                                    Buy={Buy} Delete={Delete} Edit={Edit} Change={ChangeVisibility} />
+                                    Buy={buy} Delete={remove} Edit={edit} Change={changeVisibility} />
                 <Chip radius="sm"
                       variant="bordered"
                       startContent={<img src={Toncoin} alt={"toncoin"} className={"size-4"} />}>
@@ -102,9 +113,9 @@ export const CoursePage = () => {
 
             {editing ? (
                 <>
-                    <CreateCourseForm course={course} editing={editing} onSubmit={Edit} />
+                    <CreateCourseForm course={course} editing={editing} onSubmit={edit} />
                     {course?.steps && (
-                        <CourseStepList data={course?.steps} />
+                        <CourseStepList isOwner={isOwner} data={course?.steps} onDelete={stepDeleted} />
                     )}
                     <CreateCourseStepButton />
                 </>
@@ -114,7 +125,7 @@ export const CoursePage = () => {
                         <CourseSummary course={course}/>
                     )}
                     {course?.steps && (
-                        <CourseStepList data={course?.steps} />
+                        <CourseStepList isOwner={isOwner} data={course?.steps} onDelete={stepDeleted} />
                     )}
                 </div>
             )}

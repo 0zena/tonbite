@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tonbite.Api.Data;
 using Tonbite.Api.Http;
+using Tonbite.Api.Identity;
 using Tonbite.Api.Model;
 using Tonbite.Api.Model.Utils;
 
@@ -33,5 +34,17 @@ public class CourseStepController(ApplicationDbContext context, ICourseStepHttpS
         var course = await context.Courses.FirstOrDefaultAsync(x => x.Id == props.ParentId);
         if (course == null) return BadRequest();
         return await context.CreateAsync(service.Create(props, course));
+    }
+
+    [HttpDelete]
+    [Route("{id:long}")]
+    [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
+    public async Task<ActionResult<long?>> Delete([FromRoute] long id)
+    {
+        var step = context.CourseSteps.FirstOrDefault(x => x.Id == id);
+        if (step != null)
+            await context.DeleteAsync(step);
+        
+        return step?.Id;
     }
 }
