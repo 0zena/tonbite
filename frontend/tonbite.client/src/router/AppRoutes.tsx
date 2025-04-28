@@ -10,14 +10,11 @@ import {
     CoursePage,
     CourseStepPage,
     CreateCourseStepPage,
+    LandingPage,
 } from "../pages";
 import { ProtectedRoute, CourseLayout } from "../components";
 
 export const publicRoutes = [
-    {
-        path: "/",
-        element: <HomePage />,
-    },
     {
       path: "*",
       element: <NotFoundError />,
@@ -25,6 +22,10 @@ export const publicRoutes = [
 ];
 
 export const anonymousOnlyRoutes = [
+    {
+        path: "/",
+        element: <LandingPage />,
+    },
     {
         path: "/register",
         element: <RegisterPage />,
@@ -40,6 +41,10 @@ export const authorizedRoutes = [
         path: "/",
         element: <ProtectedRoute />,
         children: [
+            {
+                path: "/",
+                element: <HomePage />,
+            },
             {
               path: "/browse",
               element: <BrowsePage />,

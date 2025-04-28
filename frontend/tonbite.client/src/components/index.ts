@@ -7,3 +7,4 @@ export { CourseMenuButton, CourseList, CourseCard } from "./course";
 export { CreateCourseStepButton } from "./courseStep/CreateCourseStepButton.tsx";
 export { SearchBar } from "./search/SearchBar.tsx";
 export { TextEditor } from "./textEditor/TextEditor.tsx";
+export { FeatureCard } from "../components/feature/FeatureCard.tsx";

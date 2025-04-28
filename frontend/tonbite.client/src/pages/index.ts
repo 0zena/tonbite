@@ -3,6 +3,7 @@ export { CoursePage, CreateCoursePage } from "./course";
 export { CourseStepPage, CreateCourseStepPage } from "./courseStep";
 export { NotFoundError } from "./error/NotFoundError.tsx";
 export { HomePage } from "./home/HomePage.tsx";
+export { LandingPage } from "./home/LandingPage.tsx";
 export { LoginPage } from "./login/LoginPage.tsx";
 export { ProfilePage, ProfileManagePage } from "./profile";
 export { RegisterPage } from "./register/RegisterPage.tsx";
