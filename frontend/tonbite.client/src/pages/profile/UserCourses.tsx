@@ -4,19 +4,12 @@ import { UserService } from "../../services";
 import { useEffect, useState } from "react";
 import {CourseList} from "../../components";
 
-export const UserCourses = ({client}: {client: UserType}) => {
-    const [createdCourses, setCreatedCourses] = useState<CourseType[]>();
-    const [purchasedCourses, setPurchasedCourses] = useState<CourseType[]>();
+interface UserCoursesProps {
+    createdCourses: CourseType[] | undefined;
+    purchasedCourses: CourseType[] | undefined;
+}
 
-    useEffect(() => {
-        if (client?.id) {
-            UserService.getCourses(client.id, UserCourseStatus.creator)
-                .then(res => setCreatedCourses(res));
-            UserService.getCourses(client.id, UserCourseStatus.purchased)
-                .then(res => setPurchasedCourses(res));
-        }
-    }, [client?.id]);
-
+export const UserCourses = ({createdCourses, purchasedCourses}: UserCoursesProps) => {
     return (
         <div className={"p-6"}>
                 <Tabs>

@@ -1,4 +1,8 @@
 import { useAuth } from "../../provider/AuthProvider.tsx";
+import { useEffect, useState } from "react";
+import { UserService } from "../../services/UserService.ts";
+import { UserCourseStatus } from "../../states/UserCourse.ts";
+import { CourseType } from "../../states/Course.ts";
 
 // Components
 import { Divider } from "@heroui/divider";
@@ -7,15 +11,26 @@ import { UserCourses } from "./UserCourses.tsx";
 import { UserSummary } from "./UserSummary.tsx";
 
 export const ProfilePage = () => {
+    const [createdCourses, setCreatedCourses] = useState<CourseType[]>();
+    const [purchasedCourses, setPurchasedCourses] = useState<CourseType[]>();
     const { client } = useAuth();
+
+    useEffect(() => {
+        if (client?.id) {
+            UserService.getCourses(client.id, UserCourseStatus.creator)
+                .then(res => setCreatedCourses(res));
+            UserService.getCourses(client.id, UserCourseStatus.purchased)
+                .then(res => setPurchasedCourses(res));
+        }
+    }, [client?.id]);
 
     return (
         <main>
             { client != undefined ? (
                     <div>
-                        <UserSummary user={client} />
+                        <UserSummary user={client} totalCourses={createdCourses?.length ?? 0} totalPurchasedCourses={purchasedCourses?.length ?? 0} />
                         <Divider />
-                        <UserCourses client={client} />
+                        <UserCourses createdCourses={createdCourses} purchasedCourses={purchasedCourses} />
                     </div>
                 ) : (
                     <CircularProgress className={"justify-self-center"} />
