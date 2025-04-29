@@ -1,7 +1,6 @@
 import { Button } from "@heroui/button";
 import { Link } from "@heroui/link";
 import Tonbite from "../../assets/tonbite.svg";
-import { TonConnectButton } from "@tonconnect/ui-react";
 import { Icons } from "../../utils";
 import { FeatureCard } from "../../components";
 
@@ -48,7 +47,6 @@ export const LandingPage = () => {
                     >
                         Get Started
                     </Button>
-                    <TonConnectButton />
                 </div>
                 <p className="text-sm text-white/70">
                     Already have an account? <Link href="/login" className="text-blue-400 hover:text-blue-300 transition-colors">Sign in</Link>

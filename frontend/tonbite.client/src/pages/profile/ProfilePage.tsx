@@ -26,7 +26,7 @@ export const ProfilePage = () => {
 
     return (
         <main>
-            { client != undefined ? (
+            { client ? (
                     <div>
                         <UserSummary user={client} totalCourses={createdCourses?.length ?? 0} totalPurchasedCourses={purchasedCourses?.length ?? 0} />
                         <Divider />

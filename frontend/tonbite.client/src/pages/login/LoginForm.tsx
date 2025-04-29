@@ -17,11 +17,11 @@ export default function LoginForm() {
 
     const Submit = async (form: LoginFormProps) => {
         const response = await AuthService.login(form);
-        if (response != undefined)
+        if (response)
             setMessage(response);
         else {
-            navigate("/");
             setToken(localStorage.getItem("accessToken"));
+            navigate("/profile");
         }
 
         reset();

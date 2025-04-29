@@ -1,7 +1,5 @@
 import { Tabs, Tab } from "@heroui/tabs";
-import { CourseType, UserCourseStatus, UserType } from "../../states";
-import { UserService } from "../../services";
-import { useEffect, useState } from "react";
+import {CourseType} from "../../states";
 import {CourseList} from "../../components";
 
 interface UserCoursesProps {
