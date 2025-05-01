@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Tonbite.Api.Data;
+using Tonbite.Api.Exceptions;
 using Tonbite.Api.Identity;
 using Tonbite.Api.Model;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -28,9 +29,7 @@ public class UserHttpService(IConfiguration configuration, ApplicationDbContext 
         
         var jwtSecret = configuration["Jwt:Key"];
         if (string.IsNullOrEmpty(jwtSecret))
-        {
-            throw new InvalidOperationException("JWT secret key is not configured.");
-        }
+            throw new InvalidKeyException();
         
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

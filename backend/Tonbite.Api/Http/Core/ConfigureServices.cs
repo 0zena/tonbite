@@ -2,7 +2,7 @@ using Tonbite.Api.Http.Services;
 
 namespace Tonbite.Api.Http.Core;
 
-public static class ScopedServices
+public static class ConfigureServices
 {
     /// <summary> Adds all scoped http services. </summary>
     /// <param name="services">A collection of services for the application to compose.</param>
@@ -12,5 +12,6 @@ public static class ScopedServices
         services.AddScoped<ICourseHttpService, CourseHttpService>();
         services.AddScoped<ICourseStepHttpService, CourseStepHttpService>();
         services.AddScoped<ITransactionHttpService, TransactionHttpService>();
+        services.AddScoped<IEmailHttpService, EmailHttpService>();
     }
 }
