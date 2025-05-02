@@ -12,6 +12,7 @@ import {
     CreateCourseStepPage,
     LandingPage,
     ProblemReport,
+    TransactionPage,
 } from "../pages";
 import { ProtectedRoute, CourseLayout } from "../components";
 
@@ -65,6 +66,10 @@ export const authorizedRoutes = [
             {
                 path: "/create",
                 element: <CreateCoursePage />,
+            },
+            {
+                path: "/transaction/:id",
+                element: <TransactionPage />,
             },
             {
                 path: "/course-step/:id",

@@ -1,7 +1,7 @@
 import { UserType } from "../../states";
 import { Button } from "@heroui/button";
 import { NavLink } from "react-router-dom";
-import { Icon } from "../../components";
+import { Icon, UserSummaryCard } from "../../components";
 import { Icons } from "../../utils";
 import { Card, CardHeader, CardBody } from "@heroui/card";
 
@@ -13,7 +13,7 @@ interface UserSummaryProps {
 
 export const UserSummary = ({ user, totalCourses, totalPurchasedCourses }: UserSummaryProps) => {
     return (
-        <div className="max-w-4xl mx-auto p-6">
+        <div className="max-w-4xl mx-auto md:p-6">
             <Card>
                 <CardHeader className="flex flex-col md:flex-row gap-6">
                     <div className="flex-shrink-0">
@@ -48,19 +48,9 @@ export const UserSummary = ({ user, totalCourses, totalPurchasedCourses }: UserS
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 mt-4">
-                        <div className="bg-gray-800/50 rounded-lg p-4 text-center border border-gray-700">
-                            <p className="text-2xl font-bold text-blue-400">
-                                {totalCourses}
-                            </p>
-                            <p className="text-sm text-gray-400">Created Courses</p>
-                        </div>
-                        <div className="bg-gray-800/50 rounded-lg p-4 text-center border border-gray-700">
-                            <p className="text-2xl font-bold text-purple-400">
-                                {totalPurchasedCourses}
-                            </p>
-                            <p className="text-sm text-gray-400">Purchased Courses</p>
-                        </div>
+                    <div className="grid grid-cols-2 gap-4 mt-4 max-sm:grid-cols-1">
+                        <UserSummaryCard value={totalCourses} label={"Created Courses"} />
+                        <UserSummaryCard value={totalPurchasedCourses} label={"Purchased Courses"} />
                     </div>
                 </CardBody>
             </Card>

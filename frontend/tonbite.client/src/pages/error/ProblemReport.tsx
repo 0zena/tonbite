@@ -1,14 +1,13 @@
-import { Input } from "@heroui/input";
+import { Input, Textarea } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReportProblemFormSchema, ReportProblemFormProps } from "../../states";
-import { TextEditor, ValidationError } from "../../components";
+import { ValidationError } from "../../components";
 import { EmailService } from "../../services";
-import { Card } from "@heroui/react";
 
 export const ProblemReport = () => {
-    const { register, handleSubmit, formState: { errors }, watch, setValue, reset } = useForm<ReportProblemFormProps>({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<ReportProblemFormProps>({
         resolver: zodResolver(ReportProblemFormSchema),
     });
 
@@ -30,12 +29,7 @@ export const ProblemReport = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full max-w-[500px]">
                 <Input label="Author" placeholder="Your name, email or TON address" {...register("author")} />
                 <ValidationError error={errors.author} />
-                <Card className="p-4">
-                    <p>Problem Description</p>
-                    <TextEditor value={watch("problem")}
-                                onChange={(val) => setValue("problem", val)}
-                                placeholder={"Describe the problem..."} />
-                </Card>
+                <Textarea label="Problem Description" placeholder="Describe the problem..." {...register("problem")} />
                 <ValidationError error={errors.problem} />
                 <Button type="submit">Report</Button>
             </form>

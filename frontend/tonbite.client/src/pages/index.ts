@@ -8,3 +8,5 @@ export { LandingPage } from "./home/LandingPage.tsx";
 export { LoginPage } from "./login/LoginPage.tsx";
 export { ProfilePage, ProfileManagePage } from "./profile";
 export { RegisterPage } from "./register/RegisterPage.tsx";
+export { TransactionPage } from "./transaction/TransactionPage.tsx";
+

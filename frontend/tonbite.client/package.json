@@ -17,6 +17,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-quill": "^2.0.0",
+    "react-to-pdf": "^2.0.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
@@ -37,6 +38,6 @@
     "tailwindcss": "^3.4.13",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "6.2.6"
+    "vite": "5.4.14"
   }
 }

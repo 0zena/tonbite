@@ -1,0 +1,23 @@
+.transaction-page {
+    @apply bg-white text-black w-fit text-start p-4 self-center rounded-lg;
+
+    table {
+        @apply border-collapse border border-black;
+    }
+
+    th {
+        @apply bg-zinc-300;
+    }
+
+    tr, td, th {
+        @apply border-b border-black p-2;
+    }
+
+    td {
+        @apply border-r border-black;
+    }
+
+    label {
+        @apply font-bold;
+    }
+}

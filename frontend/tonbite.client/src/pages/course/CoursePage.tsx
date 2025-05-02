@@ -70,9 +70,12 @@ export const CoursePage = () => {
                 amount: course!.price!.toString(),
             }
 
-            await tonConnectUI.sendTransaction(transaction, sender.defaultModalOptions);
-            await TransactionService.send(form);
+            // await tonConnectUI.sendTransaction(transaction, sender.defaultModalOptions);
+            const transactionId = await TransactionService.send(form);
             await CourseService.purchase(id);
+
+            if (transactionId)
+                window.open(`/transaction/${transactionId}`, '_blank');
         } catch (error) {
             console.log("transaction failed " + error);
         }
