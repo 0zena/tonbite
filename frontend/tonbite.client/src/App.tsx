@@ -4,7 +4,7 @@ import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { HeroUIProvider } from "@heroui/react";
 import AppRouter from "./router/AppRouter.tsx";
 import AuthProvider from "./provider/AuthProvider.tsx";
-import { AppNavbar } from "./components";
+import { AppNavbar, Footer } from "./components";
 
 function App() {
     return (
@@ -15,6 +15,7 @@ function App() {
                     <main className={"h-full p-4"}>
                         <AppRouter />
                     </main>
+                    <Footer />
                 </HeroUIProvider>
             </AuthProvider>
         </TonConnectUIProvider>

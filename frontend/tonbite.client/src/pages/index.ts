@@ -2,6 +2,7 @@ export { BrowsePage } from "./browse/BrowsePage.tsx";
 export { CoursePage, CreateCoursePage } from "./course";
 export { CourseStepPage, CreateCourseStepPage } from "./courseStep";
 export { NotFoundError } from "./error/NotFoundError.tsx";
+export { ProblemReport } from "./error/ProblemReport.tsx";
 export { HomePage } from "./home/HomePage.tsx";
 export { LandingPage } from "./home/LandingPage.tsx";
 export { LoginPage } from "./login/LoginPage.tsx";

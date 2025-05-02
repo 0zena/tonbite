@@ -11,10 +11,15 @@ import {
     CourseStepPage,
     CreateCourseStepPage,
     LandingPage,
+    ProblemReport,
 } from "../pages";
 import { ProtectedRoute, CourseLayout } from "../components";
 
 export const publicRoutes = [
+    {
+        path: "/report",
+        element: <ProblemReport />,
+    },
     {
       path: "*",
       element: <NotFoundError />,

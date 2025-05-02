@@ -17,8 +17,6 @@ public class EmailHttpService(ILogger<EmailHttpService> logger, IConfiguration c
         if (string.IsNullOrEmpty(key))
             throw new InvalidKeyException();
 
-        _logger.LogInformation($"Sending with key {key}.");
-        
         await Execute(key, subject, message, toEmail);
     }
 
@@ -33,8 +31,6 @@ public class EmailHttpService(ILogger<EmailHttpService> logger, IConfiguration c
             PlainTextContent = message,
             HtmlContent = message
         };
-        
-        _logger.LogInformation($"Sending email to {email}.");
         
         msg.AddTo(new EmailAddress(toEmail));
         msg.SetClickTracking(false, false);

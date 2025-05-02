@@ -1,3 +1,6 @@
+export type { ReportProblemFormProps } from "./email/ReportProblem.ts";
+export { ReportProblemFormSchema } from "./email/ReportProblem.ts";
+
 export type { ChangePasswordProps } from "./ChangePasswordProps.ts";
 export { ChangePasswordSchema } from "./ChangePasswordProps.ts";
 

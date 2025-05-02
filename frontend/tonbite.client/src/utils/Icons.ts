@@ -16,4 +16,5 @@ export class Icons
     static readonly FILTERS = "filter_alt";
     static readonly LINK = "link";
     static readonly GITHUB = "code";
+    static readonly REPORT = "report";
 }
