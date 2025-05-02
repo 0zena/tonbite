@@ -10,5 +10,9 @@ public interface ICourseHttpService
     /// <returns>New course instance.</returns>
     Course Create(CourseProps props, User user);
 
+    /// <summary> Gets Course. </summary>
+    /// <param name="id">Search key.</param>
+    /// <param name="includeSteps">Include Steps or not.</param>
+    /// <returns>Course.</returns>
     Task<Course?> Get(long id, bool includeSteps);
 }

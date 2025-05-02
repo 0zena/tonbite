@@ -32,14 +32,20 @@ public class CourseHttpService(ApplicationDbContext context) : ICourseHttpServic
         return course;
     }
 
-    public async Task<Course?> Get(long id, bool includeSteps)
+    /// <inheritdoc /> 
+    public Task<Course?> Get(long id, bool includeSteps)
     {
         var query = context.Courses
             .Include(x => x.Users)
             .AsQueryable();
 
-        if (includeSteps) query = query.Include(x => x.Steps);
+        if (includeSteps)
+            query = query
+                .Include(x => x.Steps!
+                    .AsQueryable()
+                    .OrderBy(y => y.Created)
+                );
         
-        return await query.FirstOrDefaultAsync(x => x.Id == id);
+        return query.FirstOrDefaultAsync(x => x.Id == id);
     }
 }

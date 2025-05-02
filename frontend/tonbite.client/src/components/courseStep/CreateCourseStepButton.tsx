@@ -10,7 +10,7 @@ export const CreateCourseStepButton = () => {
     }
 
     return (
-        <div onClick={toCreateStepPage} className={"p-6 w-full rounded-xl border border-dashed cursor-pointer hover:opacity-20"}>
+        <div onClick={toCreateStepPage} className={"p-6 w-full rounded-xl border border-dashed cursor-pointer max-w-[900px] hover:opacity-20"}>
             <Icon icon={Icons.ADD} />
         </div>
     )

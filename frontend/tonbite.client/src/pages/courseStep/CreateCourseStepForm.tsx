@@ -9,13 +9,16 @@ import { Icon, TextEditor, ValidationError } from "../../components";
 import { Input, Textarea } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Card } from "@heroui/card";
+import { useNavigate } from "react-router-dom";
 
 export const CreateCourseStepForm = ({courseId}: {courseId: number}) => {
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<CourseStepType>({ resolver: zodResolver(CourseStepSchema)});
+    const navigate = useNavigate();
 
     const Submit = async (form: CourseStepType) => {
         form.parentId = courseId;
         await CourseStepService.create(form);
+        navigate(`/courses/${courseId}`);
     }
 
     return (

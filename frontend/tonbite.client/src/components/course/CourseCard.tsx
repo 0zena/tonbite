@@ -7,9 +7,9 @@ export const CourseCard = ({item, showStatus}: {item: CourseType, showStatus: bo
     const visibilityName = item?.visibility !== undefined ? Visibility[item.visibility] : '';
 
     return (
-        <Card as={Link} href={`/courses/${item.id}`} className={"hover:opacity-85"}>
+        <Card as={Link} href={`/courses/${item.id}`} className={"w-full hover:opacity-85"}>
             <CardHeader className={"flex"}>
-                <h3 className={"text-xl font-bold text-start bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent"}>{item.name}</h3>
+                <h3 className={"text-xl font-bold text-start text-gradient"}>{item.name}</h3>
                 <p className={"self-start text-nowrap ml-auto text-primary font-bold text-xs"}>{item.price} TON</p>
             </CardHeader>
             <CardBody>

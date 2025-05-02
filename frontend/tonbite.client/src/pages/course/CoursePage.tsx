@@ -112,13 +112,15 @@ export const CoursePage = () => {
             </header>
 
             {editing ? (
-                <>
-                    <CreateCourseForm course={course} editing={editing} onSubmit={edit} />
+                <div className={"flex flex-col items-center gap-8"}>
+                    <div className={"w-full max-w-[900px]"}>
+                        <CreateCourseForm course={course} editing={editing} onSubmit={edit} />
+                    </div>
                     {course?.steps && (
                         <CourseStepList isOwner={isOwner} data={course?.steps} onDelete={stepDeleted} />
                     )}
                     <CreateCourseStepButton />
-                </>
+                </div>
             ) : (
                 <div className={"flex flex-col items-center gap-2"}>
                     {(

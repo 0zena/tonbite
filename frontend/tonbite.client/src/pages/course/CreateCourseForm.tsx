@@ -37,7 +37,7 @@ export const CreateCourseForm = ({course = {} as CourseType, editing = false, on
     }
 
     return (
-        <Card className={"p-6 space-y-6"}>
+        <Card className={"p-6 space-y-6 w-full"}>
             <h2 className={"text-xl"}>{editing ? ("Edit Course") : ("Create a new Course")}</h2>
             <p>{editing ? ("Add steps below") : ("You will be able to add steps later.")}</p>
             <form onSubmit={handleSubmit(Submit)} className={"space-y-4"}>

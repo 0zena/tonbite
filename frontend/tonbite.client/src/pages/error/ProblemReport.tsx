@@ -18,12 +18,14 @@ export const ProblemReport = () => {
     };
 
     return (
-        <div className="flex flex-col items-center">
-            <h1>Problem Report</h1>
-            <p>
-                If you have any problems with the site, please report them
-                to the developers.
-            </p>
+        <div className="flex flex-col items-center gap-8">
+            <div className="flex flex-col gap-4">
+                <h1 className="text-2xl font-bold text-gradient">Problem Report</h1>
+                <p>
+                    If you have any problems with the site, please report them
+                    to the developers.
+                </p>
+            </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full max-w-[500px]">
                 <Input label="Author" placeholder="Your name, email or TON address" {...register("author")} />

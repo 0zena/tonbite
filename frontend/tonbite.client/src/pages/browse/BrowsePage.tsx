@@ -8,7 +8,9 @@ import {CourseService} from "../../services";
 import {Pagination} from "@heroui/pagination";
 import {BrowseFilters} from "./BrowseFilters.tsx";
 import {BrowseSorting} from "./BrowseSorting.tsx";
-import {CourseList, SearchBar, LoadingLayout} from "../../components";
+import {CourseList, SearchBar, LoadingLayout, Icon} from "../../components";
+import {Button} from "@heroui/button";
+import {Icons} from "../../utils/Icons.ts";
 
 export const BrowsePage = () => {
     const [courses, setCourses] = useState<CourseType[]>([]);
@@ -31,19 +33,24 @@ export const BrowsePage = () => {
             });
     }, [page, filter, sorting]);
 
-    const ApplyFilters = (form: FilterProps) => {
+    const applyFilters = (form: FilterProps) => {
         setFilter(form);
     }
 
-    const ApplySorting = (sortBy: SortProps) => {
+    const applySorting = (sortBy: SortProps) => {
         setSorting(sortBy);
     }
 
-    const ApplySearch = (key: string | undefined) => {
+    const applySearch = (key: string | undefined) => {
         setFilter(prev => ({
             ...prev,
             searchKey: key,
         }));
+    }
+
+    const clearAll = () => {
+        setFilter({page: 1});
+        setSorting({});
     }
 
     if (loading) {
@@ -52,15 +59,18 @@ export const BrowsePage = () => {
 
     return (
         <div className={"flex flex-col h-full gap-6"}>
-            <SearchBar value={filter.searchKey} onSearch={ApplySearch} />
-            <span className={"flex items-center justify-end space-x-4"}>
-                <BrowseSorting selected={sorting.desc ? "newest" : "oldest"} onSort={ApplySorting} />
-                <BrowseFilters current={filter} onApply={ApplyFilters} />
+            <SearchBar value={filter.searchKey} onSearch={applySearch} />
+            <span className={"flex items-center justify-end gap-4 max-sm:flex-col max-sm:items-start"}>
+                <BrowseSorting selected={sorting.desc ? "newest" : "oldest"} onSort={applySorting} />
+                <BrowseFilters current={filter} onApply={applyFilters} />
+                <Button startContent={<Icon icon={Icons.CANCEL} />} size={"lg"} radius={"sm"} onPress={clearAll}>
+                    Clear All
+                </Button>
             </span>
 
             <h2 className={"text-start text-2xl font-bold"}>Available Courses</h2>
 
-            <div className={"flex justify-center pt-6 border-t"}>
+            <div className={"flex justify-center pt-6 border-t w-full"}>
                 <CourseList data={courses} showStatus={false} />
             </div>
             {courses.length > 0 && (<Pagination variant={"bordered"}

@@ -27,6 +27,8 @@ export const SearchBar = ({value, onSearch}: SearchBarProps) => {
     return (
         <div className="flex">
             <Input label={"Search"}
+                   radius={"full"}
+                   size={"lg"}
                    placeholder={"Type to search..."}
                    value={key}
                    endContent={<Button isIconOnly startContent={<Icon icon={Icons.SEARCH} />} onPress={submit} />}

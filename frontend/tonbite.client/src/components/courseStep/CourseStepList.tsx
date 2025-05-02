@@ -34,7 +34,7 @@ export const CourseStepList = ({data, onDelete, isOwner}: CourseStepListProps) =
                           title="Delete Course?"
                           message="Are you sure you want to delete this course? This action cannot be undone." />
 
-            <div className={"space-y-4 w-full max-w-[900px]"}>
+            <div className={"flex flex-col space-y-4 w-full items-center"}>
                 {data.map((item, index) => (
                     <CourseStepCard item={item} isOwner={isOwner ?? false} editing={editing} onEdit={edit} onDelete={remove} key={index} />
                 ))}

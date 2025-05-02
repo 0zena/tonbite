@@ -51,6 +51,7 @@ export const BrowseFilters = ({current, onApply}: BrowseFiltersProps) => {
             <Button startContent={<Icon icon={Icons.FILTERS} />}
                     color="warning" size={"lg"}
                     variant={"flat"}
+                    radius={"sm"}
                     onPress={onOpen}>
                 Filters
             </Button>
