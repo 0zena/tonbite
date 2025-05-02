@@ -1,4 +1,4 @@
-import { Textarea, Input } from "@heroui/input";
+import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,12 +8,13 @@ import { EmailService } from "../../services";
 import { Card } from "@heroui/react";
 
 export const ProblemReport = () => {
-    const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<ReportProblemFormProps>({
+    const { register, handleSubmit, formState: { errors }, watch, setValue, reset } = useForm<ReportProblemFormProps>({
         resolver: zodResolver(ReportProblemFormSchema),
     });
 
     const onSubmit = async (data: ReportProblemFormProps) => {
         await EmailService.sendProblemReport(data);
+        reset();
     };
 
     return (
