@@ -3,11 +3,14 @@ import { useEffect } from "react";
 import { TransactionService } from "../../services";
 import { useParams } from "react-router-dom";
 import { TransactionType } from "../../states";
+import { Icons } from "../../utils";
 import "./TransactionPage.scss";
+
+// UI Components
 import { TransactionRow } from "./TransactionRow";
 import { usePDF } from 'react-to-pdf';
 import { Button } from "@heroui/react";
-
+import { Icon } from "../../components";
 
 export const TransactionPage = () => {
     const { id } = useParams();
@@ -19,9 +22,11 @@ export const TransactionPage = () => {
     }, [id]);
 
     const handleDownload = () => {
-        if (transaction) {
-            toPDF();
-        }
+        toPDF();
+    }
+
+    if (!transaction) {
+        return <p>Transaction not found</p>;
     }
 
     return (
@@ -40,12 +45,12 @@ export const TransactionPage = () => {
                         <TransactionRow label="Recipient" value={transaction?.recipientId?.toString()} />
                         <TransactionRow label="Sender Address" value={transaction?.senderAddress} />
                         <TransactionRow label="Recipient Address" value={transaction?.recipientAddress} />
-                        <TransactionRow label="Amount" value={`${transaction?.amount} TON`} />
+                        <TransactionRow label="Amount" value={transaction?.amount ? `${transaction?.amount} TON` : undefined} />
                     </tbody>
                 </table>
             </div>
             <span>
-                <Button onPress={handleDownload}>Download PDF</Button>
+                <Button startContent={<Icon icon={Icons.PDF} />} onPress={handleDownload}>Download PDF</Button>
             </span>
         </div>
     );

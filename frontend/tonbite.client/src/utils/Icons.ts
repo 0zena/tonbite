@@ -8,6 +8,7 @@ export class Icons
     static readonly DELETE = "delete";
     static readonly HOME = "home";
     static readonly LOGOUT = "logout";
+    static readonly PDF = "download";
     static readonly PROFILE = "account_circle";
     static readonly MENU = "more_vert";
     static readonly SEARCH = "search";
