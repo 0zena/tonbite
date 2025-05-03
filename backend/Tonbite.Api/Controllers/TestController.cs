@@ -9,6 +9,10 @@ namespace Tonbite.Api.Controllers;
 public class TestController : ControllerBase
 {
     [AllowAnonymous]
+    [HttpGet("/")]
+    public IActionResult HealthCheck() => Ok("healthy");
+
+    [AllowAnonymous]
     [HttpGet("anonymous")]
     public IActionResult TestRequest() => Ok("API TEST");
 

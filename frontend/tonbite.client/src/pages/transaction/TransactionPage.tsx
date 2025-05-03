@@ -31,7 +31,7 @@ export const TransactionPage = () => {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="transaction-page" ref={targetRef}>
+            <div className="transaction-page max-sm:scale-50" ref={targetRef}>
                 <table>
                     <thead>
                         <tr>
