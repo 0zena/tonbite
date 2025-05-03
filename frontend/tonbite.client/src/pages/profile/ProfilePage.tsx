@@ -13,6 +13,7 @@ import { UserSummary } from "./UserSummary.tsx";
 export const ProfilePage = () => {
     const [createdCourses, setCreatedCourses] = useState<CourseType[]>();
     const [purchasedCourses, setPurchasedCourses] = useState<CourseType[]>();
+    const [totalSoldCourses, setTotalSoldCourses] = useState<number>();
     const { client } = useAuth();
 
     useEffect(() => {
@@ -21,6 +22,8 @@ export const ProfilePage = () => {
                 .then(res => setCreatedCourses(res));
             UserService.getCourses(client.id, UserCourseStatus.purchased)
                 .then(res => setPurchasedCourses(res));
+            UserService.getSoldCoursesCount()
+                .then(res => setTotalSoldCourses(res));
         }
     }, [client?.id]);
 
@@ -28,7 +31,10 @@ export const ProfilePage = () => {
         <main>
             { client ? (
                     <div>
-                        <UserSummary user={client} totalCourses={createdCourses?.length ?? 0} totalPurchasedCourses={purchasedCourses?.length ?? 0} />
+                        <UserSummary user={client} 
+                                     totalCourses={createdCourses?.length ?? 0} 
+                                     totalPurchasedCourses={purchasedCourses?.length ?? 0} 
+                                     totalSoldCourses={totalSoldCourses ?? 0} />
                         <Divider />
                         <UserCourses createdCourses={createdCourses} purchasedCourses={purchasedCourses} />
                     </div>

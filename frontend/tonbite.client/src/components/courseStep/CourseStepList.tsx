@@ -19,6 +19,7 @@ export const CourseStepList = ({data, onDelete, isOwner}: CourseStepListProps) =
     const edit = () => {
         setEditing(!editing);
     }
+    
     const remove = async (id: number) => {
         if (!await confirmAction()) return;
         const result = await CourseStepService.delete(id);

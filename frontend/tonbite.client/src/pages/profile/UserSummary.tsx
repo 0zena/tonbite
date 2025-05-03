@@ -9,9 +9,10 @@ interface UserSummaryProps {
     user: UserType;
     totalCourses: number;
     totalPurchasedCourses: number;
+    totalSoldCourses: number;
 }
 
-export const UserSummary = ({ user, totalCourses, totalPurchasedCourses }: UserSummaryProps) => {
+export const UserSummary = ({ user, totalCourses, totalPurchasedCourses, totalSoldCourses }: UserSummaryProps) => {
     return (
         <div className="max-w-4xl mx-auto md:p-6">
             <Card>
@@ -48,9 +49,10 @@ export const UserSummary = ({ user, totalCourses, totalPurchasedCourses }: UserS
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 mt-4 max-sm:grid-cols-1">
+                    <div className="grid grid-cols-3 gap-4 mt-4 max-md:grid-cols-1">
                         <UserSummaryCard value={totalCourses} label={"Created Courses"} />
                         <UserSummaryCard value={totalPurchasedCourses} label={"Purchased Courses"} />
+                        <UserSummaryCard value={totalSoldCourses} label={"Total Sold"} />
                     </div>
                 </CardBody>
             </Card>

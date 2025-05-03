@@ -36,4 +36,13 @@ export class UserService {
             return undefined;
         }
     }
+
+    public static async getSoldCoursesCount() : Promise<number | undefined> {
+        try {
+            const result = await api.get("/user/sold/count");
+            return result.data as number | undefined;
+        } catch {
+            return undefined;
+        }
+    }
 }

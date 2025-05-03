@@ -47,4 +47,12 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
         await context.UpdateAsync(user);
         return user;
     }
+
+    [Authorize]
+    [HttpGet("sold/count")]
+    public async Task<int> GetSoldCoursesCount()
+    {
+        var id = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
+        return await context.Transactions.Where(x => x.RecipientId == id).CountAsync();
+    }
 }
