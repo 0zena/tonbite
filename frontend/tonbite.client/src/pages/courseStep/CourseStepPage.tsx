@@ -6,12 +6,16 @@ import {CourseStepType} from "../../states";
 // UI Components
 import {CourseStepContent} from "./CourseStepContent.tsx";
 import {NotFoundError} from "../error/NotFoundError.tsx";
-import {LoadingLayout} from "../../components";
+import {Icon, LoadingLayout} from "../../components";
+import { usePDF } from "react-to-pdf";
+import { Button } from "@heroui/react";
+import { Icons } from "../../utils/Icons.ts";
 
 export const CourseStepPage = () => {
     const [step, setStep] = useState<CourseStepType | undefined>();
     const [loading, setLoading] = useState(false);
     const {id} = useParams();
+    const { toPDF, targetRef } = usePDF({filename: `course-step-${id}.pdf`});
 
     useEffect(() => {
         setLoading(true);
@@ -21,15 +25,22 @@ export const CourseStepPage = () => {
         });
     }, [id]);
 
+    const handleDownload = () => {
+        toPDF();
+    }
+
 
     if (loading) return <LoadingLayout />;
     if (!loading && !step) return <NotFoundError />
 
     return (
-      <div className={"space-y-6"}>
-          <h3 className={"text-4xl font-bold text-blue-400"}>{step?.name}</h3>
-          <p className={"text-xl text-start border-b pb-2"}>{step?.bio}</p>
-          {step?.content && (<CourseStepContent html={step.content} />)}
-      </div>
+        <div className={"course-step space-y-6 p-4 h-full overflow-y-auto scrollbar-hide"}>
+            <h3 className={"text-4xl font-bold text-blue-400"}>{step?.name}</h3>
+            <p className={"text-xl text-start border-b pb-2"}>{step?.bio}</p>
+            {step?.content && (<Button startContent={<Icon icon={Icons.PDF} />} onPress={handleDownload}>Download PDF</Button>)}
+            <div ref={targetRef}>
+                {step?.content && (<CourseStepContent html={step.content} />)}
+            </div>
+        </div>
     );
 }
