@@ -20,6 +20,15 @@ export class CourseStepService {
         }
     }
 
+    public static async update(step: CourseStepType): Promise<CourseStepType | undefined> {
+        try {
+            const result = await api.put(`/course-steps/${step.id}`, step);
+            return result.data as CourseStepType;
+        } catch {
+            return undefined;
+        }
+    }
+
     public static async delete(id: number | undefined): Promise<string | undefined> {
         try {
             const result = await api.delete(`/course-steps/${id}`);

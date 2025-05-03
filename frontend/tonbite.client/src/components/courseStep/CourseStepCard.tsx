@@ -8,12 +8,10 @@ import {CourseStepMenuButton} from "./CourseStepMenuButton.tsx";
 interface CourseStepCardProps {
     item: CourseStepType;
     isOwner: boolean;
-    editing: boolean;
-    onEdit: () => void;
     onDelete: (id: number) => void;
 }
 
-export const CourseStepCard = ({item, isOwner, editing, onEdit, onDelete}: CourseStepCardProps) => {
+export const CourseStepCard = ({item, isOwner, onDelete}: CourseStepCardProps) => {
     const deleteItem = () => {
         onDelete(item.id!);
     }
@@ -24,7 +22,7 @@ export const CourseStepCard = ({item, isOwner, editing, onEdit, onDelete}: Cours
               <h3 className={"text-2xl font-bold text-blue-400"}>{item.name}</h3>
               <h3 className={"text-white text-start w-full"}>{item.bio}</h3>
           </Link>
-          {isOwner && (<CourseStepMenuButton editing={editing} onEdit={onEdit} onDelete={deleteItem} />)}
+          {isOwner && (<CourseStepMenuButton onDelete={deleteItem} />)}
       </Card>
     );
 }

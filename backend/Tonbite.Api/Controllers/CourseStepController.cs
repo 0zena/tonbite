@@ -17,7 +17,7 @@ public class CourseStepController(ApplicationDbContext context, ICourseStepHttpS
 {
     [HttpGet]
     [Route("{id:long}")]
-    public async Task<CourseStep?> Get([FromRoute] long id, [FromServices] IUserHttpService userService)
+    public async Task<ActionResult<CourseStep?>> Get([FromRoute] long id, [FromServices] IUserHttpService userService)
     {
         var userId = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
         var user =  await userService.GetUser(userId);
@@ -25,7 +25,7 @@ public class CourseStepController(ApplicationDbContext context, ICourseStepHttpS
         var step = await service.Get(id);
         var course = step?.Course;
 
-        return course?.Users?.FirstOrDefault(x => x.User == user) != null || user.IsAdmin() ? step : null;
+        return course?.Users?.FirstOrDefault(x => x.User == user) != null || user.IsAdmin() ? step : NotFound();
     }
 
     [HttpPost]
@@ -34,6 +34,17 @@ public class CourseStepController(ApplicationDbContext context, ICourseStepHttpS
         var course = await context.Courses.FirstOrDefaultAsync(x => x.Id == props.ParentId);
         if (course == null) return BadRequest();
         return await context.CreateAsync(service.Create(props, course));
+    }
+
+    [HttpPut]
+    [Route("{id:long}")]
+    [RequiresOneOfClaim(IdentityData.CreatorUserClaimName, "True", IdentityData.AdminUserClaimName, "True")]
+    public async Task<ActionResult<CourseStep>> Update([FromRoute] long id, [FromBody] CourseStepProps props)
+    {
+        var step = await service.Get(id);
+        if (step == null) return BadRequest();
+        step?.CopyFrom(props);
+        return await context.UpdateAsync(step);
     }
 
     [HttpDelete]

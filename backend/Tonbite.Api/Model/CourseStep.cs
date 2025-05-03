@@ -11,17 +11,24 @@ public class CourseStep : CourseStepProps, IEntity
     public long Id { get; set; }
 
     [NotMapped]
-    public override long ParentId => Course.Id;
+    public override long? ParentId => Course?.Id;
 
     /// <summary> Course which course step belongs to. </summary>
     [JsonIgnore]
     public Course Course { get; set; } = null!;
+
+    public void CopyFrom(CourseStepProps other)
+    {
+        Name = other.Name;
+        Bio = other.Bio;
+        Content = other.Content;
+    }
 }
 
 public class CourseStepProps
 {
     [NotMapped]
-    public virtual long ParentId { get; set; }
+    public virtual long? ParentId { get; set; }
     
     /// <summary> Course step name. </summary>
     [Required(ErrorMessage = "Course Name is required.")]

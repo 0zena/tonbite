@@ -1,5 +1,4 @@
 import {CourseStepType} from "../../states";
-import {useState} from "react";
 
 // UI Components
 import {CourseStepCard} from "./CourseStepCard.tsx";
@@ -14,12 +13,7 @@ interface CourseStepListProps {
 
 export const CourseStepList = ({data, onDelete, isOwner}: CourseStepListProps) => {
     const {isOpen, onOpenChange, confirmAction, handleConfirmResult} = useConfirmModal();
-    const [editing, setEditing] = useState(false);
 
-    const edit = () => {
-        setEditing(!editing);
-    }
-    
     const remove = async (id: number) => {
         if (!await confirmAction()) return;
         const result = await CourseStepService.delete(id);
@@ -32,12 +26,12 @@ export const CourseStepList = ({data, onDelete, isOwner}: CourseStepListProps) =
             <ConfirmModal isOpen={isOpen}
                           onOpenChange={onOpenChange}
                           onConfirm={handleConfirmResult}
-                          title="Delete Course?"
-                          message="Are you sure you want to delete this course? This action cannot be undone." />
+                          title="Delete Course Step?"
+                          message="Are you sure you want to delete this course step? This action cannot be undone." />
 
             <div className={"flex flex-col space-y-4 w-full items-center"}>
                 {data.map((item, index) => (
-                    <CourseStepCard item={item} isOwner={isOwner ?? false} editing={editing} onEdit={edit} onDelete={remove} key={index} />
+                    <CourseStepCard item={item} isOwner={isOwner ?? false} onDelete={remove} key={index} />
                 ))}
             </div>
         </>

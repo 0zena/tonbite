@@ -1,5 +1,11 @@
 import { z, ZodType } from "zod";
 
+export function copyCoursStepFrom(source: CourseStepType, target: CourseStepType) {
+    source.name = target.name;
+    source.bio = target.bio;
+    source.content = target.content;
+}
+
 export type CourseStepType = {
     id?: number;
     parentId?: number;

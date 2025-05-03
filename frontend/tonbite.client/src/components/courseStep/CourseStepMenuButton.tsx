@@ -5,12 +5,10 @@ import {Icon} from "../icon/Icon.tsx";
 import {Icons} from "../../utils";
 
 interface CourseStepMenuButtonProps {
-    editing: boolean;
-    onEdit: () => void;
     onDelete: () => void;
 }
 
-export const CourseStepMenuButton = ({editing, onEdit, onDelete}: CourseStepMenuButtonProps) => {
+export const CourseStepMenuButton = ({onDelete}: CourseStepMenuButtonProps) => {
     return (
         <Dropdown>
             <DropdownTrigger>
@@ -19,13 +17,6 @@ export const CourseStepMenuButton = ({editing, onEdit, onDelete}: CourseStepMenu
                 </Button>
             </DropdownTrigger>
             <DropdownMenu>
-                <DropdownSection showDivider>
-                    <DropdownItem key="edit"
-                                  description={editing ? "Cancel Editing Step" : "Edit Step"}
-                                  onPress={onEdit}>
-                        {editing ? "Cancel Edit" : "Edit"}
-                    </DropdownItem>
-                </DropdownSection>
                 <DropdownSection title="Danger zone">
                     <DropdownItem key="delete"
                                   className="text-danger"

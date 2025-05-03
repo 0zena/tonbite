@@ -61,7 +61,7 @@ export const CreateCourseForm = ({course = {} as CourseType, editing = false, on
                                {...register("walletAddress")}  />
                         <ValidationError error={errors.walletAddress} />
                     </span>
-                    <span className={""}>
+                    <span>
                         <Input label={"Price"}
                                step={"any"}
                                type={"number"}

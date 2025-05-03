@@ -8,7 +8,7 @@ export type { CourseType } from "./Course.ts";
 export { CourseSchema, copyFrom } from "./Course.ts";
 
 export type { CourseStepType } from "./CourseStep.ts";
-export { CourseStepSchema } from "./CourseStep.ts";
+export { CourseStepSchema, copyCoursStepFrom } from "./CourseStep.ts";
 
 export type { LoginFormProps } from "./LoginFormProps.ts";
 export { LoginFormSchema } from "./LoginFormProps.ts";
