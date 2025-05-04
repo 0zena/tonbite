@@ -13,6 +13,7 @@ import {
     LandingPage,
     ProblemReport,
     TransactionPage,
+    AdminPage,
 } from "../pages";
 import { ProtectedRoute, CourseLayout } from "../components";
 
@@ -90,5 +91,12 @@ export const authorizedRoutes = [
                 ]
             },
         ],
+    },
+];
+
+export const adminRoutes = [
+    {
+        path: "/admin",
+        element: <AdminPage />,
     },
 ];

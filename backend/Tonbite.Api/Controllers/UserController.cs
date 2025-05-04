@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tonbite.Api.Data;
 using Tonbite.Api.Http;
+using Tonbite.Api.Identity;
 using Tonbite.Api.Model;
 
 namespace Tonbite.Api.Controllers;
@@ -20,6 +21,19 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
         var user =  await service.GetUser(id, roles);
 
         return user;
+    }
+
+    [Authorize]
+    [HttpGet("search")]
+    [RequiresClaim(IdentityData.AdminUserClaimName, "True")]
+    public async Task<IList<User>?> Get([FromQuery] string searchKey)
+    {
+        return await context.Users
+            .Where(x => x.Email.ToLower().Contains(searchKey.ToLower()) 
+                        || x.Id.ToString() == searchKey 
+                        || x.Username!.ToLower().Contains(searchKey.ToLower()))
+            .OrderBy(x => x.Id)
+            .ToListAsync();
     }
 
     [Authorize]
@@ -54,5 +68,13 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
     {
         var id = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
         return await context.Transactions.Where(x => x.RecipientId == id).CountAsync();
+    }
+
+    [HttpDelete("{id:long}")]
+    public async Task Delete([FromRoute] long id)
+    {
+        var user = await service.GetUser(id);
+        if (user == null) return;
+        await context.DeleteAsync(user);
     }
 }

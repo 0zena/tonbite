@@ -1,3 +1,4 @@
+export { AdminPage } from "./admin/AdminPage.tsx";
 export { BrowsePage } from "./browse/BrowsePage.tsx";
 export { CoursePage, CreateCoursePage } from "./course";
 export { CourseStepPage, CreateCourseStepPage } from "./courseStep";
@@ -9,4 +10,3 @@ export { LoginPage } from "./login/LoginPage.tsx";
 export { ProfilePage, ProfileManagePage } from "./profile";
 export { RegisterPage } from "./register/RegisterPage.tsx";
 export { TransactionPage } from "./transaction/TransactionPage.tsx";
-

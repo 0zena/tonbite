@@ -15,6 +15,19 @@ export class UserService {
         }
     }
 
+    public static async searchUsers(key: string) : Promise<UserType[] | undefined> {
+        try {
+            const response = await api.get(`/user/search`, {
+                params: {
+                    searchKey: key,
+                }
+            });
+            return response.data as UserType[];
+        } catch {
+            return undefined;
+        }
+    }
+
     public static async update(form: UserType) : Promise<UserType | undefined> {
         try {
             const response = await api.put("/user", form);
@@ -41,6 +54,14 @@ export class UserService {
         try {
             const result = await api.get("/user/sold/count");
             return result.data as number | undefined;
+        } catch {
+            return undefined;
+        }
+    }
+
+    public static async delete(id: number) : Promise<void> {
+        try {
+            await api.delete(`/user/${id}`);
         } catch {
             return undefined;
         }
