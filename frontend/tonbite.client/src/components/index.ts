@@ -2,6 +2,7 @@ export { ValidationError } from "./alert/ValidationError.tsx";
 export { ConfirmModal, useConfirmModal } from "./modal";
 export { AppNavbar, CourseLayout, LoadingLayout, Footer } from "./layout";
 export { ProtectedRoute } from "./auth/ProtectedRoute.tsx";
+export { AdminRoute } from "./auth/AdminRoute.tsx";
 export { Icon } from "./icon/Icon.tsx";
 export { CourseMenuButton, CourseList, CourseCard } from "./course";
 export { CreateCourseStepButton } from "./courseStep/CreateCourseStepButton.tsx";

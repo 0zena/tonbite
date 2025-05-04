@@ -19,7 +19,7 @@ export class UserService {
         try {
             const response = await api.get(`/user/search`, {
                 params: {
-                    searchKey: key,
+                    key: key,
                 }
             });
             return response.data as UserType[];

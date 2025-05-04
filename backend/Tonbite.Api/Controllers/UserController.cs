@@ -26,12 +26,13 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
     [Authorize]
     [HttpGet("search")]
     [RequiresClaim(IdentityData.AdminUserClaimName, "True")]
-    public async Task<IList<User>?> Get([FromQuery] string searchKey)
+    public async Task<IList<User>?> Get([FromQuery] string key)
     {
         return await context.Users
-            .Where(x => x.Email.ToLower().Contains(searchKey.ToLower()) 
-                        || x.Id.ToString() == searchKey 
-                        || x.Username!.ToLower().Contains(searchKey.ToLower()))
+            .Where(x => x.Email.ToLower().Contains(key.ToLower()) 
+                        || x.Id.ToString() == key 
+                        || x.Username!.ToLower().Contains(key.ToLower())
+            )
             .OrderBy(x => x.Id)
             .ToListAsync();
     }

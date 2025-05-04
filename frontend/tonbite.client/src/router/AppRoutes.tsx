@@ -15,7 +15,7 @@ import {
     TransactionPage,
     AdminPage,
 } from "../pages";
-import { ProtectedRoute, CourseLayout } from "../components";
+import { AdminRoute, ProtectedRoute, CourseLayout } from "../components";
 
 export const publicRoutes = [
     {
@@ -96,7 +96,13 @@ export const authorizedRoutes = [
 
 export const adminRoutes = [
     {
-        path: "/admin",
-        element: <AdminPage />,
+        path: "/",
+        element: <AdminRoute />,
+        children: [
+            {
+                path: "/admin",
+                element: <AdminPage />,
+            },
+        ],
     },
 ];

@@ -24,10 +24,9 @@ export const AdminPage = () => {
     }
 
     return (
-        <div>
-            <h1>Admin</h1>
+        <div className="flex flex-col gap-4">
             <SearchBar label="Search User" placeholder="Search for a user by email, username or id" value={search} onSearch={searchUser} />
-            {users && <UserList users={users} onDelete={remove} />}
+            <UserList users={users ?? []} onDelete={remove} />
         </div>
     )
 }

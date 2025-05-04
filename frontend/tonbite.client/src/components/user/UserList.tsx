@@ -1,8 +1,11 @@
 import { UserType } from "../../states";
-import { UserListItem } from "./UserListItem";
-import "./UserList.scss";
 import { ConfirmModal, useConfirmModal } from "../modal";
 import { UserService } from "../../services";
+import { useAuth } from "../../provider/AuthProvider";
+
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@heroui/react";
+import { Icon } from "../icon/Icon";
+import { Icons } from "../../utils";
 
 interface UserListProps {
     users: UserType[];
@@ -11,6 +14,7 @@ interface UserListProps {
 
 export const UserList = ({ users, onDelete }: UserListProps) => {
     const {isOpen, onOpenChange, confirmAction, handleConfirmResult} = useConfirmModal();
+    const { client } = useAuth();
 
     const remove = async (id: number) => {
         if (!await confirmAction()) return;
@@ -20,18 +24,32 @@ export const UserList = ({ users, onDelete }: UserListProps) => {
 
     return (
         <>
-            <table className="user-list">
-                <thead> 
-                    <tr>
-                        <th>Users</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <Table aria-label="User List" className="user-list">
+                <TableHeader> 
+                    <TableColumn>ID</TableColumn>
+                    <TableColumn>USERNAME</TableColumn>
+                    <TableColumn>EMAIL</TableColumn>
+                    <TableColumn>ACTIONS</TableColumn>
+                </TableHeader>
+                <TableBody emptyContent={"No users to display."}>
                     {users.map(user => (
-                        <UserListItem key={user.id} user={user} onDelete={remove} />
+                        <TableRow key={user.id}>
+                            <TableCell className="text-center">{user.id}</TableCell>
+                            <TableCell>{user.username}</TableCell>
+                            <TableCell>{user.email}</TableCell>
+                            <TableCell>
+                                {client?.id !== user.id && 
+                                (<Button isIconOnly 
+                                         variant="light" 
+                                         color="danger" 
+                                         startContent={<Icon icon={Icons.DELETE} />} 
+                                         onPress={() => remove(user.id!)} />
+                                )}
+                            </TableCell>
+                        </TableRow>
                     ))}
-                </tbody>
-            </table>
+                </TableBody>
+            </Table>
         
             <ConfirmModal isOpen={isOpen}
                             onOpenChange={onOpenChange}
