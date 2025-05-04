@@ -11,10 +11,13 @@ public class StatisticsController(ApplicationDbContext context) : ControllerBase
     [HttpGet]
     public SummaryForm GetSummary()
     {
+        var today = DateTime.UtcNow.Date;
+        var tomorrow = today.AddDays(1);
+        
         return new()
         {
-            PaymentsToday = context.Transactions.Count(x => x.Time.Day == DateTime.Today.Day),
-            CreatedCoursesToday = context.Courses.Count(x => x.Created.Day == DateTime.Today.Day),
+            PaymentsToday = context.Transactions.Count(x => x.Time >= today && x.Time < tomorrow),
+            CreatedCoursesToday = context.Courses.Count(x => x.Created >= today && x.Created < tomorrow),
             AvaragePrice = context.Courses.Average(x => x.Price),
             TotalCourses = context.Courses.Count(),
             TotalPayments = context.Transactions.Count(),
