@@ -1,5 +1,6 @@
 .course-step-content {
-  @apply text-start tracking-wide space-y-4 bg-white text-black p-4 rounded-lg max-h-full h-full;
+  @apply tracking-wide space-y-4 bg-white p-4 rounded-lg max-h-full h-full w-full;
+  @apply text-start text-black overflow-x-hidden break-words;
   max-width: 21cm;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 

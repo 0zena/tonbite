@@ -83,9 +83,8 @@ export const CreateCourseForm = ({course = {} as CourseType, editing = false, on
                         </Button>
                     )}
 
-                    <Button color="primary" type={"submit"} className={"ml-auto"}>
-                        <Icon icon={Icons.ADD} />
-                        {editing ? ("Save") : ("Create")}
+                    <Button startContent={<Icon icon={editing ? Icons.APPLY : Icons.ADD} />} color="primary" type={"submit"} className={"ml-auto"}>
+                        {editing ? ("Update") : ("Create")}
                     </Button>
                 </span>
             </form>

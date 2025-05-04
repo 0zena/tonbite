@@ -2,13 +2,14 @@ import { copyCoursStepFrom, CourseStepSchema, CourseStepType } from "../../state
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CourseStepService } from "../../services";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { Icons } from "../../utils";
 
 // UI components
-import { TextEditor, ValidationError } from "../../components";
+import { Icon, TextEditor, ValidationError } from "../../components";
 import { Input, Textarea } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Card } from "@heroui/card";
-import { useNavigate } from "react-router-dom";
 
 interface CreateCourseStepFormProps {
     courseId: number;
@@ -50,8 +51,14 @@ export const CreateCourseStepForm = ({courseId, step, editing, onSubmit}: Create
                             onChange={(val) => setValue("content", val)}
                             placeholder={"Write something..."} />
                 <ValidationError error={errors.content} />
-                <span className={"flex w-full justify-end"}>
-                    <Button color="primary" type={"submit"}>
+                <span className={"flex w-full"}>
+                    {editing && (
+                        <Button startContent={<Icon icon={Icons.CANCEL} />} color="warning" variant={"light"} onPress={onSubmit}>
+                            Cancel
+                        </Button>
+                    )}
+
+                    <Button startContent={<Icon icon={editing ? Icons.APPLY : Icons.ADD} />} color="primary" type={"submit"} className={"ml-auto"}>
                         {editing ? "Update" : "Create"}
                     </Button>
                 </span>

@@ -6,6 +6,7 @@ export class Icons
     static readonly CANCEL = "close";
     static readonly CREATE = "add_circle";
     static readonly DELETE = "delete";
+    static readonly EDIT = "edit";
     static readonly HOME = "home";
     static readonly LOGOUT = "logout";
     static readonly PDF = "download";
