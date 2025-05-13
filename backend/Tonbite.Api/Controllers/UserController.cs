@@ -24,6 +24,13 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
     }
 
     [Authorize]
+    [HttpGet("{id:long}")]
+    public async Task<User?> Get([FromRoute] long id)
+    {
+       return await context.Users.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    [Authorize]
     [HttpGet("search")]
     [RequiresClaim(IdentityData.AdminUserClaimName, "True")]
     public async Task<IList<User>?> Get([FromQuery] string key)

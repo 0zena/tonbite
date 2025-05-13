@@ -15,6 +15,15 @@ export class UserService {
         }
     }
 
+    public static async getById(id: number): Promise<UserType | undefined> {
+        try {
+            const response = await api.get(`/user/${id}`);
+            return response.data as UserType;
+        } catch {
+            return undefined;
+        }
+    }
+
     public static async searchUsers(key: string) : Promise<UserType[] | undefined> {
         try {
             const response = await api.get(`/user/search`, {

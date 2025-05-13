@@ -1,7 +1,7 @@
 import {useTonAddress, useTonConnectUI} from '@tonconnect/ui-react';
 import {TransactionHandler} from "../../TON/TransactionHandler.ts";
-import {CourseService, TransactionService} from "../../services";
-import {CourseType, TransactionType, UserCourseStatus} from "../../states";
+import {CourseService, TransactionService, UserService} from "../../services";
+import {CourseType, TransactionType, UserCourseStatus, UserType} from "../../states";
 import {useAuth} from "../../provider/AuthProvider.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
@@ -16,10 +16,12 @@ import {CourseStepList} from "../../components/courseStep/CourseStepList.tsx";
 import {CourseHeaderAction} from "./CourseHeaderAction.tsx";
 import {NotFoundError} from "../error/NotFoundError.tsx";
 import {Chip} from "@heroui/chip";
+import { CourseOwner } from './CourseOwner.tsx';
 
 export const CoursePage = () => {
     const {isOpen, onOpenChange, confirmAction, handleConfirmResult} = useConfirmModal();
     const [course, setCourse] = useState<CourseType | undefined>();
+    const [owner, setOwner] = useState<UserType | undefined>();
     const [editing, setEditing] = useState<boolean>(false);
     const navigate = useNavigate();
     const clientAddress = useTonAddress();
@@ -30,10 +32,18 @@ export const CoursePage = () => {
     const isOwner = course?.users?.isCourseOwner(client) || client?.roles?.hasRole("Admin");
     const Created = course?.created ? new Date(course?.created) : "null";
     const visibilityName = course?.visibility !== undefined ? Visibility[course.visibility] : '';
+    const ownerId = course?.users?.find(x => x.status == UserCourseStatus.creator)?.userId;
+
 
     useEffect(() => {
-        CourseService.get(id, true).then(r => setCourse(r));
+        CourseService.get(id, true).then(setCourse);
     }, [id]);
+
+    useEffect(() => {
+        if (ownerId) {
+            UserService.getById(ownerId).then(setOwner);
+        }
+    }, [ownerId])
 
     const changeVisibility = async () => {
         let visibility: Visibility;
@@ -112,6 +122,7 @@ export const CoursePage = () => {
                 </Chip>
                 <Chip radius="sm" variant="dot" color={"secondary"}>{Created.toLocaleString()}</Chip>
                 <Chip radius="sm" variant="dot" color={"danger"}>{visibilityName}</Chip>
+                <CourseOwner user={owner} />
             </header>
 
             {editing ? (
