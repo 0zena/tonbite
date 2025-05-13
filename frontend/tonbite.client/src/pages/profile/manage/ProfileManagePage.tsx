@@ -5,6 +5,10 @@ import { ChangePasswordForm } from "./ChangePasswordForm.tsx";
 import { EditProfileForm } from "./EditProfileForm.tsx";
 import { AdvancedSettingsForm } from "./AdvancedSettingsForm.tsx";
 import { useAuth } from "../../../provider/AuthProvider.tsx";
+import { Button } from "@heroui/button";
+import { Link } from "@heroui/link";
+import { Icon } from "../../../components/index.ts";
+import { Icons } from "../../../utils/Icons.ts";
 
 export const ProfileManagePage = () => {
     const { client } = useAuth();
@@ -13,7 +17,8 @@ export const ProfileManagePage = () => {
         <main className="min-h-screen py-8">
             <div className="max-w-4xl mx-auto px-4">
                 <Card className="min-h-[600px]">
-                    <CardHeader className="flex flex-col items-center gap-4">
+                    <CardHeader className="flex items-center gap-4">
+                        <Button startContent={<Icon icon={Icons.BACK} />} as={Link} href={"/profile"} size="sm">Back</Button>
                         <h1 className="text-3xl font-bold text-gray-200">
                             Manage Profile
                         </h1>

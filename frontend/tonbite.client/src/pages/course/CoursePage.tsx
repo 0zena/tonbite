@@ -80,7 +80,9 @@ export const CoursePage = () => {
                 amount: course!.price!.toString(),
             }
 
-            await tonConnectUI.sendTransaction(transaction, sender.defaultModalOptions);
+            if (course.price !== 0)
+                await tonConnectUI.sendTransaction(transaction, sender.defaultModalOptions);
+            
             const transactionId = await TransactionService.send(form);
             await CourseService.purchase(id);
 

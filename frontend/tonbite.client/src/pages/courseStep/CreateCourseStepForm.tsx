@@ -22,7 +22,7 @@ export const CreateCourseStepForm = ({courseId, step, editing, onSubmit}: Create
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<CourseStepType>({ resolver: zodResolver(CourseStepSchema)});
     const navigate = useNavigate();
 
-    const Submit = async (form: CourseStepType) => {
+    const submit = async (form: CourseStepType) => {
         if (!editing) {
             form.parentId = courseId;
             await CourseStepService.create(form);
@@ -36,7 +36,7 @@ export const CreateCourseStepForm = ({courseId, step, editing, onSubmit}: Create
 
     return (
         <Card className={"p-4"}>
-            <form onSubmit={handleSubmit(Submit)} className={"space-y-4"}>
+            <form onSubmit={handleSubmit(submit)} className={"space-y-4"}>
                 <Input label={"Title"}
                        defaultValue={step?.name}
                        placeholder={"Introduction to..."}
