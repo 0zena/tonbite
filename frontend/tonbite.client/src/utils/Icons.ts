@@ -19,4 +19,5 @@ export class Icons
     static readonly LINK = "link";
     static readonly GITHUB = "code";
     static readonly REPORT = "report";
+    static readonly OWNER = "article_person";
 }

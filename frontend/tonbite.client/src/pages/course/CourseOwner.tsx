@@ -1,4 +1,5 @@
 import { UserType } from "../../states";
+import { Icons } from "../../utils";
 
 // UI Components
 import {
@@ -21,7 +22,10 @@ export const CourseOwner = ({user}: CourseOwnerProps) => {
 
     return (
         <>
-            <Button isIconOnly startContent={<Icon icon="info" />} onPress={onOpen} />
+            <Button isIconOnly startContent={<Icon icon={Icons.OWNER} />} 
+                               size={"sm"} 
+                               variant={"bordered"} 
+                               onPress={onOpen} />
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalContent>
@@ -37,7 +41,7 @@ export const CourseOwner = ({user}: CourseOwnerProps) => {
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="primary" onPress={onClose}>
-                                Nice
+                                Ok
                                 </Button>
                             </ModalFooter>
                         </>
