@@ -20,6 +20,19 @@ builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwa
 // Http Services
 builder.Services.AddScopedServices();
 
+// CORS
+var origin = builder.Configuration.GetValue<string>("ClientBaseUrl") ?? string.Empty;
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowClient", policy =>
+    {
+        policy.WithOrigins(origin)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 // JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var validIssuers = jwtSettings.GetSection("Issuer").Get<IEnumerable<string>>() ?? [];
@@ -52,6 +65,13 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
 
 var app = builder.Build();
 
+// Migrations
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -60,15 +80,9 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-// CORS
-var origin = builder.Configuration.GetValue<string>("ClientBaseUrl") ?? string.Empty;
-app.UseCors(corsPolicyBuilder => corsPolicyBuilder
-    .WithOrigins(origin)
-    .AllowCredentials()
-    .AllowAnyHeader()
-    .AllowAnyMethod());
-
 app.UseRouting();
+
+app.UseCors("AllowClient");
 
 app.UseAuthentication();
 app.UseAuthorization();

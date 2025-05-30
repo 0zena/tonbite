@@ -1,36 +1,61 @@
-version: '3.3'
+version: '3.8'
 
 services:
   react-app:
     build: 
       context: frontend/tonbite.client
+    container_name: tonbite-frontend
     ports:
-       - "5173:80"
+      - "5173:80"
+    environment:
+      - NODE_ENV=production
+      - VITE_API_URL=http://localhost:7085
+      - VITE_CLIENT_URL=http://localhost:5173
+    networks:
+      - tonbite-network
     depends_on:
-       - api 
-
+      - api
+    restart: unless-stopped
 
   api: 
     build:
       context: backend/Tonbite.Api
+    container_name: tonbite-api
     ports:
-       - "7085:80"
+      - "7085:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__Postgres=Host=db;Database=tonbite;Username=user;Password=postgres
+    networks:
+      - tonbite-network
     depends_on:
-       - db 
+      - db
+    restart: unless-stopped
 
   db:
-   image: postgres:13
-   environment:
-     POSTGRES_USER: user
-     POSTGRES_PASSWORD: postgres
-     POSTGRES_DB: tonbite
-     POSTGRES_USER_ID: postgres
-   ports:
-    - "5432:5432"
-   volumes:
-     - postgres_data:/var/lib/postgresql/data
+    image: postgres:16-alpine
+    container_name: tonbite-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tonbite
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - tonbite-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d tonbite"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  tonbite-network:
+    driver: bridge
 
 volumes:
   postgres_data:
+    driver: local
