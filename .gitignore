@@ -4,5 +4,6 @@
 backend/Tonbite.Api/bin/
 backend/Tonbite.Api/obj/
 backend/Tonbite.Api/Folder.DotSettings.user
+backend/Tonbite.Api/appsettings.Production.json
 
 *.tsbuildinfo

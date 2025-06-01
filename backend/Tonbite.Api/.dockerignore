@@ -1,0 +1,15 @@
+# flyctl launch added from .idea\.idea.tonbite.dir\.idea\.gitignore
+# Default ignored files
+.idea\.idea.tonbite.dir\.idea\shelf
+.idea\.idea.tonbite.dir\.idea\workspace.xml
+# Rider ignored files
+.idea\.idea.tonbite.dir\.idea\.idea.tonbite.iml
+.idea\.idea.tonbite.dir\.idea\modules.xml
+.idea\.idea.tonbite.dir\.idea\projectSettingsUpdater.xml
+.idea\.idea.tonbite.dir\.idea\contentModel.xml
+# Editor-based HTTP Client requests
+.idea\.idea.tonbite.dir\.idea\httpRequests
+# Datasource local storage ignored files
+.idea\.idea.tonbite.dir\.idea\dataSources
+.idea\.idea.tonbite.dir\.idea\dataSources.local.xml
+fly.toml
