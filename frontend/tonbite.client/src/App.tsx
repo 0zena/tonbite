@@ -8,7 +8,7 @@ import { AppNavbar, Footer } from "./components";
 
 function App() {
     return (
-        <TonConnectUIProvider manifestUrl="https://ton.vote/tonconnect-manifest.json">
+        <TonConnectUIProvider manifestUrl="https://tonbite.vercel.app/tonconnect-manifest.json">
             <AuthProvider>
                 <HeroUIProvider className={"app-overlay"}>
                     <AppNavbar />
