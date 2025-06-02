@@ -25,4 +25,10 @@ public interface IUserHttpService
     /// <param name="roles">Include roles in response or not</param>
     /// <returns>All users data from database.</returns>
     Task<User?> GetUser(long id, bool roles = true);
+
+    /// <summary> Get specific user from database. </summary>
+    /// <param name="email">Search key.</param>
+    /// <param name="roles">Include roles in response or not</param>
+    /// <returns>All users data from database.</returns>
+    Task<User?> GetUserByEmail(string email, bool roles = true);
 }

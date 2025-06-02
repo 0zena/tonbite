@@ -18,7 +18,7 @@ public class StatisticsController(ApplicationDbContext context) : ControllerBase
         {
             PaymentsToday = context.Transactions.Count(x => x.Time >= today && x.Time < tomorrow),
             CreatedCoursesToday = context.Courses.Count(x => x.Created >= today && x.Created < tomorrow),
-            AvaragePrice = context.Courses.Average(x => x.Price),
+            AvaragePrice = context.Courses.Average(x => x.Price) ?? 0,
             TotalCourses = context.Courses.Count(),
             TotalPayments = context.Transactions.Count(),
             TotalUsers = context.Users.Count()

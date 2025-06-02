@@ -63,6 +63,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
 
+var admin = builder.Configuration.GetSection("Admin");
+
 var app = builder.Build();
 
 // Migrations
@@ -78,6 +80,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
+}
+
+// Configure applications default admin profile
+if (app.Environment.IsProduction())
+{
+    await app.UseDefaultAdmin(admin);
 }
 
 app.UseRouting();

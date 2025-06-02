@@ -86,4 +86,14 @@ public class UserHttpService(IConfiguration configuration, ApplicationDbContext 
         
         return await query.FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    /// <inheritdoc />
+    public async Task<User?> GetUserByEmail(string email, bool roles = true)
+    {
+        var query = context.Users.AsQueryable();
+
+        if (roles) query = query.Include(x => x.Roles);
+        
+        return await query.FirstOrDefaultAsync(x => x.Email == email);
+    }
 }
