@@ -9,7 +9,10 @@ public class EmailHttpService(ILogger<EmailHttpService> logger, IConfiguration c
     private readonly ILogger _logger = logger;
 
     public Task SendProblemReport(string email, string message)
-        => SendEmailAsync(email, "Service Problem Report", message);
+        => SendEmailAsync(email, "Tonbite Service Problem Report", message);
+
+    public Task SendVerificationCode(string email, string code)
+        => SendEmailAsync(email, "Tonbite Verify Email", $"Your verification code: {code}. It is valid 1 hour.");
 
     private async Task SendEmailAsync(string toEmail, string subject, string message)
     {

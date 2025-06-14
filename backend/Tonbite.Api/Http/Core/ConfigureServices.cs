@@ -13,5 +13,6 @@ public static class ConfigureServices
         services.AddScoped<ICourseStepHttpService, CourseStepHttpService>();
         services.AddScoped<ITransactionHttpService, TransactionHttpService>();
         services.AddScoped<IEmailHttpService, EmailHttpService>();
+        services.AddScoped<IVerifyEmailService, VerifyEmailService>();
     }
 }

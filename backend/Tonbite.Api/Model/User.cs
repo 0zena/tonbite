@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Tonbite.Api.Model;
@@ -41,6 +40,8 @@ public class UserProps : IEntity
     /// <summary> User profile bio </summary>
     [MaxLength(1000, ErrorMessage = "Bio must be 1000 characters or fewer")]
     public string? Bio { get; set; }
+    
+    public bool Verified { get; set; }
     
     /// <summary> List of the user roles. </summary>
     public List<Role>? Roles { get; set; }

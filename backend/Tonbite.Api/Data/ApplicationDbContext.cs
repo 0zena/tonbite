@@ -12,6 +12,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<CourseStep> CourseSteps { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<VerificationCode> VerificationCodes { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
