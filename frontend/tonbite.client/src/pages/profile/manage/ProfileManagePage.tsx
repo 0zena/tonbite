@@ -14,7 +14,7 @@ export const ProfileManagePage = () => {
     const { client } = useAuth();
 
     return (
-        <main className="min-h-screen py-8">
+        <div className="py-8">
             <div className="max-w-4xl mx-auto px-4">
                 <Card className="min-h-[600px]">
                     <CardHeader className="flex items-center gap-4">
@@ -84,6 +84,6 @@ export const ProfileManagePage = () => {
                     </CardBody>
                 </Card>
             </div>
-        </main>
+        </div>
     );
 };

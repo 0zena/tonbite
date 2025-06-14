@@ -7,10 +7,11 @@ using Tonbite.Api.Model;
 
 namespace Tonbite.Api.Controllers;
 
+[Authorize]
+[Route("/api/verify-email")]
 public class VerifyEmailController(ApplicationDbContext context) : ControllerBase
 {
-    [Authorize]
-    [HttpPost("verify-email")]
+    [HttpPost]
     public async Task<ActionResult<User>> VerifyEmail([FromBody] VerifyEmailForm form)
     {
         var code = await context.VerificationCodes.FirstOrDefaultAsync(x => x.Email == form.Email && x.Code == form.Code);

@@ -5,3 +5,4 @@ export { CourseService } from "./CourseService.ts";
 export { CourseStepService } from "./CourseStepService.ts";
 export { TransactionService } from "./TransactionService.ts";
 export { EmailService } from "./EmailService.ts";
+export { VerifyEmailService } from "./VerifyEmailService.ts";

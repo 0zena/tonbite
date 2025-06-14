@@ -16,7 +16,7 @@ public class EmailController(IEmailHttpService service) : ControllerBase
         var message = string.Join('\n', form.Message, form.Author);
         return service.SendProblemReport("jevgenijs.kursevs@gmail.com", message);
     }
-    
+        
     [Authorize]
     [HttpPost("send-code")]
     public async Task<IActionResult> SendCode([FromBody] string email, [FromServices] IVerifyEmailService verifyEmailService)

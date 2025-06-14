@@ -6,5 +6,13 @@ export class EmailService {
         const response = await api.post("/email/report", data);
         return response.data;
     }
+
+    public static async sendCode(email: string): Promise<string | undefined> {
+        const response = await api.post("/email/send-code", JSON.stringify(email),
+        {
+            headers: { "Content-Type": "application/json" }
+        });
+        return response.data;
+    }
 }
 
