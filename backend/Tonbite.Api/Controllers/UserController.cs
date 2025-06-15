@@ -40,6 +40,7 @@ public partial class UserController(ApplicationDbContext context, IUserHttpServi
                         || x.Id.ToString() == key 
                         || x.Username!.ToLower().Contains(key.ToLower())
             )
+            .Include(x => x.Roles)
             .OrderBy(x => x.Id)
             .ToListAsync();
     }

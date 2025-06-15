@@ -12,7 +12,7 @@ function App() {
             <AuthProvider>
                 <HeroUIProvider className={"app-overlay"}>
                     <AppNavbar />
-                    <main className={"h-full p-4 overflow-y-auto"}>
+                    <main className={"max-h-full h-full p-4 overflow-y-auto"}>
                         <AppRouter />
                     </main>
                     <Footer />

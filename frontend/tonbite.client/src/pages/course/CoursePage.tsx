@@ -30,9 +30,12 @@ export const CoursePage = () => {
     const {id} = useParams();
 
     const isOwner = course?.users?.isCourseOwner(client) || client?.roles?.hasRole("Admin");
-    const Created = course?.created ? new Date(course?.created) : "null";
+    const Created = course?.created ? new Date(course?.created) : null;
     const visibilityName = course?.visibility !== undefined ? Visibility[course.visibility] : '';
     const ownerId = course?.users?.find(x => x.status == UserCourseStatus.creator)?.userId;
+    const formattedDate = Created
+        ? `${Created.getFullYear()}-${String(Created.getMonth() + 1).padStart(2, '0')}-${String(Created.getDate()).padStart(2, '0')}`
+        : "N/A";
 
 
     useEffect(() => {
@@ -67,9 +70,10 @@ export const CoursePage = () => {
     }
 
     const buy = async () => {
-        if (!course?.walletAddress || !course?.price) return;
+        if (!course?.walletAddress) return;
+
         const sender = new TransactionHandler();
-        const transaction = sender.createTransaction(course.walletAddress, course.price);
+        const transaction = sender.createTransaction(course.walletAddress, course.price ?? 0);
 
         try {
             const form: TransactionType = {
@@ -114,17 +118,21 @@ export const CoursePage = () => {
                           title="Delete Course?"
                           message="Are you sure you want to delete this course? This action cannot be undone." />
 
-            <header className={"flex justify-center items-center gap-4"}>
-                <CourseHeaderAction editing={editing} client={client} course={course}
+            <header className={"flex justify-center items-center gap-4 max-md:flex-col max-md:items-end"}>
+                <div className="flex gap-2">
+                    <CourseHeaderAction editing={editing} client={client} course={course}
                                     Buy={buy} Delete={remove} Edit={edit} Change={changeVisibility} />
-                <Chip radius="sm"
+                    <CourseOwner user={owner} />
+                </div>
+                <div className="flex items-center gap-4 max-sm:flex-col max-sm:items-end">
+                    <Chip radius="sm" size='lg'
                       variant="bordered"
                       startContent={<img src={Toncoin} alt={"toncoin"} className={"size-4"} />}>
-                    {course?.price === 0 ? "Free" : `${course?.price} TON`}
-                </Chip>
-                <Chip radius="sm" variant="dot" color={"secondary"}>{Created.toLocaleString()}</Chip>
-                <Chip radius="sm" variant="dot" color={"danger"}>{visibilityName}</Chip>
-                <CourseOwner user={owner} />
+                        {course?.price === 0 ? "Free" : `${course?.price} TON`}
+                    </Chip>
+                    <Chip radius="sm" size='lg' variant="dot" color={"danger"}>{visibilityName}</Chip>
+                    <Chip radius="sm" size='lg' variant="dot" color={"secondary"}>{formattedDate}</Chip>
+                </div>
             </header>
 
             {editing ? (

@@ -29,6 +29,8 @@ export const UserList = ({ users, onDelete }: UserListProps) => {
                     <TableColumn>ID</TableColumn>
                     <TableColumn>USERNAME</TableColumn>
                     <TableColumn>EMAIL</TableColumn>
+                    <TableColumn>ROLES</TableColumn>
+                    <TableColumn>VERIFIED</TableColumn>
                     <TableColumn>ACTIONS</TableColumn>
                 </TableHeader>
                 <TableBody emptyContent={"No users to display."}>
@@ -37,6 +39,8 @@ export const UserList = ({ users, onDelete }: UserListProps) => {
                             <TableCell className="text-center">{user.id}</TableCell>
                             <TableCell>{user.username}</TableCell>
                             <TableCell>{user.email}</TableCell>
+                            <TableCell>[{user.roles?.map(role => role.name).join(', ')}]</TableCell>
+                            <TableCell>{user.verified ? <p className="text-success">True</p> : <p className="text-danger">False</p>}</TableCell>
                             <TableCell>
                                 {client?.id !== user.id && 
                                 (<Button isIconOnly 

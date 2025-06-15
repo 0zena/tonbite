@@ -3,7 +3,7 @@ import { CourseType, UserType } from "../../states";
 // UI Components
 import { Button } from "@heroui/button";
 import { CourseMenuButton } from "../../components";
-import {TonConnectButton} from "@tonconnect/ui-react";
+import {TonConnectButton, useTonAddress } from "@tonconnect/ui-react";
 
 interface CourseHeaderActionProps {
     course?: CourseType;
@@ -16,12 +16,14 @@ interface CourseHeaderActionProps {
 }
 
 export const CourseHeaderAction = ({course, client, editing, Buy, Edit, Delete, Change}: CourseHeaderActionProps) => {
+    const address = useTonAddress();
+
     if (course?.users?.isCourseOwner(client) || client?.roles?.hasRole("Admin"))
         return (<CourseMenuButton visibility={course!.visibility!} 
-                                 editing={editing} 
-                                 onEdit={Edit} 
-                                 onDelete={Delete} 
-                                 onChange={Change} />
+                                  editing={editing} 
+                                  onEdit={Edit} 
+                                  onDelete={Delete} 
+                                  onChange={Change} />
         );
     else if (course?.users?.isCourseBuyer(client))
         return (
@@ -29,8 +31,11 @@ export const CourseHeaderAction = ({course, client, editing, Buy, Edit, Delete, 
         );
     else return (
              <>
-                 <TonConnectButton />
-                 <Button onPress={Buy} variant={"flat"} color={"primary"}>Buy</Button>
+                <TonConnectButton />
+                {address.length > 0
+                    ? <Button onPress={Buy} variant={"flat"} color={"primary"}>Buy</Button>
+                    : null
+                }
              </>
          );
 }

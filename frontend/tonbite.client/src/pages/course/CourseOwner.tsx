@@ -22,11 +22,7 @@ export const CourseOwner = ({user}: CourseOwnerProps) => {
 
     return (
         <>
-            <Button isIconOnly startContent={<Icon icon={Icons.OWNER} />} 
-                               size={"sm"} 
-                               variant={"bordered"} 
-                               onPress={onOpen} />
-
+            <Button isIconOnly startContent={<Icon icon={Icons.OWNER} />} size={"md"} variant={"bordered"} onPress={onOpen} />
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalContent>
                     {(onClose) => (

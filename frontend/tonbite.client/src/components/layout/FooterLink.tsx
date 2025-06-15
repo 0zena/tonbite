@@ -9,8 +9,9 @@ interface FooterLinkProps {
 export const FooterLink = (props: FooterLinkProps) => {
     return (
         <a href={props.to}
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors max-sm:text-xs">
+           target="_blank"
+           rel="noopener noreferrer"
+           className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors max-sm:text-xs">
             <Icon icon={props.icon} />
             <span>{props.text}</span>
         </a>
