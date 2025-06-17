@@ -119,7 +119,7 @@ export const CoursePage = () => {
                           message="Are you sure you want to delete this course? This action cannot be undone." />
 
             <header className={"flex justify-center items-center gap-4 max-md:flex-col max-md:items-end"}>
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
                     <CourseHeaderAction editing={editing} client={client} course={course}
                                     Buy={buy} Delete={remove} Edit={edit} Change={changeVisibility} />
                     <CourseOwner user={owner} />
