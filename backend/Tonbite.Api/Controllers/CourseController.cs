@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,19 +61,22 @@ public class CourseController(ApplicationDbContext context, ICourseHttpService s
     [Route("{id:long}")]
     public async Task<ActionResult<Course?>> Get(
         [FromRoute] long id, 
-        [FromQuery] bool steps)
+        [FromQuery] bool steps,
+        [FromServices] IUserHttpService userService)
     {
         var userId = long.Parse(HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
         var course = await service.Get(id, steps);
+        var user = await userService.GetUser(userId);
 
         // Allow fetching only creator if it is private
-        if (course?.Visibility == Visibility.Private
-            && course.Users?.FirstOrDefault(x =>
+        if ((course?.Visibility == Visibility.Private)
+            && (course.Users?.FirstOrDefault(x =>
                 x.UserId == userId &&
-                x.Status == UserCourseStatus.Creator) == null)
+                x.Status == UserCourseStatus.Creator) == null))
             return Forbid();
 
-        if (course?.Users?.FirstOrDefault(x => x.UserId == userId) != null) 
+        var isAdmin = user?.Roles?.Exists(x => x.Name == nameof(Roles.Admin)) ?? false;
+        if (course?.Users?.FirstOrDefault(x => x.UserId == userId) != null || isAdmin) 
             return course;
         
         course!.Steps = [];
