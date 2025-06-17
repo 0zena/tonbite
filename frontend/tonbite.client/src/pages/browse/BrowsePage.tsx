@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {CourseType} from "../../states";
 import {FilterProps} from "../../services/extensions/FilterProps.ts";
 import {SortProps} from "../../services/extensions/SortProps.ts";
+import {PagingProps} from "../../services/extensions/PagingProps.ts";
 import {CourseService} from "../../services";
 
 // UI Components
@@ -15,19 +16,21 @@ import {Icons} from "../../utils/Icons.ts";
 export const BrowsePage = () => {
     const [courses, setCourses] = useState<CourseType[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState<PagingProps>({page: 1});
     const [total, setTotal] = useState(0);
-    const [filter, setFilter] = useState<FilterProps>({page: page});
+    const [maximum, setMaxium] = useState(0);
+    const [filter, setFilter] = useState<FilterProps>({});
     const [sorting, setSorting] = useState<SortProps>({});
 
     useEffect(() => {
         setLoading(true);
         CourseService
-            .getList(sorting, filter)
+            .getList(sorting, filter, page)
             .then(x => {
                 if (x) {
                     setCourses(x.courses ?? []);
                     setTotal(x.total ?? 0);
+                    setMaxium(x.max ?? 0);
                 }
                 setLoading(false);
             });
@@ -41,6 +44,10 @@ export const BrowsePage = () => {
         setSorting(sortBy);
     }
 
+    const applyPagigng = (page: number) => {
+        setPage({page: page});
+    }
+
     const applySearch = (key: string | undefined) => {
         setFilter(prev => ({
             ...prev,
@@ -49,8 +56,9 @@ export const BrowsePage = () => {
     }
 
     const clearAll = () => {
-        setFilter({page: 1});
+        setFilter({});
         setSorting({});
+        setPage({page: 1});
     }
 
     if (loading) {
@@ -62,7 +70,7 @@ export const BrowsePage = () => {
             <SearchBar value={filter.searchKey} onSearch={applySearch} />
             <span className={"flex items-center justify-end gap-4 max-sm:flex-col max-sm:items-start"}>
                 <BrowseSorting selected={sorting.desc ? "newest" : "oldest"} onSort={applySorting} />
-                <BrowseFilters current={filter} onApply={applyFilters} />
+                <BrowseFilters maximum={maximum} current={filter} onApply={applyFilters} />
                 <Button startContent={<Icon icon={Icons.CANCEL} />} size={"lg"} radius={"sm"} onPress={clearAll}>
                     Clear All
                 </Button>
@@ -74,8 +82,8 @@ export const BrowsePage = () => {
                 <CourseList data={courses} showStatus={false} />
             </div>
             {courses.length > 0 && (<Pagination variant={"bordered"}
-                                                page={page}
-                                                onChange={setPage}
+                                                page={page.page}
+                                                onChange={applyPagigng}
                                                 total={(Math.ceil((total / 15)))}
                                                 className={"flex mt-auto justify-center"} />
             )}

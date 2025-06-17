@@ -5,6 +5,8 @@ import { useAuth } from "../../provider/AuthProvider.tsx";
 import { Icons } from "../../utils";
 import { Icon } from "../icon/Icon.tsx";
 import Tonbite from "../../assets/tonbite.svg";
+import { useConfirmModal } from "../modal/useConfirmModal.ts";
+import { ConfirmModal } from "../modal/ConfirmModal.tsx";
 
 const publicItems = [
     {
@@ -31,6 +33,7 @@ const authenticatedItems = [
 ]
 
 export const AppNavbar = () => {
+    const {isOpen, onOpenChange, confirmAction, handleConfirmResult} = useConfirmModal();
     const { client, isAuthenticated, logout } = useAuth();
     const menuItems = [
         ...publicItems,
@@ -38,8 +41,19 @@ export const AppNavbar = () => {
         ...(isAuthenticated && client?.roles?.hasOneOfRole("Creator", "Admin") ? protectedItems : []),
     ];
 
+    const onLogout = async () => {
+        if (await confirmAction())
+            logout();
+    }
+
     return (
         <Navbar className={"backdrop-saturate-100 bg-inherit"}>
+            <ConfirmModal isOpen={isOpen}
+                        onOpenChange={onOpenChange}
+                        onConfirm={handleConfirmResult}
+                        title="Logout?"
+                        message="Are you sure you want to logout?" />
+
             <NavbarContent>
                 <NavbarMenuToggle className="sm:hidden" />
                 <NavbarBrand as={Link} href={"/"} className={"flex items-center space-x-4"}>
@@ -66,7 +80,7 @@ export const AppNavbar = () => {
                             </Button>
                         </NavbarItem>
                         <NavbarItem>
-                            <Button onPress={logout} variant={"light"}>
+                            <Button onPress={onLogout} variant={"light"}>
                                 Logout
                                 <Icon icon={Icons.LOGOUT} />
                             </Button>

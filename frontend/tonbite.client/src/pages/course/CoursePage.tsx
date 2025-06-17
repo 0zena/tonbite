@@ -70,28 +70,28 @@ export const CoursePage = () => {
     }
 
     const buy = async () => {
-        if (!course?.walletAddress) return;
-
         const sender = new TransactionHandler();
-        const transaction = sender.createTransaction(course.walletAddress, course.price ?? 0);
+        const transaction = sender.createTransaction(course?.walletAddress ?? "", course?.price ?? 0);
 
         try {
             const form: TransactionType = {
                 ownerId: client!.id!,
-                recipientId: course!.users!.find(x => x.status === UserCourseStatus.creator)!.userId!,
+                recipientId: course!.users?.find(x => x.status === UserCourseStatus.creator)?.userId ?? 0,
                 senderAddress: clientAddress,
-                recipientAddress: course!.walletAddress!,
+                recipientAddress: course!.walletAddress ?? "",
                 amount: course!.price!.toString(),
             }
 
-            if (course.price !== 0)
+            if (course?.price !== 0 && course?.walletAddress !== undefined)
                 await tonConnectUI.sendTransaction(transaction, sender.defaultModalOptions);
             
             const transactionId = await TransactionService.send(form);
-            await CourseService.purchase(id);
+            await CourseService.purchase(id)
 
             if (transactionId)
                 window.open(`/transaction/${transactionId}`, '_blank');
+
+            location.reload();
         } catch (error) {
             console.log("transaction failed " + error);
         }

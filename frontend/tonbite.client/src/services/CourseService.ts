@@ -3,6 +3,7 @@ import { api } from "./Api.ts";
 import { Visibility } from "../states/Course.ts";
 import {SortProps} from "./extensions/SortProps.ts";
 import {FilterProps} from "./extensions/FilterProps.ts";
+import {PagingProps} from "./extensions/PagingProps.ts";
 
 export class CourseService {
     public static async create(form: CourseType): Promise<CourseType | undefined> {
@@ -28,12 +29,13 @@ export class CourseService {
         }
     }
 
-    public static async getList(sort: SortProps, filter: FilterProps): Promise<Pagination<CourseType> | undefined> {
+    public static async getList(sort: SortProps, filter: FilterProps, paging: PagingProps): Promise<Pagination<CourseType> | undefined> {
         try {
             const result = await api.get("courses", {
                 params: {
                     ...sort,
                     ...filter,
+                    ...paging,
                 },
             });
             return result.data as Pagination<CourseType> | undefined;

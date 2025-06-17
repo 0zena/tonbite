@@ -12,18 +12,19 @@ import {DrawerContent, useDisclosure} from "@heroui/react";
 import {Drawer, DrawerHeader, DrawerBody, DrawerFooter} from "@heroui/drawer";
 
 interface BrowseFiltersProps {
+    maximum: number;
     current: FilterProps;
     onApply: (filters: FilterProps) => void;
 }
 
-export const BrowseFilters = ({current, onApply}: BrowseFiltersProps) => {
+export const BrowseFilters = ({maximum, current, onApply}: BrowseFiltersProps) => {
     const dates = {
         start: current?.startDate ? new Date(current.startDate) : null,
         end: current?.endDate ? new Date(current.endDate) : null,
     }
 
     const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
-    const [price, setPrice] = useState([Number(current.minPrice ?? 0), Number(current.maxPrice ?? 10)]);
+    const [price, setPrice] = useState([Number(current.minPrice ?? 0), Number(current.maxPrice ?? maximum > 0 ? maximum : 10)]);
     const [date, setDate] = useState({
         start: dates.start ? new CalendarDate(dates.start.getUTCFullYear(), dates.start.getUTCMonth() + 1, dates.start.getUTCDate()) : today(getLocalTimeZone()),
         end: dates.end ? new CalendarDate(dates.end.getUTCFullYear(), dates.end.getUTCMonth() + 1, dates.end.getUTCDate()) : today(getLocalTimeZone()),
@@ -35,8 +36,10 @@ export const BrowseFilters = ({current, onApply}: BrowseFiltersProps) => {
         form.minPrice = price[0].toString();
         form.maxPrice = price[1].toString();
 
-        form.startDate = new Date(Date.UTC(date.start.year, date.start.month - 1, date.start.day)).toISOString();
-        form.endDate = new Date(Date.UTC(date.end.year, date.end.month - 1, date.end.day)).toISOString();
+        if (date.start.day != date.end.day) {
+            form.startDate = new Date(Date.UTC(date.start.year, date.start.month - 1, date.start.day)).toISOString();
+            form.endDate = new Date(Date.UTC(date.end.year, date.end.month - 1, date.end.day)).toISOString();
+        }
 
         onApply(form);
         onClose();
@@ -64,7 +67,7 @@ export const BrowseFilters = ({current, onApply}: BrowseFiltersProps) => {
                             <Slider label={"Price Range"}
                                     step={0.01}
                                     minValue={0}
-                                    maxValue={10}
+                                    maxValue={maximum > 0 ? maximum : 10}
                                     value={price}
                                     // @ts-expect-error Slider's onChange expects a specific type signature not matched by useState setter.
                                     onChange={setPrice}
@@ -72,7 +75,7 @@ export const BrowseFilters = ({current, onApply}: BrowseFiltersProps) => {
                             />
                             <span>
                                 <h4 className={"text-center mb-2"}>Date Range</h4>
-                                <RangeCalendar aria-label="Date (No Selection)" value={date} onChange={setDate} maxValue={today(getLocalTimeZone())} />
+                                <RangeCalendar aria-label="Date (No Selection)" value={date} onChange={setDate} />
                             </span>
                         </div>
                     </DrawerBody>

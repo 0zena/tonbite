@@ -9,7 +9,7 @@ export const CreateCoursePage = () => {
                 <div className="flex flex-col items-center space-y-4 text-center">
                     <h1 className="text-4xl font-bold text-gradient">Create Your Course</h1>
                     <p className="text-xl text-white/80 max-w-2xl">
-                        Share your knowledge with the world and earn TON coins through our decentralized education platform.
+                        Share your knowledge with the world and earn TON coins through decentralized payment system.
                     </p>
                 </div>
 
